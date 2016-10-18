@@ -2,8 +2,6 @@
 
 namespace Modules\mysql\template;
 
-use TemplateInterface;
-
 final class Template implements TemplateInterface {
     /**
      * @param $error

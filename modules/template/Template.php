@@ -2,7 +2,6 @@
 
 namespace Modules\template;
 
-use Modules\template\templateInterface\TemplateInterface;
 use Modules\mobileDetect\MobileDetect;
 use Modules\translit\Translit;
 

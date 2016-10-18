@@ -3,10 +3,9 @@
 namespace Modules\mysql\db;
 
 use Modules\mysql\config\ConfigDB;
-use Modules\mysql\db\dbInterface\DbInterface;
 use Modules\mysql\template\Template;
 
-final class db implements DbInterface {
+final class db implements dbInterface {
     /** @var bool|ConfigDB  */
     private $configDb = false;
     /** @var bool  */
@@ -65,7 +64,7 @@ final class db implements DbInterface {
      * @param bool $show_error
      * @return bool|\mysqli_result
      */
-    public function query( $query, $show_error = true )    {
+    public function query( $query, $show_error = true ) {
         $time_before = $this->getRealTime();
         if( ! $this->db_id ) {
             $this->connect( $this->configDb->getDbUser(), $this->configDb->getDbPass(), $this->configDb->getDbName(), $this->configDb->getDbHost() );

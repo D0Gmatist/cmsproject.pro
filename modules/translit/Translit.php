@@ -2,22 +2,6 @@
 
 namespace Modules\translit;
 
-use Modules\translit\translitInterface\TranslitInterface;
-
-/*
-$var = '123123-ad_as dsadADAWD Wфыв/.фйцукывффффф.в,ы""ФЦЫВФ В!@#$ %^&*()';
-$tr = new Translit();
-$tr->setVar( $var );
-$tr->strReplaceVar();
-$tr->strReplaceVar( ' ' );
-$tr->pregReplaceVar();
-$tr->strTrVar();
-$tr->trimVar();
-$tr->trimVar( '_' );
-$var = $tr->getVar();
-// result: 123123_ad_as_dsadADAWD_W
-*/
-
 class Translit implements TranslitInterface {
     /** @var string  */
     public $var = '';

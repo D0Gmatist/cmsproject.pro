@@ -2,8 +2,6 @@
 
 namespace Modules\mysql\config;
 
-use Modules\mysql\config\configDBInterface\ConfigDBInterface;
-
 final class ConfigDB implements ConfigDBInterface {
     const DBHOST = 'localhost';
     const DBNAME = 'testimonials';
