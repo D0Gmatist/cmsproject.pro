@@ -1,9 +1,16 @@
 <?php
 
-namespace Modules\mysql\templateError;
+namespace Modules\mysql\template;
 
-final class TemplateError {
-    function displayError( $error, $error_num, $query = '' ) {
+use TemplateInterface;
+
+final class Template implements TemplateInterface {
+    /**
+     * @param $error
+     * @param $error_num
+     * @param string $query
+     */
+    public function displayError( $error, $error_num, $query = '' ) {
         if( $query ) {
             $query = preg_replace( "/([0-9a-f]){32}/", "********************************", $query );
         }

@@ -2,13 +2,14 @@
 
 namespace Modules\mysql\config;
 
-final class ConfigDB {
+use Modules\mysql\config\configDBInterface\ConfigDBInterface;
+
+final class ConfigDB implements ConfigDBInterface {
     const DBHOST = 'localhost';
     const DBNAME = 'testimonials';
     const DBUSER = 'testimonials';
     const DBPASS = 'testimonials';
     const COLLATE = 'utf8';
-    const SECUREAUTHKEY = '!xI@=L<,v7-!n}G80=^pHykUU<C44)XBv>J(O{fY;mfn)2r^)?j U{%F]?oT33';
 
     /**
      * @return string
@@ -43,13 +44,6 @@ final class ConfigDB {
      */
     public function getCollate() {
         return ConfigDB::COLLATE;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecureAuthKey() {
-        return ConfigDB::SECUREAUTHKEY;
     }
 
 }

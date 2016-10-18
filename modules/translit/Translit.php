@@ -2,6 +2,8 @@
 
 namespace Modules\translit;
 
+use Modules\translit\translitInterface\TranslitInterface;
+
 /*
 $var = '123123-ad_as dsadADAWD Wфыв/.фйцукывффффф.в,ы""ФЦЫВФ В!@#$ %^&*()';
 $tr = new Translit();
@@ -16,7 +18,7 @@ $var = $tr->getVar();
 // result: 123123_ad_as_dsadADAWD_W
 */
 
-class Translit {
+class Translit implements TranslitInterface {
     /** @var string  */
     public $var = '';
     /** @var array  */
@@ -46,16 +48,16 @@ class Translit {
         'þ'=>'b', 'ß'=>'ss', '£'=>'pf', '¥'=>'ien', 'ð'=>'eth', 'ѓ'=>'r'
     );
 
-    function strTrVar() {
+    public function strTrVar() {
         $this->var = strtr( $this->var, $this->fromTo );
 
     }
 
     /**
-     * @param $from
-     * @param $to
+     * @param string $from
+     * @param string $to
      */
-    function strReplaceVar( $from = '-', $to = '_' ) {
+    public function strReplaceVar( $from = '-', $to = '_' ) {
         $this->var = str_replace( $from, $to, $this->var );
 
     }
@@ -64,7 +66,7 @@ class Translit {
      * @param string $from
      * @param string $to
      */
-    function pregReplaceVar( $from = "/[^a-z0-9\_]+/mi", $to = '' ) {
+    public function pregReplaceVar( $from = "/[^a-z0-9\_]+/mi", $to = '' ) {
         $this->var = preg_replace( $from, $to, $this->var );
 
     }
@@ -72,7 +74,7 @@ class Translit {
     /**
      * @param string $from
      */
-    function trimVar( $from = ' ' ) {
+    public function trimVar( $from = ' ' ) {
         $this->var = trim( $this->var, $from );
 
     }

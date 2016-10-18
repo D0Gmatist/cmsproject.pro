@@ -3,9 +3,10 @@
 namespace Modules\mysql\db;
 
 use Modules\mysql\config\ConfigDB;
-use Modules\mysql\templateError\TemplateError;
+use Modules\mysql\db\dbInterface\DbInterface;
+use Modules\mysql\template\Template;
 
-final class db {
+final class db implements DbInterface {
     /** @var bool|ConfigDB  */
     private $configDb = false;
     /** @var bool  */
@@ -214,8 +215,8 @@ final class db {
      * @param string $query
      */
     private function displayError( $error, $error_num, $query = '' ) {
-        $templateError = new TemplateError;
-        $templateError->displayError( $error, $error_num, $query );
+        $template = new Template;
+        $template->displayError( $error, $error_num, $query );
         exit();
     }
 

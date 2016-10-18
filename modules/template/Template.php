@@ -2,10 +2,11 @@
 
 namespace Modules\template;
 
+use Modules\template\templateInterface\TemplateInterface;
 use Modules\mobileDetect\MobileDetect;
 use Modules\translit\Translit;
 
-class Template {
+class Template implements TemplateInterface {
     /** @var string  */
     public $dir;
     /** @var MobileDetect  */
@@ -239,7 +240,7 @@ class Template {
      * @param $tpl_name
      * @return mixed|string
      */
-    function subLoadTemplate( $tpl_name ) {
+    public function subLoadTemplate( $tpl_name ) {
         $tpl_name = str_replace( chr(0), '', $tpl_name );
         $url = @parse_url( $tpl_name );
         $file_path = dirname( $this->clearUrlDir( $url['path'] ) );
@@ -324,7 +325,7 @@ class Template {
      * @param $matches
      * @return mixed
      */
-    function checkModule( $matches ) {
+    public function checkModule( $matches ) {
         global $module;
         $regex = '/\[(aviable|available|not-aviable|not-available)=(.+?)\]((?>(?R)|.)*?)\[\/\1\]/is';
         if ( is_array( $matches ) ) {
@@ -387,7 +388,7 @@ class Template {
      * @param array $matches
      * @return string
      */
-    function declination( $matches = [] ) {
+    public function declination( $matches = [] ) {
         $matches[1] = str_replace( ' ', '', $matches[1] );
         $matches[1] = intval( $matches[1] );
         $words = explode( '|', trim( $matches[2] ) );
