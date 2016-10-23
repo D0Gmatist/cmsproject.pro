@@ -12,7 +12,7 @@ abstract class PluginsAbstract {
 
     /** @var db  */
     protected $db;
-    protected $query        = 'SELECT * FROM dle_users ORDER BY `user_id` ASC';
+    protected $query        = 'SELECT * FROM users ORDER BY `user_id` ASC';
     protected $row          = [];
     /** @var Template  */
     protected $tpl;

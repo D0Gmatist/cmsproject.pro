@@ -33,7 +33,7 @@ require_once 'loader.php';
 
 $db = new db( new ConfigDB, new ErrorTemplate );
 
-//$sql = $db->query( "SELECT * FROM dle_users ORDER BY `user_id` ASC" );
+//$sql = $db->query( "SELECT * FROM users ORDER BY `user_id` ASC" );
 
 $tpl = new Template( new MobileDetect(),  new Translit(), 'Default' );
 define ( 'TPL_DIR', $tpl->dir );
