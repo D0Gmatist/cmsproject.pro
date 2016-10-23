@@ -2,12 +2,14 @@
 
 namespace Modules\mysql\db;
 
+use Modules\errorTemplate\ErrorTemplate;
 use Modules\mysql\config\ConfigDB;
-use Modules\mysql\template\Template;
 
 final class db implements dbInterface {
     /** @var bool|ConfigDB  */
     private $configDb = false;
+    /** @var bool|ErrorTemplate  */
+    private $errorTemplate = false;
     /** @var bool  */
     private $db_id = false;
     private $query_id = false;
@@ -24,9 +26,11 @@ final class db implements dbInterface {
     /**
      * db constructor.
      * @param ConfigDB $configDb
+     * @param ErrorTemplate $errorTemplate
      */
-    function __construct( ConfigDB $configDb ) {
+    function __construct( ConfigDB $configDb, ErrorTemplate $errorTemplate ) {
         $this->configDb = $configDb;
+        $this->errorTemplate = $errorTemplate;
     }
 
     /**
@@ -214,7 +218,7 @@ final class db implements dbInterface {
      * @param string $query
      */
     private function displayError( $error, $error_num, $query = '' ) {
-        $template = new Template;
+        $template = $this->errorTemplate;
         $template->displayError( $error, $error_num, $query );
         exit();
     }

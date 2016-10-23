@@ -1,7 +1,7 @@
 <?php
 
-namespace Modules\mysql\template;
+namespace Modules\errorTemplate;
 
-interface TemplateInterface {
+interface ErrorTemplateInterface {
     public function displayError( $error, $error_num, $query );
 }

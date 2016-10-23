@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\mysql\template;
+namespace Modules\errorTemplate;
 
-final class Template implements TemplateInterface {
+final class ErrorTemplate implements ErrorTemplateInterface {
     /**
      * @param $error
      * @param $error_num

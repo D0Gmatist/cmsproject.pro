@@ -1,8 +1,9 @@
 <?
 
+use Modules\extendsException\ExtendsException;
+use Modules\errorTemplate\ErrorTemplate;
 use Modules\mysql\config\ConfigDB;
 use Modules\mysql\db\db;
-
 use Modules\mobileDetect\MobileDetect;
 use Modules\template\Template;
 use Modules\translit\Translit;
@@ -21,7 +22,7 @@ if( !defined( 'E_DEPRECATED' ) ) {
 
 define ( 'ENGINE', true );
 define ( 'ROOT_DIR', dirname ( __FILE__ ) );
-define ( 'TEMPLATE_DIR', ROOT_DIR . '/template' );
+define ( 'TEMPLATE_DIR', ROOT_DIR . '/errorTemplate' );
 
 header('Content-Type: text/html; charset=utf-8');
 
@@ -31,7 +32,8 @@ $is_logged = false;
 
 require_once 'loader.php';
 
-$db = new db( new ConfigDB );
+$db = new db( new ConfigDB, new ErrorTemplate );
+
 //$sql = $db->query( "SELECT * FROM dle_users ORDER BY `user_id` ASC" );
 
 $tpl = new Template( new MobileDetect(),  new Translit(), 'Default' );
