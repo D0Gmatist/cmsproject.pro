@@ -1,5 +1,6 @@
 <?php
 
+require_once 'extendsException/loader.php';
 require_once 'translit/loader.php';
 require_once 'mysql/loader.php';
 require_once 'mobileDetect/loader.php';
