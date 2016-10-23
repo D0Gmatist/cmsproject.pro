@@ -2,6 +2,8 @@
 
 namespace Modules\plugins\home;
 
-class Home {
+use Modules\plugins\PluginsAbstract;
+
+class Home extends PluginsAbstract {
 
 }
