@@ -1,6 +1,5 @@
 <?
 
-use Modules\extendsException\ExtendsException;
 use Modules\errorTemplate\ErrorTemplate;
 use Modules\mysql\config\ConfigDB;
 use Modules\mysql\db\db;
