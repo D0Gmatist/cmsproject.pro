@@ -4,7 +4,7 @@ namespace Modules\plugins;
 
 class PluginsAutoload {
     /** @var array  */
-    private $notDir = [ '.', '..', 'loader.php', 'PluginsAbstract.php', 'AutoloadPlugins.php' ];
+    private $notDir = [ '.', '..', 'loader.php', 'PluginsAbstract.php', 'PluginsAutoload.php' ];
 
     function __construct() {
         $this->scanDir();
