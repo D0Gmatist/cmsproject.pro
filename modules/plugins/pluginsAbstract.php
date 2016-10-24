@@ -108,5 +108,5 @@ abstract class PluginsAbstract {
     public function setTplResult( $tplResult ) {
         $this->tplResult = $tplResult;
     }
-
+    
 }

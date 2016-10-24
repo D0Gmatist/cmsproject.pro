@@ -4,9 +4,9 @@ namespace Modules\mysql\config;
 
 final class ConfigDB implements ConfigDBInterface {
     const DBHOST = 'localhost';
-    const DBNAME = 'testimonials';
-    const DBUSER = 'testimonials';
-    const DBPASS = 'testimonials';
+    const DBNAME = 'cmsproject';
+    const DBUSER = 'cmsproject';
+    const DBPASS = 'cmsproject';
     const COLLATE = 'utf8';
 
     /**
