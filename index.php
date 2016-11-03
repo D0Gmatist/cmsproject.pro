@@ -1,6 +1,5 @@
 <?
 
-use Modules\errorTemplate\ErrorTemplate;
 use Modules\mysql\config\ConfigDB;
 use Modules\mysql\db\db;
 use Modules\mobileDetect\MobileDetect;
@@ -31,7 +30,7 @@ $is_logged = false;
 
 require_once 'loader.php';
 
-$db = new db( new ConfigDB, new ErrorTemplate );
+$db = new db( new ConfigDB );
 
 //$sql = $db->query( "SELECT * FROM users ORDER BY `user_id` ASC" );
 

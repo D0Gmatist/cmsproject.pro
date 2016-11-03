@@ -234,7 +234,7 @@ final class db implements dbInterface {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>MySQL Fatal Error</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;

@@ -13,15 +13,20 @@ class PluginsAutoload {
         $this->scanDir();
     }
 
-    private function scanDir () {
+    private function scanDir() {
         if ( $handle = opendir( ROOT_DIR . '\modules\plugins' ) ) {
-            while ( false !== ( $file = readdir( $handle ) ) ) {
-                if ( ! in_array( $file, $this->notDir ) ) {
-                    if ( file_exists( $file ) ) {
-                        require_once $file . '/loader.php';
+            while ( false !== ( $dir = readdir( $handle ) ) ) {
+                if ( ! in_array( $dir, $this->notDir ) ) {
+                    var_dump( file_exists( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php' ) );
+                    if ( file_exists( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php' ) ) {
+                        require_once $dir . '/loader.php';
                     } else {
-                        $this->displayError( $file, 'Error 404' );
+                        $fp = fopen( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php', 'w' );
+                        fwrite( $fp, "<?php\n\n\$loader = '" . $dir . "';" );
+                        fclose( $fp );
+
                     }
+
                 }
 
             }
@@ -44,15 +49,15 @@ class PluginsAutoload {
      */
     public function displayError( $file, $error_info ) {
 
-        $error = 'Отсутствует файл подключения плагина: /modules/plugins/' . $file . '/loader.php';
+        $error = 'Отсутствует файл подключения плагина: ' . $file;
 
         echo <<<HTML
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>MySQL Fatal Error</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <title>PHP Error</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
