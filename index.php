@@ -40,6 +40,6 @@ define ( 'TPL_DIR', $tpl->dir );
 $tpl->loadTemplate( 'main.tpl' );
 $tpl->compile( 'main' );
 echo $tpl->result['main'];
-
+var_dump( $_GET );
 $tpl->globalClear();
 $db->close();
