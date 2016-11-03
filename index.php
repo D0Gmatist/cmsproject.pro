@@ -1,10 +1,10 @@
 <?
 
-use Modules\mysql\config\ConfigDB;
-use Modules\mysql\db\db;
-use Modules\mobileDetect\MobileDetect;
-use Modules\template\Template;
-use Modules\translit\Translit;
+use Modules\MobileDetect\MobileDetect;
+use Modules\Mysql\Config\ConfigDb;
+use Modules\Mysql\Db\Db;
+use Modules\Template\Template;
+use Modules\Translate\Translate;
 
 @ob_start ();
 @ob_implicit_flush ( 0 );
@@ -30,11 +30,11 @@ $is_logged = false;
 
 require_once 'loader.php';
 
-$db = new db( new ConfigDB );
+$db = new Db( new ConfigDb );
 
 //$sql = $db->query( "SELECT * FROM users ORDER BY `user_id` ASC" );
 
-$tpl = new Template( new MobileDetect(),  new Translit(), 'Default' );
+$tpl = new Template( new MobileDetect(),  new Translate(), 'Default' );
 define ( 'TPL_DIR', $tpl->dir );
 
 $tpl->loadTemplate( 'main.tpl' );

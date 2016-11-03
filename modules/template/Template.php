@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\template;
+namespace Modules\Template;
 
-use Modules\mobileDetect\MobileDetect;
-use Modules\translit\Translit;
+use Modules\MobileDetect\MobileDetect;
+use Modules\Translate\Translate;
 
 class Template implements TemplateInterface {
     /** @var string  */
     public $dir;
     /** @var MobileDetect  */
     public $mobileDetect;
-    /** @var Translit  */
-    public $translit;
+    /** @var Translate  */
+    public $translate;
     /** @var bool  */
     public $smartPhone      = false;
     public $tablet          = false;
@@ -35,13 +35,13 @@ class Template implements TemplateInterface {
     /**
      * Template constructor.
      * @param MobileDetect $mobileDetect
-     * @param Translit $translit
+     * @param Translate $translate
      * @param $tplName
      */
-    function __construct( MobileDetect $mobileDetect, Translit $translit, $tplName ) {
+    function __construct( MobileDetect $mobileDetect, Translate $translate, $tplName ) {
         $this->dir = ROOT_DIR . '/templates/' . $tplName;
         $this->mobileDetect = $mobileDetect;
-        $this->translit = $translit;
+        $this->translate = $translate;
 
         if ( $this->mobileDetect->isMobile() ) {
             $this->smartPhone   = true;
@@ -98,13 +98,13 @@ class Template implements TemplateInterface {
         $file_path = dirname( $this->clearUrlDir( $url['path'] ) );
         $tpl_name = pathinfo($url['path']);
         #################################################
-        $this->translit->setVar( $tpl_name['basename'] );
-        $this->translit->strReplaceVar();
-        $this->translit->strReplaceVar( ' ' );
-        $this->translit->pregReplaceVar( "/[^a-z0-9\_.]+/mi" );
-        $this->translit->strTrVar();
-        $this->translit->trimVar();
-        $tpl_name = $this->translit->getVar();
+        $this->translate->setVar( $tpl_name['basename'] );
+        $this->translate->strReplaceVar();
+        $this->translate->strReplaceVar( ' ' );
+        $this->translate->pregReplaceVar( "/[^a-z0-9\_.]+/mi" );
+        $this->translate->strTrVar();
+        $this->translate->trimVar();
+        $tpl_name = $this->translate->getVar();
         #################################################
         $type = explode( '.', $tpl_name );
         $type = strtolower( end( $type ) );
@@ -121,7 +121,7 @@ class Template implements TemplateInterface {
             $this->copy_template = $this->template;
             return '';
         }
-        if( $tpl_name == '' || !file_exists( $this->dir . '/' . $tpl_name ) ) {
+        if( $tpl_name == '' || ! file_exists( $this->dir . '/' . $tpl_name ) ) {
             $this->template = 'Template not found: ' . str_replace( ROOT_DIR, '', $this->dir ) . '/' . $tpl_name;
             $this->copy_template = $this->template;
             return '';
@@ -226,7 +226,7 @@ class Template implements TemplateInterface {
                 unset( $module_params );
             }
             ob_start();
-            $tpl = new Template( new MobileDetect(), 'Default' );
+            $tpl = new Template( new MobileDetect(), new Translate(), '' );
             $tpl->dir = TPL_DIR;
             include $file_path . '/' . $file_name;
             return ob_get_clean();
@@ -245,13 +245,13 @@ class Template implements TemplateInterface {
         $file_path = dirname( $this->clearUrlDir( $url['path'] ) );
         $tpl_name = pathinfo( $url['path'] );
         #################################################
-        $this->translit->setVar( $tpl_name['basename'] );
-        $this->translit->strReplaceVar();
-        $this->translit->strReplaceVar( ' ' );
-        $this->translit->pregReplaceVar( "/[^a-z0-9\_.]+/mi" );
-        $this->translit->strTrVar();
-        $this->translit->trimVar();
-        $tpl_name = $this->translit->getVar();
+        $this->translate->setVar( $tpl_name['basename'] );
+        $this->translate->strReplaceVar();
+        $this->translate->strReplaceVar( ' ' );
+        $this->translate->pregReplaceVar( "/[^a-z0-9\_.]+/mi" );
+        $this->translate->strTrVar();
+        $this->translate->trimVar();
+        $tpl_name = $this->translate->getVar();
         #################################################
         $type = explode( '.', $tpl_name );
         $type = strtolower( end( $type ) );

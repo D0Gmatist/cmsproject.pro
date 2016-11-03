@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\plugins\home;
+namespace Modules\Plugins\Home;
 
-use Modules\plugins\PluginsAbstract;
+use Modules\Plugins\PluginsAbstract;
 
 class Home extends PluginsAbstract {
 

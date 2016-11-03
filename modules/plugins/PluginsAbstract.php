@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\plugins;
+namespace Modules\Plugins;
 
-use Modules\mysql\db\db;
-use Modules\template\Template;
+use Modules\mysql\Db\Db;
+use Modules\Template\Template;
 
 abstract class PluginsAbstract {
     public $nameMod         = 'Name Mod';

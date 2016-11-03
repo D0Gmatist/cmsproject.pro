@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\mysql\db;
+namespace Modules\Mysql\Db;
 
-use Modules\mysql\config\ConfigDB;
+use Modules\Mysql\Config\ConfigDb;
 
-final class db implements dbInterface {
+final class Db implements DbInterface {
     /** @var bool|ConfigDB  */
     private $configDb = false;
     /** @var bool  */
@@ -22,9 +22,9 @@ final class db implements dbInterface {
 
     /**
      * db constructor.
-     * @param ConfigDB $configDb
+     * @param ConfigDb $configDb
      */
-    function __construct( ConfigDB $configDb ) {
+    function __construct( ConfigDb $configDb ) {
         $this->configDb = $configDb;
     }
 
@@ -52,7 +52,7 @@ final class db implements dbInterface {
         }
         $this->mysql_version = mysqli_get_server_info( $this->db_id );
         if( ! defined( $this->configDb->getCollate() ) ) {
-            define ( $this->configDb->getCollate(), 'cp1251' );
+            define ( $this->configDb->getCollate(), 'utf8' );
         }
         mysqli_set_charset ( $this->db_id , $this->configDb->getCollate() );
         return true;

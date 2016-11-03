@@ -2,7 +2,7 @@
 
 /*
 $var = '123123-ad_as dsadADAWD Wфыв/.фйцукывффффф.в,ы""ФЦЫВФ В!@#$ %^&*()';
-$tr = new Translit();
+$tr = new Translate();
 $tr->setVar( $var );
 $tr->strReplaceVar();
 $tr->strReplaceVar( ' ' );
@@ -14,9 +14,9 @@ $var = $tr->getVar();
 // result: 123123_ad_as_dsadADAWD_W
 */
 
-namespace Modules\translit;
+namespace Modules\Translate;
 
-interface TranslitInterface {
+interface TranslateInterface {
     public function strTrVar();
     public function strReplaceVar( $from, $to );
     public function pregReplaceVar( $from, $to );

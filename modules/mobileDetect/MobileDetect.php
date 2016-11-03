@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\mobileDetect;
+namespace Modules\MobileDetect;
 
 /**
  * Mobile Detect Library

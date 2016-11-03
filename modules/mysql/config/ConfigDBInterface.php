@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\mysql\config;
+namespace Modules\Mysql\Config;
 
-interface ConfigDBInterface {
+interface ConfigDbInterface {
     public function getDbHost();
     public function getDbName();
     public function getDbUser();

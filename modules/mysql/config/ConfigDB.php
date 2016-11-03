@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\mysql\config;
+namespace Modules\Mysql\Config;
 
-final class ConfigDB implements ConfigDBInterface {
+final class ConfigDb implements ConfigDbInterface {
     const DBHOST = 'localhost';
     const DBNAME = 'cmsproject';
     const DBUSER = 'cmsproject';
@@ -13,35 +13,35 @@ final class ConfigDB implements ConfigDBInterface {
      * @return string
      */
     public function getDbHost() {
-        return ConfigDB::DBHOST;
+        return ConfigDb::DBHOST;
     }
 
     /**
      * @return string
      */
     public function getDbName() {
-        return ConfigDB::DBNAME;
+        return ConfigDb::DBNAME;
     }
 
     /**
      * @return string
      */
     public function getDbUser() {
-        return ConfigDB::DBUSER;
+        return ConfigDb::DBUSER;
     }
 
     /**
      * @return string
      */
     public function getDbPass() {
-        return ConfigDB::DBPASS;
+        return ConfigDb::DBPASS;
     }
 
     /**
      * @return string
      */
     public function getCollate() {
-        return ConfigDB::COLLATE;
+        return ConfigDb::COLLATE;
     }
 
 }

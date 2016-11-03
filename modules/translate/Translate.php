@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\translit;
+namespace Modules\Translate;
 
-class Translit implements TranslitInterface {
+class Translate implements TranslateInterface {
     /** @var string  */
     public $var = '';
     /** @var array  */

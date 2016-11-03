@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\mysql\db;
+namespace Modules\Mysql\Db;
 
-interface dbInterface {
+interface DbInterface {
     public function query( $query, $show_error );
     public function getRow( $query_id );
     public function getAffectedRows();

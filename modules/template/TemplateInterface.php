@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\template;
+namespace Modules\Template;
 
 interface TemplateInterface {
     public function set( $name, $var );
