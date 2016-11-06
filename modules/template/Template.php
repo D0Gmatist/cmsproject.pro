@@ -12,6 +12,8 @@ class Template implements TemplateInterface {
     public $mobileDetect;
     /** @var Translate  */
     public $translate;
+    /** @var array  */
+    public $config = [];
     /** @var bool  */
     public $smartPhone      = false;
     public $tablet          = false;
@@ -36,12 +38,13 @@ class Template implements TemplateInterface {
      * Template constructor.
      * @param MobileDetect $mobileDetect
      * @param Translate $translate
-     * @param $tplName
+     * @param $config
      */
-    function __construct( MobileDetect $mobileDetect, Translate $translate, $tplName ) {
-        $this->dir = ROOT_DIR . '/templates/' . $tplName;
+    function __construct( MobileDetect $mobileDetect, Translate $translate, $config ) {
+        $this->dir = ROOT_DIR . '/templates/' . $config['skin'];
         $this->mobileDetect = $mobileDetect;
         $this->translate = $translate;
+        $this->config = $config;
 
         if ( $this->mobileDetect->isMobile() ) {
             $this->smartPhone   = true;
@@ -226,7 +229,7 @@ class Template implements TemplateInterface {
                 unset( $module_params );
             }
             ob_start();
-            $tpl = new Template( new MobileDetect(), new Translate(), '' );
+            $tpl = new Template( new MobileDetect(), new Translate(), $this->config );
             $tpl->dir = TPL_DIR;
             include $file_path . '/' . $file_name;
             return ob_get_clean();
@@ -500,6 +503,9 @@ class Template implements TemplateInterface {
             $this->include_mode = 'php';
             $this->copy_template = preg_replace_callback( "#\\{include file=['\"](.+?)['\"]\\}#i", array( &$this, 'loadFile'), $this->copy_template );
         }
+
+        $this->copy_template = $this->globalTags( $this->copy_template );
+
         if( isset( $this->result[$tpl] ) ) {
             $this->result[$tpl] .= $this->copy_template;
         } else {
@@ -507,6 +513,15 @@ class Template implements TemplateInterface {
         }
         $this->_clear();
         $this->template_parse_time += $this->getRealTime() - $time_before;
+    }
+
+    /**
+     * @param $template
+     * @return mixed
+     */
+    public function globalTags( $template ) {
+        return str_ireplace( '{THEME}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'], $template );
+
     }
 
     /**

@@ -34,7 +34,7 @@ $db = new Db( new ConfigDb );
 
 //$sql = $db->query( "SELECT * FROM users ORDER BY `user_id` ASC" );
 
-$tpl = new Template( new MobileDetect(),  new Translate(), 'Default' );
+$tpl = new Template( new MobileDetect(),  new Translate(), $config );
 define ( 'TPL_DIR', $tpl->dir );
 
 $tpl->loadTemplate( 'main.tpl' );
