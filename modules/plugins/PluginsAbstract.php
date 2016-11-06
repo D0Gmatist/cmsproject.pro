@@ -10,7 +10,7 @@ abstract class PluginsAbstract {
     public $versionMod      = 'Version Mod';
     public $authorMod       = 'Author Mod';
 
-    /** @var db  */
+    /** @var Db  */
     protected $db;
     protected $query        = 'SELECT * FROM users ORDER BY `user_id` ASC';
     protected $row          = [];
@@ -21,23 +21,16 @@ abstract class PluginsAbstract {
 
     /**
      * PluginsAbstract constructor.
-     * @param db $db
+     * @param Db $db
      * @param $query
      * @param Template $tpl
      * @param $tplName
      */
-    function __construct( db $db, $query, Template $tpl, $tplName ) {
+    function __construct( Db $db, $query, Template $tpl, $tplName ) {
         $this->db = $db;
         $this->query = $query;
         $this->tpl = $tpl;
         $this->tplName = $tplName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getQuery() {
-        return $this->query;
     }
 
     /**
@@ -60,25 +53,6 @@ abstract class PluginsAbstract {
      */
     public function getRowAll() {
         return $this->row;
-    }
-
-    /**
-     * @param $row
-     * @param bool $num
-     */
-    public function addToRow( $row, $num = false ) {
-        if ( $num != false AND (int)$num > 0 ) {
-            $this->row[$num] = $row;
-        } else {
-            $this->row[] = $row;
-        }
-    }
-
-    /**
-     * @param array $row
-     */
-    public function setRow( $row ) {
-        $this->row = $row;
     }
 
     /**
