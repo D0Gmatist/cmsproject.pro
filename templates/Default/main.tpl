@@ -22,8 +22,15 @@
 
 </head>
 <body>
-    вафывыфвфы вафывыфв фывфывфы
-    main.tpl
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="btn btn-primary btn-sm">bottom</div>
+            </div>
+            <div class="col-lg-9">вафывыфв фывфывфы</div>
+        </div>
+    </div>
     <script type="application/javascript" src="{THEME}/js/jquery.js"></script>
     <script type="application/javascript" src="{THEME}/js/waves.js"></script>
     <script type="application/javascript" src="{THEME}/js/javascript.js"></script>
