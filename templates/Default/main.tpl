@@ -16,46 +16,16 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{THEME}/favicon/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="{THEME}/favicon/favicon-32x32.png">
 
-    <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/material.css">
     <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/materialdesignicons.css">
-
-    <link media="screen" type="text/css" rel="stylesheet"  href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-
+    <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/waves.css">
     <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/style.css">
+
 </head>
 <body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
-            <div class="mdl-layout__header-row">
-                <!-- Title -->
-                <span class="mdl-layout-title">Title</span>
-                <!-- Add spacer, to align navigation to the right -->
-                <div class="mdl-layout-spacer"></div>
-                <!-- Navigation. We hide it in small screens. -->
-                <nav class="mdl-navigation mdl-layout--large-screen-only">
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                </nav>
-            </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">Title</span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-            </nav>
-        </div>
-        <main class="mdl-layout__content">
-            <div class="page-content"><!-- Your content goes here --></div>
-        </main>
-    </div>
+    вафывыфвфы вафывыфв фывфывфы
     main.tpl
     <script type="application/javascript" src="{THEME}/js/jquery.js"></script>
-    <script type="application/javascript" src="{THEME}/js/material.js"></script>
+    <script type="application/javascript" src="{THEME}/js/waves.js"></script>
     <script type="application/javascript" src="{THEME}/js/javascript.js"></script>
 </body>
 </html>
