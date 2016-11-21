@@ -19,7 +19,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 var cms = {
     a : $( document ),
     ready : function (  ) {
-        Waves.attach( '.btn', ['waves-button', 'waves-float', 'waves-light'] );
+
     }
 }
 
