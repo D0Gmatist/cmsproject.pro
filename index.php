@@ -38,8 +38,22 @@ $tpl = new Template( new MobileDetect(),  new Translate(), $config );
 define ( 'TPL_DIR', $tpl->dir );
 
 $tpl->loadTemplate( 'main.tpl' );
+
+/***
+ * тут глобальные теги и блоки
+ */
+
 $tpl->compile( 'main' );
 echo $tpl->result['main'];
-var_dump( $_GET );
+
+if ( $_GET['log'] == 1 ) {
+    echo '<hr>_GET<pre>';
+    print_r( $_GET );
+    echo '</pre>';
+    echo '<hr>_POST<pre>';
+    print_r( $_POST );
+    echo '</pre>';
+
+}
 $tpl->globalClear();
 $db->close();

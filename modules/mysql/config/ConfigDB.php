@@ -5,8 +5,8 @@ namespace Modules\Mysql\Config;
 final class ConfigDb implements ConfigDbInterface {
     const DBHOST = 'localhost';
     const DBNAME = 'cmsproject';
-    const DBUSER = 'cmsproject';
-    const DBPASS = 'cmsproject';
+    const DBUSER = 'root';
+    const DBPASS = 'mR7clzJsqXzVD7k6';
     const COLLATE = 'utf8';
 
     /**
