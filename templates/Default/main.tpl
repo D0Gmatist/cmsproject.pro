@@ -17,7 +17,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{THEME}/favicon/favicon-32x32.png">
 
     <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/materialdesignicons.css">
-    <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/waves.css">
     <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/style.css">
 
 </head>
@@ -32,7 +31,6 @@
         </div>
     </div>
     <script type="application/javascript" src="{THEME}/js/jquery.js"></script>
-    <script type="application/javascript" src="{THEME}/js/waves.js"></script>
     <script type="application/javascript" src="{THEME}/js/javascript.js"></script>
 </body>
 </html>
