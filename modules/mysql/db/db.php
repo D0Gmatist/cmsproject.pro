@@ -263,14 +263,6 @@ body {
   padding-bottom: 10px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   background-color: #AB2B2D;
-  background-image: -moz-linear-gradient(top, #CC3C3F, #982628);
-  background-image: -ms-linear-gradient(top, #CC3C3F, #982628);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#CC3C3F), to(#982628));
-  background-image: -webkit-linear-gradient(top, #CC3C3F, #982628);
-  background-image: -o-linear-gradient(top, #CC3C3F, #982628);
-  background-image: linear-gradient(top, #CC3C3F, #982628);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#CC3C3F', endColorstr='#982628',GradientType=0 ); 
-  background-repeat: repeat-x;
   border-bottom: 1px solid #ffffff;
 }
 .box {

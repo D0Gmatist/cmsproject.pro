@@ -18,19 +18,14 @@
 
     <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/materialdesignicons.css">
     <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/style.css">
+    <link media="screen" type="text/css" rel="stylesheet" href="{THEME}/css/my.css">
 
 </head>
 <body>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="btn btn-primary btn-sm">bottom</div>
-            </div>
-            <div class="col-lg-9">вафывыфв фывфывфы</div>
-        </div>
-    </div>
+
+
     <script type="application/javascript" src="{THEME}/js/jquery.js"></script>
-    <script type="application/javascript" src="{THEME}/js/javascript.js"></script>
+    <script type="application/javascript" src="{THEME}/js/my.js"></script>
 </body>
 </html>
