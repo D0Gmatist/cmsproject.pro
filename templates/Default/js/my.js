@@ -16,13 +16,36 @@ if ( typeof( jQuery ) === 'undefined' ) {
 };
 
 
-var cms = {
+var CMS = {
     a : $( document ),
-    ready : function (  ) {
+    cssLoading : {
+        tpl: '<div class="css_loadading_form" data-alt="ЗАГРУЗКА" data-content="css_loading" style="display: none;">' +
+                '<div class="cssload-thecube">' +
+                    '<div class="cssload-cube cssload-c1"></div>' +
+                    '<div class="cssload-cube cssload-c2"></div>' +
+                    '<div class="cssload-cube cssload-c4"></div>' +
+                    '<div class="cssload-cube cssload-c3"></div>' +
+                '</div>' +
+            '</div>',
+        init : function () {
+            $( 'body' ).append( CMS.cssLoading.tpl );
+        },
+        open : function () {
+            $( '[data-content="css_loading"]' ).show();
+
+        },
+        clos : function () {
+            $( '[data-content="css_loading"]' ).hide();
+
+        }
+
+    },
+    ready : function () {
+        CMS.cssLoading.init();
 
     }
 }
 
-cms.a.ready(function (  ) {
-    cms.ready();
+CMS.a.ready(function (  ) {
+    CMS.ready();
 });
