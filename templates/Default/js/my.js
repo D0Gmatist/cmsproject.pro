@@ -46,6 +46,13 @@ var CMS = {
     }
 }
 
+/** DEMO */
+var DEMO = {
+
+}
+/** DEMO */
+
 CMS.a.ready(function (  ) {
     CMS.ready();
+    DEMO.ready();
 });
