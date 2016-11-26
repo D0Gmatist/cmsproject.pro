@@ -8,28 +8,18 @@
 
     <title>Title</title>
 
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{THEME}/vendor/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/morris/morris.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL STYLES -->
-    <link href="{THEME}/vendor/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-    <link href="{THEME}/vendor/plugins.min.css" rel="stylesheet" type="text/css" />
-    <!-- END THEME GLOBAL STYLES -->
-    <!-- BEGIN THEME LAYOUT STYLES -->
-    <link href="{THEME}/vendor/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
-    <link href="{THEME}/vendor/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
-    <link href="{THEME}/vendor/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
-    <!-- END THEME LAYOUT STYLES -->
+    <link href="{THEME}/css/vendor/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME}/css/vendor/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME}/css/vendor/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME}/css/vendor/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME}/css/vendor/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="{THEME}/css/vendor/plugins.min.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME}/css/vendor/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="{THEME}/css/vendor/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="{THEME}/css/vendor/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- END STYLES -->
 
     <link href="{THEME}/css/my.css" rel="stylesheet" type="text/css" />
 
@@ -41,7 +31,7 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="index.html">
+                    <a href="/">
                         <img src="/templates/Default/img/logo.png" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler">
                         <span></span>
@@ -1415,63 +1405,16 @@
         </div>
         <!-- END FOOTER -->
 
-
-        <!--[if lt IE 9]>
-        <script src="{THEME}/vendor/respond.min.js"></script>
-    <script src="{THEME}/vendor/excanvas.min.js"></script>
-        <![endif]-->
-        <!-- BEGIN CORE PLUGINS -->
-    <script src="{THEME}/vendor/jquery.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/js.cookie.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="{THEME}/vendor/moment.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/morris/morris.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/morris/raphael-min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/counterup/jquery.counterup.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/serial.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/pie.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/radar.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/ammap/ammap.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/horizontal-timeline/horozontal-timeline.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/flot/jquery.flot.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jquery.sparkline.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL SCRIPTS -->
-    <script src="{THEME}/vendor/app.min.js" type="text/javascript"></script>
-        <!-- END THEME GLOBAL SCRIPTS -->
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="{THEME}/vendor/dashboard.min.js" type="text/javascript"></script>
-        <!-- END PAGE LEVEL SCRIPTS -->
-        <!-- BEGIN THEME LAYOUT SCRIPTS -->
-    <script src="{THEME}/vendor/layout/scripts/layout.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/layout/scripts/demo.min.js" type="text/javascript"></script>
-    <script src="{THEME}/vendor/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-        <!-- END THEME LAYOUT SCRIPTS -->
+        <!-- BEGIN SCRIPTS -->
+    <script src="{THEME}/js/vendor/jquery.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/bootstrap.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/bootbox.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/js.cookie.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/app.min.js" type="text/javascript"></script>
+    <script src="{THEME}/js/vendor/layout.min.js" type="text/javascript"></script>
+        <!-- END SCRIPTS -->
 
     <script src="{THEME}/js/my.js" type="text/javascript"></script>
 
