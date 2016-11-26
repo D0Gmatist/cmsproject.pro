@@ -1,7 +1,6 @@
 /**
  * Created by Сергей on 06.11.2016.
  */
-
 if ( typeof( jQuery ) === 'undefined' ) {
     var jQuery;
 
@@ -14,7 +13,6 @@ if ( typeof( jQuery ) === 'undefined' ) {
     }
 
 };
-
 
 var CMS = {
     a : $( document ),
