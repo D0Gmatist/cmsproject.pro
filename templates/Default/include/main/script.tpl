@@ -6,6 +6,10 @@
 <script src="{THEME}/js/vendor/jquery.slimscroll.min.js" type="text/javascript"></script>
 <script src="{THEME}/js/vendor/spin.min.js" type="text/javascript"></script>
 <script src="{THEME}/js/vendor/ladda.min.js" type="text/javascript"></script>
+<script src="{THEME}/js/vendor/jquery.validate.min.js" type="text/javascript"></script>
+<script src="{THEME}/js/vendor/additional-methods.min.js" type="text/javascript"></script>
+<script src="{THEME}/js/vendor/select2.full.min.js" type="text/javascript"></script>
+
 <script src="{THEME}/js/vendor/app.min.js" type="text/javascript"></script>
 <script src="{THEME}/js/vendor/layout.min.js" type="text/javascript"></script>
 

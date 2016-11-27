@@ -25,10 +25,15 @@ define ( 'TEMPLATE_DIR', ROOT_DIR . '/errorTemplate' );
 header('Content-Type: text/html; charset=utf-8');
 
 $module = 'home';
-$member_id = false;
+$member_id = array();
 $is_logged = false;
 
 require_once 'loader.php';
+
+if ( ! $is_logged ) {
+	$member_id['user_group'] = 5;
+
+}
 
 $db = new Db( new ConfigDb );
 

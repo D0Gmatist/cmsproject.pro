@@ -134,8 +134,8 @@ class Template implements TemplateInterface {
             $this->template = preg_replace( "'\\{\\*(.*?)\\*\\}'si", '', $this->template );
         }
         $this->template = $this->checkModule( $this->template );
-        if ( strpos( $this->template, '[group=' ) !== false OR strpos ( $this->template, '[not-group=' ) !== false ) {
-            $this->template = $this->checkModule($this->template);
+		if ( strpos( $this->template, '[group=' ) !== false OR strpos ( $this->template, '[not-group=' ) !== false ) {
+            $this->template = $this->checkGroup($this->template);
         }
         if ( strpos( $this->template, '[smartphone]' ) !== false ) {
             $this->template = preg_replace_callback( "#\\[(smartphone)\\](.*?)\\[/smartphone\\]#is", array( &$this, 'checkDevice' ), $this->template );
@@ -283,7 +283,7 @@ class Template implements TemplateInterface {
         }
         $template = $this->checkModule( $template );
         if ( strpos( $template, '[group=' ) !== false OR strpos( $template, '[not-group=' ) !== false ) {
-            $template = $this->checkModule( $template );
+            $template = $this->checkGroup( $template );
         }
         if ( strpos( $template, '[smartphone]' ) !== false ) {
             $template = preg_replace_callback( "#\\[(smartphone)\\](.*?)\\[/smartphone\\]#is", array( &$this, 'checkDevice' ), $template );
@@ -427,37 +427,52 @@ class Template implements TemplateInterface {
      */
     public function checkGroup( $matches ) {
         global $member_id;
+
         $regex = '/\[(group|not-group)=(.+?)\]((?>(?R)|.)*?)\[\/\1\]/is';
+
         if ( is_array( $matches ) ) {
-            $groups = $matches[2];
+			$groups = $matches[2];
             $block = $matches[3];
-            if ($matches[1] == "group") {
+
+            if ( $matches[1] == 'group' ) {
                 $action = true;
+
             } else {
                 $action = false;
+
             }
             $groups = explode( ',', $groups );
+
             if ( $action ) {
                 if ( ! in_array( $member_id['user_group'], $groups ) ) {
                     $matches = '';
+
                 } else {
                     $matches = $block;
+
                 }
+
             } else {
                 if ( in_array( $member_id['user_group'], $groups ) ) {
                     $matches = '';
+
                 } else {
                     $matches = $block;
+
                 }
+
             }
+
         }
-        return preg_replace_callback( $regex, array( &$this, 'checkGroup'), $matches );
+		return preg_replace_callback( $regex, array( &$this, 'checkGroup'), $matches );
+
     }
 
     public function _clear() {
         $this->data = [];
         $this->block_data = [];
         $this->copy_template = $this->template;
+
     }
 
     public function clear() {
@@ -465,6 +480,7 @@ class Template implements TemplateInterface {
         $this->block_data = [];
         $this->copy_template = null;
         $this->template = null;
+
     }
 
     public function globalClear() {
@@ -473,6 +489,7 @@ class Template implements TemplateInterface {
         $this->copy_template = null;
         $this->template = null;
         $this->result = [];
+
     }
 
     /**
@@ -484,35 +501,46 @@ class Template implements TemplateInterface {
         $find           = [];
         $replace        = [];
         $time_before = $this->getRealTime();
+
         if ( count( $this->block_data ) ) {
             foreach ( $this->block_data AS $key_find => $key_replace ) {
                 $find_preg[]    = $key_find;
                 $replace_preg[] = $key_replace;
+
             }
             $this->copy_template = preg_replace( $find_preg, $replace_preg, $this->copy_template );
+
         }
+
         foreach ( $this->data as $key_find => $key_replace ) {
             $find[] = $key_find;
             $replace[] = $key_replace;
+
         }
         $this->copy_template = str_ireplace( $find, $replace, $this->copy_template );
+
         if ( strpos( $this->copy_template, '[declination=' ) !== false ) {
             $this->copy_template = preg_replace_callback ( "#\\[declination=(.+?)\\](.+?)\\[/declination\\]#is", array( &$this, 'declination'), $this->copy_template );
+
         }
+
         if( strpos( $this->template, "{include file=" ) !== false ) {
             $this->include_mode = 'php';
             $this->copy_template = preg_replace_callback( "#\\{include file=['\"](.+?)['\"]\\}#i", array( &$this, 'loadFile'), $this->copy_template );
-        }
 
+        }
         $this->copy_template = $this->globalTags( $this->copy_template );
 
         if( isset( $this->result[$tpl] ) ) {
             $this->result[$tpl] .= $this->copy_template;
+
         } else {
             $this->result[$tpl] = $this->copy_template;
+
         }
         $this->_clear();
         $this->template_parse_time += $this->getRealTime() - $time_before;
+
     }
 
     /**
@@ -530,6 +558,7 @@ class Template implements TemplateInterface {
     public function getRealTime() {
         list ( $seconds, $microSeconds ) = explode( ' ', microtime() );
         return ( ( float ) $seconds + ( float ) $microSeconds );
+
     }
 
 }
