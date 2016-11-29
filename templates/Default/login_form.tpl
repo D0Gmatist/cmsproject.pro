@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	{include file="include/main/head.tpl"}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Title</title>
+
+	{include file="include/main/style.tpl"}
 </head>
 
 <body class="login">
