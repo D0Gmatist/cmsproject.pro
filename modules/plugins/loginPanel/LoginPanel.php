@@ -5,15 +5,18 @@ namespace Modules\Plugins\LoginPanel;
 use Modules\Template\Template;
 
 final class LoginPanel {
+	private $config;
 	private $member_id;
 	public $tpl;
 
 	/**
 	 * LoginPanel constructor.
+	 * @param array $config
 	 * @param array $member_id
 	 * @param Template $tpl
 	 */
-	function __construct ( array $member_id, Template $tpl ) {
+	function __construct ( array $config, array $member_id, Template $tpl ) {
+		$this->config = $config;
 		$this->member_id = $member_id;
 		$this->tpl = $tpl;
 
@@ -32,13 +35,8 @@ final class LoginPanel {
 		if ( $this->member_id['user_avatar'] != '' ) {
 			$this->tpl->set( '{user_avatar}', $this->member_id['user_avatar'] );
 
-			$this->tpl->set( '[user_avatar]', '' );
-			$this->tpl->set( '[/user_avatar]', '' );
-
 		} else {
-			$this->tpl->set( '{user_avatar}', '' );
-
-			$this->tpl->setBlock( "'\\[user_avatar\\](.*?)\\[/user_avatar\\]'si", '' );
+			$this->tpl->set( '{user_avatar}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
 
 		}
 

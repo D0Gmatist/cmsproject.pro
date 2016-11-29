@@ -41,12 +41,7 @@ $_TIME = time();
 /** @var  $_IP */
 $_IP =  $functions->getIp();
 
-/**
- * @var  $authorization
- * @var  Functions $functions
- * @var  Db $db
- * @var  $config
- */
+/** @var  $authorization */
 $authorization = new Authorization( $functions, $db, $config );
 
 if ( $action == 'logout' ) {
@@ -66,7 +61,7 @@ if ( $authorization->is_logged ) {
 	$member_id = $authorization->member_id;
 
 	/** @var  $loginPanel */
-	$loginPanel = new LoginPanel( $member_id, $tpl );
+	$loginPanel = new LoginPanel( $config, $member_id, $tpl );
 
 } else {
 	$authorization->noLogin();
