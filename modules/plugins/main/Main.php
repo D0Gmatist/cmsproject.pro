@@ -20,6 +20,9 @@ final class Main {
 
 	}
 
+	/**
+	 * @param $tags
+	 */
 	public function setTags ( $tags ) {
 		if ( is_array( $tags ) ) {
 			foreach ( $tags AS $val ) {
