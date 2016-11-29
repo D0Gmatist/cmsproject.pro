@@ -10,6 +10,7 @@ use Modules\Plugins\Main\Main;
 use Modules\Template\Template;
 use Modules\Translate\Translate;
 
+/** @var $config */
 require_once ROOT_DIR . '/modules/config.php';
 
 /** @var  $module */
@@ -26,7 +27,7 @@ $member_id = [];
 date_default_timezone_set( $config['date_adjust'] );
 
 /** @var  $tpl */
-$tpl = new Template( new MobileDetect(),  new Translate(), $config );
+$tpl = new Template( new MobileDetect(), new Translate(), $config );
 define ( 'TPL_DIR', $tpl->dir );
 
 /** @var  $db */
@@ -42,7 +43,7 @@ $_TIME = time();
 $_IP =  $functions->getIp();
 
 /** @var  $authorization */
-$authorization = new Authorization( $functions, $db, $config );
+$authorization = new Authorization( $functions, $db, $config, $tpl );
 
 if ( $action == 'logout' ) {
 	$authorization->logout();
@@ -55,6 +56,8 @@ if ( $action == 'logout' ) {
 
 }
 
+$main = new Main( $tpl );
+
 if ( $authorization->is_logged ) {
 	$authorization->loginUpdate( $_TIME );
 	/** @var  $member_id */
@@ -63,12 +66,27 @@ if ( $authorization->is_logged ) {
 	/** @var  $loginPanel */
 	$loginPanel = new LoginPanel( $config, $member_id, $tpl );
 
+	$main->setTags( [ 'login_panel' ] );
+
 } else {
 	$authorization->noLogin();
 	$member_id['user_group'] = 5;
 
+	if ( $config['no_login'] == 1 AND $action != 'login' ) {
+		header( 'Location: ' . $config['http_home_url'] . 'login/' );
+		die();
+
+	}
+
 }
 
-$main = new Main( $tpl );
-$main->setTags( [ 'login_panel' ] );
-$main->getResult( $authorization->is_logged );
+$main->setTags( [ 'content' ] );
+
+switch ( $action ) {
+	case 'login' :
+		$authorization->getContent();
+		break;
+
+}
+
+$main->getResult();

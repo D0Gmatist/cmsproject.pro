@@ -4,11 +4,13 @@ namespace Modules\Plugins\Authorization;
 
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
+use Modules\Template\Template;
 
 final class Authorization {
 	public $functions;
 	public $db;
 	public $config;
+	public $tpl;
 
 	public $is_logged = false;
 	public $member_id = array();
@@ -19,10 +21,11 @@ final class Authorization {
 	 * @param Db $db
 	 * @param array $config
 	 */
-	function __construct ( Functions $functions, Db $db, array $config  ) {
+	function __construct ( Functions $functions, Db $db, array $config, Template $tpl ) {
 		$this->functions = $functions;
 		$this->db = $db;
 		$this->config = $config;
+		$this->tpl = $tpl;
 
 		$this->functions->domain ();
 		$this->functions->Session();
@@ -137,6 +140,12 @@ final class Authorization {
 
 		header( 'Location: ' . str_replace( 'index.php', '', $_SERVER['PHP_SELF'] ) );
 		die();
+
+	}
+
+	public function getContent () {
+		$this->tpl->loadTemplate( 'login.tpl' );
+		$this->tpl->compile( 'content' );
 
 	}
 
