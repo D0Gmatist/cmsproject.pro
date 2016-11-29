@@ -23,6 +23,26 @@ if ( isset( $_GET['action'] ) AND trim( $_GET['action'] ) != '' ) {
 /** @var  $member_id */
 $member_id = [];
 
+/** @var  $functions */
+$functions = new Functions();
+
+/** @var  $replaceUrl */
+$replaceUrl = false;
+
+/** @var  $homeUrl */
+$homeUrl = $functions->cleanUrl( $config['http_home_url'] );
+
+if ( $homeUrl AND $functions->cleanUrl( $_SERVER['HTTP_HOST'] ) != $homeUrl ) {
+	/** @var  $replaceUrl */
+	$replaceUrl =[];
+	$replaceUrl[0] = $homeUrl;
+	$replaceUrl[1] = $functions->cleanUrl( $_SERVER['HTTP_HOST'] );
+
+}
+
+$config['http_home_url'] = explode( 'index.php', strtolower ( $_SERVER['PHP_SELF'] ) );
+$config['http_home_url'] = reset( $config['http_home_url'] );
+
 /** @var  $config */
 date_default_timezone_set( $config['date_adjust'] );
 
@@ -32,9 +52,6 @@ define ( 'TPL_DIR', $tpl->dir );
 
 /** @var  $db */
 $db = new Db( new ConfigDb );
-
-/** @var  $functions */
-$functions = new Functions();
 
 /** @var  $_TIME */
 $_TIME = time();
@@ -89,4 +106,4 @@ switch ( $action ) {
 
 }
 
-$main->getResult();
+$main->getResult( $replaceUrl );

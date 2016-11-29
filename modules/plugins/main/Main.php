@@ -37,7 +37,7 @@ final class Main {
 
 	}
 
-	public function getResult () {
+	public function getResult ( $replaceUrl ) {
 		$this->tpl->loadTemplate( 'main.tpl' );
 
 		foreach ( $this->results AS $val ) {
@@ -46,6 +46,11 @@ final class Main {
 		}
 
 		$this->tpl->compile( 'main' );
+
+		if ( $replaceUrl ) {
+			$this->tpl->result['main'] = str_replace ( $replaceUrl[0] . '/', $replaceUrl[1] . '/', $this->tpl->result['main'] );
+
+		}
 
 		echo $this->tpl->result['main'];
 
