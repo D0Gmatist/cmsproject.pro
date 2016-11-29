@@ -10,7 +10,15 @@
 
     [not-group=5]
     <div class="page-header navbar navbar-fixed-top">
-		{login_panel}
+		<div class="page-header-inner ">
+
+            {include file="include/main/navbar/logo.tpl"}
+
+            {include file="include/main/navbar/sidebar_toggler_btn.tpl"}
+
+			{login_panel}
+
+        </div>
     </div>
 
     <div class="clearfix"></div>
