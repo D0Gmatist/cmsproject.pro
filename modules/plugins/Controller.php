@@ -63,7 +63,7 @@ $_IP =  $functions->getIp();
 $authorization = new Authorization( $functions, $db, $config, $tpl );
 
 if ( $action == 'logout' ) {
-	$authorization->logout();
+	$authorization->logout( $config['http_home_url'] );
 
 } else if ( $_POST['action'] == 'login' ) {
 	$authorization->login();
@@ -83,8 +83,6 @@ if ( $authorization->is_logged ) {
 	/** @var  $loginPanel */
 	$loginPanel = new LoginPanel( $config, $member_id, $tpl );
 
-	$main->setTags( [ 'login_panel' ] );
-
 } else {
 	$authorization->noLogin();
 	$member_id['user_group'] = 5;
@@ -98,6 +96,7 @@ if ( $authorization->is_logged ) {
 }
 
 $main->setTags( [ 'content' ] );
+$main->setTags( [ 'login_panel' ] );
 
 switch ( $action ) {
 	case 'login' :

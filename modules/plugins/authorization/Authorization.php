@@ -127,7 +127,10 @@ final class Authorization {
 
 	}
 
-	public function logout () {
+	/**
+	 * @param $http_home_url
+	 */
+	public function logout ( $http_home_url ) {
 		$this->member_id = array ();
 		$this->is_logged = false;
 
@@ -138,7 +141,7 @@ final class Authorization {
 		@session_destroy();
 		@session_unset();
 
-		header( 'Location: ' . str_replace( 'index.php', '', $_SERVER['PHP_SELF'] ) );
+		header( 'Location: ' . $http_home_url );
 		die();
 
 	}
