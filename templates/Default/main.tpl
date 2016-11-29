@@ -10,7 +10,7 @@
 
     [not-group=5]
     <div class="page-header navbar navbar-fixed-top">
-    {include file="include/main/navbar.tpl"}
+		{login_panel}
     </div>
 
     <div class="clearfix"></div>
@@ -57,6 +57,7 @@
                                 <button type="button" class="btn btn-primary mt-ladda-btn ladda-button" data-style="slide-up">
                                     <span class="ladda-label">Expand Right</span><span class="ladda-spinner"></span>
                                 </button>
+
                             </div>
 
                         </div>

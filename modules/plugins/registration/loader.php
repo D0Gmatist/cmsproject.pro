@@ -1,3 +1,3 @@
 <?php
 
-$loader = 'registration';
+require_once 'Registration.php';

@@ -16,36 +16,12 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 var CMS = {
     a : $( document ),
-	btnLoading : function (  ) {
-		$( '.demo-loading-btn' ).click( function() {
-			var t = $( this );
 
-			t.button( 'loading' );
-			setTimeout( function() {
-				t.button( 'reset' )
-			}, 3e3 )
+	login : function() {
 
-		});
-
-		Ladda.bind(".mt-ladda-btn", {
-			timeout: 2e3
-
-		});
-
-		Ladda.bind( '.mt-ladda-btn.mt-progress-demo', {
-			callback: function( t ) {
-				var n = 0,
-                    a = setInterval( function() {
-                            n = Math.min( n + .1 * Math.random(), 1 );
-                            t.setProgress(n);
-                            1 === n && ( t.stop(), clearInterval( a ) );
-
-                        }, 200 );
-			}
-
-		});
 
 	},
+
     cssLoading : {
         tpl: '<div class="css_loadading_form" data-alt="ЗАГРУЗКА" data-content="css_loading" style="display: none;">' +
                 '<div class="cssload-thecube">' +
@@ -70,23 +46,37 @@ var CMS = {
     },
     ready : function () {
         CMS.cssLoading.init();
-        CMS.btnLoading();
+        CMS.login();
 
     }
 }
-var UIButtons = function() {
-	var t = function() {
 
-	};
-	return {
-		init: function() {
-			t()
+CMS.a.on( 'click', '[data-btn="form"]', function () {
+	$( $( this ).closest( 'form' ) ).hide();
+	$( '[data-form="' + $( this ).data( 'name-form' ) + '"]' ).show();
+
+
+}).on( 'click', '[data-btn="formGo"]', function () {
+	if ( $( this ).data( 'action' ) == 'login' ) {
+		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="username"]' ).val() == '' ) {
+			return false;
+
 		}
+
+		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="password"]' ).val() == '' ) {
+			return false;
+
+		}
+
+	} else if ( $( this ).data( 'action' ) == 'forget' ) {
+		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="email"]' ).val() == '' ) {
+			return false;
+
+		}
+
 	}
-}();
-jQuery(document).ready(function() {
-	UIButtons.init()
-});
-CMS.a.ready(function (  ) {
+
+}).ready( function () {
     CMS.ready();
+
 });

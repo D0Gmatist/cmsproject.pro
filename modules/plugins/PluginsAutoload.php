@@ -4,7 +4,7 @@ namespace Modules\Plugins;
 
 class PluginsAutoload {
     /** @var array  */
-    private $notDir = [ '.', '..', 'loader.php', 'PluginsAbstract.php', 'PluginsAutoload.php' ];
+    private $notDir = [ '.', '..', 'loader.php', 'PluginsAutoload.php', 'Controller.php' ];
 
     /**
      * PluginsAutoload constructor.

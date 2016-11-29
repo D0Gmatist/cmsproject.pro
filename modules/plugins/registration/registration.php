@@ -2,8 +2,13 @@
 
 namespace Modules\Plugins\Registration;
 
-use Modules\Plugins\PluginsAbstract;
+use Modules\Functions\Functions;
 
-class Registration extends PluginsAbstract {
+final class Registration {
+	public $functions;
 
+	function __construct ( Functions $functions ) {
+		$this->functions = $functions;
+
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'config.php';
+require_once 'functions/loader.php';
 
 require_once 'translate/loader.php';
 require_once 'mysql/loader.php';
