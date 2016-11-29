@@ -29,9 +29,6 @@
 				<label class="control-label visible-ie8 visible-ie9">Пароль</label>
 				<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Пароль" name="password" />
 			</div>
-			<div class="form-group" style="margin-bottom: 0;height: 20px;">
-				<label class="rememberme check mt-checkbox mt-checkbox-outline"><input type="checkbox" name="remember" value="1">Запомнить<span></span></label>
-			</div>
 			<div class="form-actions">
 				<input type="hidden" name="action" value="login" />
 				<button type="submit" class="btn green uppercase" data-btn="formGo" data-action="login">Войти</button>
