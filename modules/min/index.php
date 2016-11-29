@@ -11,7 +11,6 @@ define( 'MINIFY_MIN_DIR', dirname(__FILE__) );
 // set config path defaults
 $min_configPaths = array(
     'base'   => MINIFY_MIN_DIR . '/config.php',
-    'test'   => MINIFY_MIN_DIR . '/config-test.php',
     'groups' => MINIFY_MIN_DIR . '/groupsConfig.php'
 );
 

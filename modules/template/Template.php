@@ -130,14 +130,17 @@ class Template implements TemplateInterface {
             return '';
         }
         $this->template = file_get_contents( $this->dir . '/' . $tpl_name );
-        if ( strpos( $this->template, '{*' ) !== false ) {
+
+		if ( strpos( $this->template, '{*' ) !== false ) {
             $this->template = preg_replace( "'\\{\\*(.*?)\\*\\}'si", '', $this->template );
         }
-        $this->template = $this->checkModule( $this->template );
-		if ( strpos( $this->template, '[group=' ) !== false OR strpos ( $this->template, '[not-group=' ) !== false ) {
-            $this->template = $this->checkGroup($this->template);
-        }
-        if ( strpos( $this->template, '[smartphone]' ) !== false ) {
+
+		$this->template = $this->checkModule( $this->template );
+
+		if ( strpos( $this->template, '[group=' ) !== false OR strpos( $this->template, '[not-group=' ) !== false ) {
+			$this->template = $this->checkGroup( $this->template );
+		}
+		if ( strpos( $this->template, '[smartphone]' ) !== false ) {
             $this->template = preg_replace_callback( "#\\[(smartphone)\\](.*?)\\[/smartphone\\]#is", array( &$this, 'checkDevice' ), $this->template );
         }
         if ( strpos( $this->template, '[not-smartphone]' ) !== false ) {
@@ -160,7 +163,7 @@ class Template implements TemplateInterface {
             $this->template = preg_replace_callback( "#\\{include file=['\"](.+?)['\"]\\}#i", array( &$this, 'loadFile' ), $this->template );
         }
         $this->copy_template = $this->template;
-        $this->template_parse_time += $this->getRealTime() - $time_before;
+		$this->template_parse_time += $this->getRealTime() - $time_before;
         return true;
     }
 
@@ -282,6 +285,7 @@ class Template implements TemplateInterface {
             $template = preg_replace( "'\\{\\*(.*?)\\*\\}'si", '', $template );
         }
         $template = $this->checkModule( $template );
+
         if ( strpos( $template, '[group=' ) !== false OR strpos( $template, '[not-group=' ) !== false ) {
             $template = $this->checkGroup( $template );
         }
@@ -346,7 +350,7 @@ class Template implements TemplateInterface {
                     $matches = $block;
                 }
             } else {
-                if ( (in_array( $module, $aviable )) ) {
+                if ( ( in_array( $module, $aviable ) ) ) {
                     $matches = '';
                 } else {
                     $matches = $block;
@@ -369,7 +373,7 @@ class Template implements TemplateInterface {
             $action = false;
         }
         if ( $matches[1] == 'smartphone' OR $matches[1] == 'not-smartphone' ) {
-            $device = $this->smartphone;
+            $device = $this->smartPhone;
         }
         if ( $matches[1] == 'tablet' OR $matches[1] == 'not-tablet' ) {
             $device = $this->tablet;
@@ -464,7 +468,7 @@ class Template implements TemplateInterface {
             }
 
         }
-		return preg_replace_callback( $regex, array( &$this, 'checkGroup'), $matches );
+		return preg_replace_callback( $regex, array( &$this, 'checkGroup' ), $matches );
 
     }
 

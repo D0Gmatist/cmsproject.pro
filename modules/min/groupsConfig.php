@@ -11,13 +11,7 @@
 
 return array(
     // custom source example
-    'general' => array(
-     	$min_documentRoot . '/engine/classes/js/jquery.js',
-     	$min_documentRoot . '/engine/classes/js/jqueryui.js',
-     	$min_documentRoot . '/engine/classes/js/dle_js.js',
-    ),
+    'general' => [],
 
-    'admin' => array(
-     	$min_documentRoot . '/engine/skins/javascripts/application.js', 
-    ),
+    'admin' => [],
 );

@@ -19,6 +19,7 @@ if ( isset( $_GET['action'] ) AND trim( $_GET['action'] ) != '' ) {
 	$action = $_GET['action'];
 
 }
+$module = $action;
 
 /** @var  $member_id */
 $member_id = [];
@@ -73,8 +74,6 @@ if ( $action == 'logout' ) {
 
 }
 
-$main = new Main( $tpl );
-
 if ( $authorization->is_logged ) {
 	$authorization->loginUpdate( $_TIME );
 	/** @var  $member_id */
@@ -95,14 +94,21 @@ if ( $authorization->is_logged ) {
 
 }
 
-$main->setTags( [ 'content' ] );
-$main->setTags( [ 'login_panel' ] );
+$main = new Main( $tpl );
 
 switch ( $action ) {
+	case 'main' :
+		$tpl->loadTemplate( 'xxx.tpl' );
+		$tpl->compile( 'content' );
+		break;
+
 	case 'login' :
 		$authorization->getContent();
 		break;
 
 }
+
+$main->setTags( [ 'login_panel' ] );
+$main->setTags( [ 'content' ] );
 
 $main->getResult( $replaceUrl );

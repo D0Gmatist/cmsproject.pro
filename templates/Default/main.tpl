@@ -11,9 +11,9 @@
 	{include file="include/main/style.tpl"}
 </head>
 
-<body class="[not-group=5]page-header-fixed page-sidebar-closed-hide-logo page-content-white[/not-group][group=5]login[/group]">
+[not-group=5]
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
 
-    [not-group=5]
     <div class="page-header navbar navbar-fixed-top">
 		<div class="page-header-inner ">
 
@@ -40,6 +40,7 @@
                 <!-- content -->
                 <div class="row">
                     <div class="col-md-12">
+
                         <div class="portlet light bordered">
 
                             <div class="portlet-title">
@@ -59,22 +60,15 @@
                             </div>
 
                             <div class="portlet-body">
-                                content content content content content content content content
-                                content content content content content content content content
-                                content content content content content content content content
-                                content content content content content content content content
-                                content content content content content content content content
-                                content content content content content content content content
-                                content content content content content content content content
-                                content content content content content content content content
+
                                 <button type="button" class="btn btn-primary mt-ladda-btn ladda-button" data-style="slide-up">
                                     <span class="ladda-label">Expand Right</span><span class="ladda-spinner"></span>
                                 </button>
                                 {content}
-
                             </div>
 
                         </div>
+
                     </div>
                 </div>
 
@@ -86,13 +80,20 @@
     <div class="page-footer">
     {include file="include/main/footer.tpl"}
     </div>
-    [/not-group]
-
-    [group=5]
-	{content}
-    [/group]
 
     {include file="include/main/script.tpl"}
 
 </body>
+[/not-group]
+
+[group=5]
+<body class="login">
+
+    {content}
+
+	{include file="include/main/script.tpl"}
+
+</body>
+[/group]
+
 </html>
