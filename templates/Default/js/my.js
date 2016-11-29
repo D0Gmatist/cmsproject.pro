@@ -1,5 +1,5 @@
 /**
- * Created by Сергей on 06.11.2016.
+ * Created by Сергей
  */
 if ( typeof( jQuery ) === 'undefined' ) {
     var jQuery;
