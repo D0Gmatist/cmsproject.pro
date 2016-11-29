@@ -37,8 +37,17 @@ final class Main {
 
 	}
 
-	public function getResult () {
-		$this->tpl->loadTemplate( 'main.tpl' );
+	/**
+	 * @param $is_logged
+	 */
+	public function getResult ( $is_logged ) {
+		if ( $is_logged ) {
+			$this->tpl->loadTemplate( 'main.tpl' );
+
+		} else {
+			$this->tpl->loadTemplate( 'login_form.tpl' );
+
+		}
 
 		foreach ( $this->results AS $val ) {
 			$this->tpl->set ( '{' . $val . '}', $this->tpl->result[$val] );

@@ -76,4 +76,4 @@ if ( $authorization->is_logged ) {
 
 $main = new Main( $tpl );
 $main->setTags( [ 'login_panel' ] );
-$main->getResult();
+$main->getResult( $authorization->is_logged );

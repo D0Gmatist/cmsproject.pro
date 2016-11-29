@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<!-- include/main/head -->
 {include file="include/main/head.tpl"}
-<!-- include/main/head -->
 </head>
 
-<body class="[not-group=5]page-header-fixed page-sidebar-closed-hide-logo page-content-white[/not-group][group=5]login[/group]">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
 
-    [not-group=5]
     <div class="page-header navbar navbar-fixed-top">
 		<div class="page-header-inner ">
 
@@ -80,14 +77,8 @@
     <div class="page-footer">
     {include file="include/main/footer.tpl"}
     </div>
-    [/not-group]
-
-    [group=5]
-	{include file="include/main/login.tpl"}
-    [/group]
 
     {include file="include/main/script.tpl"}
-
 
 </body>
 </html>
