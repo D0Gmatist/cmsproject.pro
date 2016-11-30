@@ -16,7 +16,7 @@ use Modules\Template\Template;
 use Modules\Translate\Translate;
 
 /** @var $config */
-require_once ROOT_DIR . '/modules/config.php';
+require_once MODULES_DIR . '/config.php';
 
 /** @var $language */
 require_once ROOT_DIR . '/Language/loader.php';

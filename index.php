@@ -14,7 +14,8 @@ if( !defined( 'E_DEPRECATED' ) ) {
 
 define ( 'ENGINE', true );
 define ( 'ROOT_DIR', dirname ( __FILE__ ) );
-define ( 'TEMPLATE_DIR', ROOT_DIR . '/errorTemplate' );
+define ( 'MODULES_DIR', ROOT_DIR . '/modules' );
+define ( 'PLUGINS_DIR', MODULES_DIR . '/plugins' );
 
 header('Content-Type: text/html; charset=utf-8');
 
