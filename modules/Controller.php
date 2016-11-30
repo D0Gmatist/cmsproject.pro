@@ -73,7 +73,7 @@ $main = new Main( $tpl );
 $msg = new MsgBox( $tpl );
 
 /** @var  $authorization */
-$authorization = new Authorization( $functions, $db, $config, $tpl );
+$authorization = new Authorization( $functions, $db, $tpl, $config, $language );
 
 if ( $action == 'logout' ) {
 	$authorization->logout();

@@ -10,8 +10,9 @@ use Modules\Template\Template;
 final class Authorization {
 	public $functions;
 	public $db;
-	public $config;
 	public $tpl;
+	public $config;
+	public $language;
 
 	public $is_logged = false;
 	public $member_id = array();
@@ -20,16 +21,18 @@ final class Authorization {
 	 * Authorization constructor.
 	 * @param Functions $functions
 	 * @param Db $db
-	 * @param array $config
 	 * @param Template $tpl
+	 * @param array $config
+	 * @param array $language
 	 */
-	function __construct ( Functions $functions, Db $db, array $config, Template $tpl ) {
+	function __construct ( Functions $functions, Db $db, Template $tpl, array $config, array $language ) {
 		$this->functions = $functions;
 		$this->db = $db;
-		$this->config = $config;
 		$this->tpl = $tpl;
+		$this->config = $config;
+		$this->language = $language;
 
-		$this->functions->domain ();
+		$this->functions->domain();
 		$this->functions->Session();
 
 	}
@@ -48,7 +51,7 @@ final class Authorization {
 			if ( preg_match( "/[\||\'|\<|\>|\"|\!|\?|\$|\/|\\\|\&\~\*\+]/", $login ) ) {
 				$logged = false;
 
-				$msgBox->getResult( 'login_err1', 'login1', 'error' );
+				$msgBox->getResult( $this->language['error'], $this->language['login'][1], 'error' );
 
 			}
 			$where = "`user_email` = '{$login}'";
@@ -57,7 +60,7 @@ final class Authorization {
 			if ( preg_match( "/[\||\'|\<|\>|\"|\!|\?|\$|\@|\/|\\\|\&\~\*\+]/", $login ) ) {
 				$logged = false;
 
-				$msgBox->getResult( 'login_err2', 'login2', 'error' );
+				$msgBox->getResult( $this->language['error'], $this->language['login'][1], 'error' );
 
 			}
 			$where = "`user_login` = '{$login}'";
@@ -74,7 +77,7 @@ final class Authorization {
 				die();
 
 			} else {
-				$msgBox->getResult( 'login_err3', 'login3', 'error' );
+				$msgBox->getResult( $this->language['error'], $this->language['login'][2], 'error' );
 
 			}
 

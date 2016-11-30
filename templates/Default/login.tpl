@@ -6,8 +6,8 @@
 	<form class="login-form" data-form="login" method="post" style="display: {form_login};">
 		<h3 class="form-title font-green">Авторизация</h3>
 		<div class="form-group">
-			<label class="control-label visible-ie8 visible-ie9">Логин</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Логин" name="login" value="{login}" />
+			<label class="control-label visible-ie8 visible-ie9">Login / Email</label>
+			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Login / Email" name="login" value="{login}" />
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Пароль</label>
