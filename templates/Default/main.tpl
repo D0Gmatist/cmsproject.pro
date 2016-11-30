@@ -91,7 +91,6 @@
 <body class="login">
 
     {content}
-	{msg}
 
 	{include file="include/main/script.tpl"}
 

@@ -9,7 +9,10 @@ final class Main {
 	public $tpl;
 
 	/** @var array  */
-	public $results = [];
+	public $tags = [];
+
+	/** @var array  */
+	public $tagsResult = [];
 
 	/**
 	 * Main constructor.
@@ -26,12 +29,12 @@ final class Main {
 	public function setTags ( $tags ) {
 		if ( is_array( $tags ) ) {
 			foreach ( $tags AS $val ) {
-				$this->results[] = $val;
+				$this->tags[] = $val;
 
 			}
 
 		} else {
-			$this->results[] = $tags;
+			$this->tags[] = $tags;
 
 		}
 
@@ -40,9 +43,9 @@ final class Main {
 	public function getResult ( $replaceUrl ) {
 		$this->tpl->loadTemplate( 'main.tpl' );
 
-		$this->results = array_unique( $this->results );
+		$this->tags = array_unique( $this->tags );
 
-		foreach ( $this->results AS $val ) {
+		foreach ( $this->tags AS $val ) {
 			$this->tpl->set ( '{' . $val . '}', $this->tpl->result[$val] );
 
 		}

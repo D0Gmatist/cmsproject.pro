@@ -7,5 +7,6 @@ interface ConfigDbInterface {
     public function getDbName();
     public function getDbUser();
     public function getDbPass();
-    public function getCollate();
+	public function getCollate();
+	public function getSecureAuthKey();
 }

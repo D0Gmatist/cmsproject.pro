@@ -5,27 +5,33 @@ namespace Modules\Mysql\Db;
 use Modules\Mysql\Config\ConfigDb;
 
 final class Db implements DbInterface {
+
     /** @var bool|ConfigDB  */
-    private $configDb = false;
+	private $configDb = false;
+
     /** @var bool  */
     private $db_id = false;
     private $query_id = false;
+
     /** @var int  */
     private $query_num = 0;
     private $mysql_error_num = 0;
     private $MySQL_time_taken = 0;
+
     /** @var array  */
-    private $query_list = array();
+    private $query_list = [];
+
     /** @var string  */
     private $mysql_error = '';
     private $mysql_version = '';
 
-    /**
+	/**
      * db constructor.
      * @param ConfigDb $configDb
      */
     function __construct( ConfigDb $configDb ) {
         $this->configDb = $configDb;
+
     }
 
     /**
@@ -38,24 +44,34 @@ final class Db implements DbInterface {
      */
     private function connect( $db_user, $db_pass, $db_name, $db_location = 'localhost', $show_error = 1 ) {
         $db_location = explode( ":", $db_location );
+
         if ( isset( $db_location[1] ) ) {
             $this->db_id = @mysqli_connect( $db_location[0], $db_user, $db_pass, $db_name, $db_location[1] );
+
         } else {
             $this->db_id = @mysqli_connect( $db_location[0], $db_user, $db_pass, $db_name );
+
         }
+
         if ( ! $this->db_id ) {
-            if( $show_error == 1 ) {
+            if ( $show_error == 1 ) {
                 $this->displayError( mysqli_connect_error(), '1' );
+
             } else {
                 return false;
             }
+
         }
         $this->mysql_version = mysqli_get_server_info( $this->db_id );
-        if( ! defined( $this->configDb->getCollate() ) ) {
+
+        if ( ! defined( $this->configDb->getCollate() ) ) {
             define ( $this->configDb->getCollate(), 'utf8' );
+
         }
         mysqli_set_charset ( $this->db_id , $this->configDb->getCollate() );
+
         return true;
+
     }
 
     /**
@@ -65,24 +81,35 @@ final class Db implements DbInterface {
      */
     public function query( $query, $show_error = true ) {
         $time_before = $this->getRealTime();
+
         if( ! $this->db_id ) {
             $this->connect( $this->configDb->getDbUser(), $this->configDb->getDbPass(), $this->configDb->getDbName(), $this->configDb->getDbHost() );
+
         }
+
         if( ! ( $this->query_id = mysqli_query( $this->db_id, $query ) ) ) {
             $this->mysql_error = mysqli_error( $this->db_id );
             $this->mysql_error_num = mysqli_errno( $this->db_id );
             if( $show_error ) {
                 $this->displayError( $this->mysql_error, $this->mysql_error_num, $query );
+
             }
+
         }
+
         $this->MySQL_time_taken += $this->getRealTime() - $time_before;
-        $this->query_list[] = array( 
-                                'time'  => ($this->getRealTime() - $time_before 
-                                ),
-                                'query' => $query,
-                                'num'   => ( count( $this->query_list ) + 1 ) );
+
+        $this->query_list[] = [
+			'time'  => ( $this->getRealTime() - $time_before ),
+			'query' => $query,
+			'num'   => ( count( $this->query_list ) + 1 )
+
+		];
+
         $this->query_num ++;
+
         return $this->query_id;
+
     }
 
     /**
@@ -92,8 +119,10 @@ final class Db implements DbInterface {
     public function getRow( $query_id = '' ) {
         if ( $query_id == '' ) {
             $query_id = $this->query_id;
+
         }
         return mysqli_fetch_assoc( $query_id );
+
     }
 
     /**
@@ -101,6 +130,7 @@ final class Db implements DbInterface {
      */
     public function getAffectedRows() {
         return mysqli_affected_rows( $this->db_id );
+
     }
 
     /**
@@ -110,8 +140,10 @@ final class Db implements DbInterface {
     public function getArray( $query_id = '' ) {
         if ($query_id == '') {
             $query_id = $this->query_id;
+
         }
         return mysqli_fetch_array( $query_id );
+
     }
 
     /**
@@ -124,15 +156,21 @@ final class Db implements DbInterface {
             $this->query( $query );
             $data = $this->getRow();
             $this->free();
+
             return $data;
+
         } else {
             $this->query( $query );
-            $rows = array();
+            $rows = [];
+
             while( $row = $this->getRow() ) {
                 $rows[] = $row;
+
             }
             $this->free();
+
             return $rows;
+
         }
     }
 
@@ -143,8 +181,10 @@ final class Db implements DbInterface {
     public function numRows( $query_id = '' ) {
         if ( $query_id == '' ) {
             $query_id = $this->query_id;
+
         }
         return mysqli_num_rows( $query_id );
+
     }
 
     /**
@@ -152,6 +192,7 @@ final class Db implements DbInterface {
      */
     public function insertId() {
         return mysqli_insert_id( $this->db_id );
+
     }
 
     /**
@@ -160,13 +201,19 @@ final class Db implements DbInterface {
      */
     public function getResultFields( $query_id = '' ) {
         $fields = [];
+
         if ( $query_id == '' ) {
             $query_id = $this->query_id;
+
         }
+
+        /** @var  $field */
         while ( $field = mysqli_fetch_field( $query_id ) ) {
             $fields[] = $field;
+
         }
         return $fields;
+
     }
 
     /**
@@ -176,11 +223,15 @@ final class Db implements DbInterface {
     public function safeSql( $source ) {
         if( ! $this->db_id ) {
             $this->connect( $this->configDb->getDbUser(), $this->configDb->getDbPass(), $this->configDb->getDbName(), $this->configDb->getDbHost() );
+
         }
+
         if ( $this->db_id) {
-            return mysqli_real_escape_string ($this->db_id, $source );
+            return mysqli_real_escape_string( $this->db_id, $source );
+
         } else {
-            return addslashes($source);
+            return addslashes( $source );
+
         }
     }
 
@@ -190,13 +241,24 @@ final class Db implements DbInterface {
     public function free( $query_id = '' ) {
         if ( $query_id == '' ) {
             $query_id = $this->query_id;
+
         }
         @mysqli_free_result( $query_id );
+
     }
+
+	/**
+	 * @return string
+	 */
+	public function getStrongHash() {
+		return sha1( $this->configDb->getDbHost() . $this->configDb->getDbName() . $this->configDb->getSecureAuthKey() );
+
+	}
 
     public function close() {
         @mysqli_close( $this->db_id );
         $this->db_id = false;
+
     }
 
     /**
@@ -205,6 +267,7 @@ final class Db implements DbInterface {
     public function getRealTime() {
         list( $seconds, $microSeconds ) = explode( ' ', microtime() );
         return ( (float)$seconds + (float)$microSeconds );
+
     }
 
     /**
@@ -215,16 +278,20 @@ final class Db implements DbInterface {
     public function displayError( $error, $error_num, $query = '' ) {
         if( $query ) {
             $query = preg_replace( "/([0-9a-f]){32}/", "********************************", $query );
+
         }
         $query = htmlspecialchars( $query, ENT_QUOTES, 'ISO-8859-1' );
         $error = htmlspecialchars( $error, ENT_QUOTES, 'ISO-8859-1' );
         $trace = debug_backtrace();
         $level = 0;
+
         if ($trace[1]['function'] == 'query' ) {
             $level = 1;
+
         }
         if ($trace[2]['function'] == 'superQuery' ) {
             $level = 2;
+
         }
         $trace[$level]['file'] = str_replace( ROOT_DIR, '', $trace[$level]['file'] );
 

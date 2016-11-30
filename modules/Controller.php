@@ -70,42 +70,15 @@ define ( 'TPL_DIR', $tpl->dir );
 /** @var  $main */
 $main = new Main( $tpl );
 /** @var  $msg */
-$msg = new MsgBox( $tpl );
+$msgBox = new MsgBox( $tpl );
 
 /** @var  $authorization */
-$authorization = new Authorization( $functions, $db, $tpl, $config, $language );
+$authorization = new Authorization( $action, $_TIME, $functions, $db, $tpl, $msgBox, $config, $language );
 
-if ( $action == 'logout' ) {
-	$authorization->logout();
-
-} else if ( $_POST['action'] == 'login' ) {
-	$authorization->login( $msg );
-
-} else if ( $_POST['action'] == 'registration' ) {
-	$authorization->registration();
-
-} else {
-	$authorization->isLogged();
-
-}
-
+/** @var  $member_id */
+$member_id = $authorization->member_id;
 if ( $authorization->is_logged ) {
-	$authorization->loginUpdate( $_TIME );
-	/** @var  $member_id */
-	$member_id = $authorization->member_id;
-
-	/** @var  $loginPanel */
-	$loginPanel = new LoginPanel( $config, $member_id, $tpl );
-
-} else {
-	$authorization->noLogin();
-	$member_id['user_group'] = 5;
-
-	if ( $config['no_login'] == 1 AND $action != 'login' ) {
-		header( 'Location: ' . $config['http_home_url'] . 'login' );
-		die();
-
-	}
+	new LoginPanel( $config, $member_id, $tpl );
 
 }
 

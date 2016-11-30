@@ -17,7 +17,13 @@ final class MsgBox {
 
 	}
 
-	public function getResult ( $title, $text, $type ) {
+	/**
+	 * @param string $title
+	 * @param string $text
+	 * @param string $type
+	 * @param string $name
+	 */
+	public function getResult ( $title = false, $text, $type, $name = 'msg' ) {
 		switch ( $type ) {
 
 			case 'error' :
@@ -34,10 +40,21 @@ final class MsgBox {
 
 		}
 
-		$this->tpl->set ( '{title}', $title );
+		if ( $title == false ) {
+			$this->tpl->set ( '{title}', '' );
+
+			$this->tpl->setBlock( "'\\[title\\](.*?)\\[/title\\]'si", "" );
+
+		} else {
+			$this->tpl->set ( '{title}', $title );
+
+			$this->tpl->set( '[title]', '' );
+			$this->tpl->set( '[/title]', '' );
+
+		}
 		$this->tpl->set ( '{text}', $text );
 
-		$this->tpl->compile( 'msg' );
+		$this->tpl->compile( $name );
 
 	}
 

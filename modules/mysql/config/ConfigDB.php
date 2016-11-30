@@ -8,6 +8,7 @@ final class ConfigDb implements ConfigDbInterface {
     const DBUSER = 'cmsproject';
     const DBPASS = 'cmsproject';
     const COLLATE = 'utf8';
+    const SECURE_AUTH_KEY = '[xF}Fsr;iXs 9jMP~YGYa8=0?cY0h*%?x~.loiu7+d@^(h|dHZ6^=)BBL/Pr}6iV';
 
     /**
      * @return string
@@ -37,12 +38,20 @@ final class ConfigDb implements ConfigDbInterface {
         return ConfigDb::DBPASS;
     }
 
-    /**
-     * @return string
-     */
-    public function getCollate() {
-        return ConfigDb::COLLATE;
-    }
+	/**
+	 * @return string
+	 */
+	public function getCollate() {
+		return ConfigDb::COLLATE;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSecureAuthKey() {
+		return ConfigDb::SECURE_AUTH_KEY;
+
+	}
 
 }
 

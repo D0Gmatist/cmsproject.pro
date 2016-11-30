@@ -3,36 +3,33 @@
 namespace Modules\Functions;
 
 class Functions {
-	public $url = '';
-
 	/**
 	 * @param $url
 	 * @return string
 	 */
 	public function cleanUrl ( $url ) {
-		$this->url = $url;
-		if( $this->url == '' ) {
+		if( $url == '' ) {
 			return false;
 
 		}
-		$this->url = str_replace( 'http://', '', strtolower( $this->url ) );
-		$this->url = str_replace( 'https://', '', $this->url );
+		$url = str_replace( 'http://', '', strtolower( $url ) );
+		$url = str_replace( 'https://', '', $url );
 
-		if( substr( $this->url, 0, 2 ) == '//' ) {
-			$this->url = str_replace( '//', '', $this->url );
-
-		}
-
-		if( substr( $this->url, 0, 4 ) == 'www.' ) {
-			$this->url = substr( $this->url, 4 );
+		if( substr( $url, 0, 2 ) == '//' ) {
+			$url = str_replace( '//', '', $url );
 
 		}
-		$this->url = explode( '/', $this->url );
-		$this->url = reset( $this->url );
-		$this->url = explode( ':', $this->url );
-		$this->url = reset( $this->url );
 
-		return $this->url;
+		if( substr( $url, 0, 4 ) == 'www.' ) {
+			$url = substr( $url, 4 );
+
+		}
+		$url = explode( '/', $url );
+		$url = reset( $url );
+		$url = explode( ':', $url );
+		$url = reset( $url );
+
+		return $url;
 
 	}
 
@@ -120,7 +117,7 @@ class Functions {
 	/**
 	 * @return string
 	 */
-	function getIp () {
+	public function getIp () {
 		if ( filter_var( $_SERVER['REMOTE_ADDR'] , FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
 			return filter_var( $_SERVER['REMOTE_ADDR'] , FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
 
@@ -183,9 +180,25 @@ class Functions {
 
 	}
 
-	function  maskMatch( $IP, $CIDR ) {
+	public function  maskMatch( $IP, $CIDR ) {
 		list ( $net, $mask) = explode ( '/', $CIDR );
 		return ( ip2long( $IP ) & ~( ( 1 << ( 32 - $mask ) ) - 1 ) ) == ip2long ( $net );
+
+	}
+
+	public function strLen( $value, $charset ) {
+		if ( strtolower( $charset ) == 'utf-8' ) {
+			if( function_exists( 'mb_strlen' ) ) {
+				return mb_strlen( $value, 'utf-8' );
+
+			} elseif( function_exists( 'iconv_strlen' ) ) {
+				return iconv_strlen( $value, 'utf-8' );
+
+			}
+
+		}
+
+		return strlen( $value );
 
 	}
 

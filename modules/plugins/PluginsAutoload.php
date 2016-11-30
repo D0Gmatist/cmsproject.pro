@@ -17,14 +17,10 @@ class PluginsAutoload {
         if ( $handle = opendir( ROOT_DIR . '\modules\plugins' ) ) {
             while ( false !== ( $dir = readdir( $handle ) ) ) {
                 if ( ! in_array( $dir, $this->notDir ) ) {
-                    if ( file_exists( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php' ) ) {
-                        require_once $dir . '/loader.php';
-                    } else {
-                        $fp = fopen( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php', 'w' );
-                        fwrite( $fp, "<?php\n\n\$loader = '" . $dir . "';" );
-                        fclose( $fp );
+					if ( is_readable( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php' ) ) {
+						require_once $dir . '/loader.php';
 
-                    }
+					}
 
                 }
 

@@ -5,9 +5,10 @@
 
 	<form class="login-form" data-form="login" method="post" style="display: {form_login};">
 		<h3 class="form-title font-green">Авторизация</h3>
+		{msg_login}
 		<div class="form-group">
-			<label class="control-label visible-ie8 visible-ie9">Login / Email</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Login / Email" name="login" value="{login}" />
+			<label class="control-label visible-ie8 visible-ie9">Login/Email</label>
+			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Login/Email" name="login" value="{login}" />
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Пароль</label>
@@ -23,6 +24,7 @@
 
 	<form class="forget-form" data-form="forget" method="post" style="display: {form_forget};">
 		<h3 class="font-green">Забыть пароль?</h3>
+		{msg_forget}
 		<p>Введите адрес электронной почты, который указан в вашем профиле на этом сайте.</p>
 		<div class="form-group">
 			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" value="{forget_email}" />
@@ -35,6 +37,7 @@
 	</form>
 
 	<form class="register-form" data-form="registration" method="post" style="display: {form_registration};">
+		{msg_registration}
 		<h3 class="form-title font-green">Регистрирация</h3>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Логин</label>

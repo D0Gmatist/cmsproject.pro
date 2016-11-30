@@ -3,46 +3,272 @@
 namespace Modules\Plugins\Authorization;
 
 use Modules\Functions\Functions;
+use Modules\Mail\Mail;
 use Modules\Mysql\Db\Db;
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
 
 final class Authorization {
-	public $functions;
-	public $db;
-	public $tpl;
-	public $config;
-	public $language;
+	private $functions;
+	private $db;
+	private $tpl;
+	private $config;
+	private $language;
 
 	public $is_logged = false;
 	public $member_id = array();
 
+	private $registration = false;
+
 	/**
 	 * Authorization constructor.
+	 * @param $action
+	 * @param $time
 	 * @param Functions $functions
 	 * @param Db $db
 	 * @param Template $tpl
+	 * @param MsgBox $msgBox
 	 * @param array $config
 	 * @param array $language
 	 */
-	function __construct ( Functions $functions, Db $db, Template $tpl, array $config, array $language ) {
+	function __construct ( $action, $time, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, array $config, array $language ) {
+		$this->action = $action;
+		$this->time = $time;
 		$this->functions = $functions;
 		$this->db = $db;
 		$this->tpl = $tpl;
+		$this->msgBox = $msgBox;
 		$this->config = $config;
 		$this->language = $language;
 
 		$this->functions->domain();
 		$this->functions->Session();
 
+		if ( $this->action == 'logout' ) {
+			$this->logout();
+
+		} else {
+			if ( $_POST['action'] == 'login' ) {
+				$this->login();
+
+			} else if ( $_POST['action'] == 'registration' ) {
+				$this->registration();
+
+			} else {
+				$this->isLogged();
+
+			}
+
+		}
+
+		if ( $this->is_logged ) {
+			$this->loginUpdate( $this->time );
+
+		} else {
+			if ( $this->config['no_login'] == 1 AND $action != 'login' ) {
+				header( 'Location: ' . $config['http_home_url'] . 'login' );
+				die();
+
+			}
+
+			$this->noLogin();
+			$this->member_id['user_group'] = 5;
+
+		}
+
+	}
+
+	private function checkLogin () {
+		$status = true;
+
+		$login = trim( $this->db->safeSql( htmlspecialchars( $_POST['login'], ENT_COMPAT, $this->config['charset'] ) ) );
+		$login = preg_replace( '#\s+#i', ' ', $login );
+
+		if ( $this->functions->strLen( $login, $this->config['charset'] ) > 40 OR $this->functions->strLen( $login, $this->config['charset'] ) < 3 ) {
+			$this->msgBox->getResult( false, $this->language['registration'][4], 'error', 'msg_registration' );
+			$status = false;
+
+		}
+
+		if (
+			preg_match( "/[\||\'|\<|\>|\[|\]|\"|\!|\?|\$|\@|\#|\/|\\\|\&\~\*\{\+]/", $login )
+			OR
+			strpos( strtolower ( $login ) , '.php' ) !== false
+			OR
+			stripos( urlencode( $login ), "%AD" ) !== false
+		) {
+			$this->msgBox->getResult( false, $this->language['registration'][5], 'error', 'msg_registration' );
+			$status = false;
+
+		}
+
+		if ( $status === false ) {
+			return $status;
+
+		}
+
+		return $login;
+
+	}
+
+	private function checkEmail () {
+		$status = true;
+
+		$notAllowSymbol = [
+			"\x22", "\x60", "\t", '\n',
+			'\r', "\n", "\r", '\\', ",",
+			"/", "¬", "#", ";", ":", "~",
+			"[", "]", "{", "}", ")", "(",
+			"*", "^", "%", "$", "<", ">",
+			"?", "!", '"', "'", " ", "&"
+		];
+		$email = trim( $this->db->safeSql( str_replace( $notAllowSymbol, '', strip_tags( stripslashes( $_POST['Mail'] ) ) ) ) );
+
+		if( empty( $email ) OR strlen( $email ) > 40 OR @count( explode( "@", $email ) ) != 2 ) {
+			$this->msgBox->getResult( false, $this->language['registration'][6], 'error', 'msg_registration' );
+			$status = false;
+
+		}
+
+		if ( $status === false ) {
+			return $status;
+
+		}
+
+		return $email;
+
+	}
+
+	private function checkPassword () {
+		$status = true;
+
+		$password = $_POST['password'];
+		if( strlen( $password ) < 8 ) {
+			$this->msgBox->getResult( false, $this->language['registration'][7], 'error', 'msg_registration' );
+			$status = false;
+
+		}
+
+		if ( $status === false ) {
+			return $status;
+
+		}
+
+		return $password;
+
 	}
 
 	public function registration () {
+		$this->registration = true;
+		if ( $this->config['allow_registration'] != 1 ) {
+			$this->msgBox->getResult( false, $this->language['registration'][1], 'error', 'msg_registration' );
+			$this->registration = false;
+
+		}
+
+		if ( $this->registration == true AND $this->config['max_users'] > 0 ) {
+			$row = $this->db->superQuery( "SELECT COUNT(*) AS count FROM users" );
+
+			if ( $row['count'] >= $this->config['max_users'] ) {
+				$this->msgBox->getResult( false, $this->language['registration'][2], 'error', 'msg_registration' );
+				$registration = false;
+
+			}
+
+		}
+
+		if ( $this->registration == true AND $this->is_logged == true ) {
+			$this->msgBox->getResult( false, $this->language['registration'][3], 'error', 'msg_registration' );
+			$registration = false;
+
+		}
+
+		if ( $this->registration == true ) {
+			$login = $this->checkLogin();
+			$email = $this->checkEmail();
+			$password = $this->checkPassword();
+
+			if ( $login === false OR $email === false OR $password === false ) {
+				$registration = false;
+
+			}
+
+		}
+
+		if ( $this->registration == true ) {
+			if ( function_exists( 'mb_strtolower' ) ) {
+				$searchLogin1 = trim( mb_strtolower( $login, $this->config['charset'] ) );
+
+			} else {
+				$searchLogin1 = trim( strtolower( $login ) );
+
+			}
+			$searchLogin2 = strtr( $searchLogin1, $this->language['relatesWord'] );
+
+			$row = $this->db->superQuery( "SELECT 
+												COUNT(*) AS count 
+													FROM 
+														users 
+															WHERE 
+																`user_email` = '{$email}' 
+																	OR 
+																`user_login` = '{$searchLogin1}' 
+																	OR 
+																LOWER( `user_login` ) REGEXP '[[:<:]]{$searchLogin2}[[:>:]]'" );
+
+			if ( $row['count'] ) {
+				$this->msgBox->getResult( false, $this->language['registration'][8], 'error', 'msg_registration' );
+				$registration = false;
+
+			}
+
+		}
+
+		if ( $this->registration == true ) {
+			$strongHash = $this->db->getStrongHash();
+
+			$row = $this->db->superQuery( "SELECT * FROM email WHERE `name` = 'reg_mail' LIMIT 1" );
+
+			$mail = new Mail( $this->config, $row['html'] );
+
+			$row['template'] = stripslashes( $row['template'] );
+
+			$idLink = rawurlencode( base64_encode( $login . "||" . $email . "||" . md5( $password ) . "||" . sha1( $login . $email . $strongHash . $this->config['key'] ) ) );
+
+			if ( strpos( $this->config['http_home_url'], "//" ) === 0 ) {
+				$sLink = "http:" . $this->config['http_home_url'];
+
+			} else if ( strpos( $this->config['http_home_url'], "/" ) === 0 ) {
+				$sLink = "http://" . $_SERVER['HTTP_HOST'] . $this->config['http_home_url'];
+
+			} else {
+				$sLink = $this->config['http_home_url'];
+
+			}
+
+			$row['template'] = str_replace( "{%username%}", $login, $row['template'] );
+			$row['template'] = str_replace( "{%email%}", $email, $row['template'] );
+			$row['template'] = str_replace( "{%validationlink%}", $sLink . "index.php?do=register&doaction=validating&id=" . $idLink, $row['template'] );
+			$row['template'] = str_replace( "{%password%}", $password, $row['template'] );
+
+			$mail->send( $email, $this->language['registration'][9], $row['template'] );
+
+			if( $mail->send_error ) {
+				$this->msgBox->getResult( false, $mail->smtp_msg, 'error', 'msg_registration' );
+				$this->registration = false;
+
+			} else {
+				$this->msgBox->getResult( false, $this->language['registration'][8], 'success', 'msg_registration' );
+
+			}
+
+
+		}
 
 
 	}
 
-	public function login ( MsgBox $msgBox ) {
+	public function login () {
 		$login = $this->db->safesql( $_POST['login'] );
 		$password = @md5( $_POST['password'] );
 
@@ -51,7 +277,7 @@ final class Authorization {
 			if ( preg_match( "/[\||\'|\<|\>|\"|\!|\?|\$|\/|\\\|\&\~\*\+]/", $login ) ) {
 				$logged = false;
 
-				$msgBox->getResult( $this->language['error'], $this->language['login'][1], 'error' );
+				$this->msgBox->getResult( false, $this->language['login'][1], 'error', 'msg_login' );
 
 			}
 			$where = "`user_email` = '{$login}'";
@@ -60,7 +286,7 @@ final class Authorization {
 			if ( preg_match( "/[\||\'|\<|\>|\"|\!|\?|\$|\@|\/|\\\|\&\~\*\+]/", $login ) ) {
 				$logged = false;
 
-				$msgBox->getResult( $this->language['error'], $this->language['login'][1], 'error' );
+				$this->msgBox->getResult( false, $this->language['login'][1], 'error', 'msg_login' );
 
 			}
 			$where = "`user_login` = '{$login}'";
@@ -77,7 +303,7 @@ final class Authorization {
 				die();
 
 			} else {
-				$msgBox->getResult( $this->language['error'], $this->language['login'][2], 'error' );
+				$this->msgBox->getResult( false, $this->language['login'][2], 'error', 'msg_login' );
 
 			}
 
@@ -172,7 +398,7 @@ final class Authorization {
 				$this->tpl->set( '{form_registration}', 'none' );
 				$this->tpl->set( '{form_login}', 'none' );
 
-				$this->tpl->set( '{forget_email}', $_POST['email'] );
+				$this->tpl->set( '{forget_email}', $_POST['Mail'] );
 
 				$this->tpl->set( '{registration_login}', '' );
 				$this->tpl->set( '{registration_email}', '' );
@@ -180,6 +406,10 @@ final class Authorization {
 
 				$this->tpl->set( '{login}', '' );
 				$this->tpl->set( '{password}', '' );
+
+				$this->tpl->set( '{msg_forget}', $this->tpl->result['msg_forget'] );
+				$this->tpl->set( '{msg_registration}', '' );
+				$this->tpl->set( '{msg_login}', '' );
 
 				break;
 
@@ -192,11 +422,15 @@ final class Authorization {
 				$this->tpl->set( '{forget_email}', '' );
 
 				$this->tpl->set( '{registration_login}', $_POST['login'] );
-				$this->tpl->set( '{registration_email}', $_POST['email'] );
+				$this->tpl->set( '{registration_email}', $_POST['Mail'] );
 				$this->tpl->set( '{registration_password}', '' );
 
 				$this->tpl->set( '{login}', '' );
 				$this->tpl->set( '{password}', '' );
+
+				$this->tpl->set( '{msg_forget}', '' );
+				$this->tpl->set( '{msg_registration}', $this->tpl->result['msg_registration'] );
+				$this->tpl->set( '{msg_login}', '' );
 
 				break;
 
@@ -215,6 +449,10 @@ final class Authorization {
 
 				$this->tpl->set( '{login}', $_POST['login'] );
 				$this->tpl->set( '{password}', '' );
+
+				$this->tpl->set( '{msg_forget}', '' );
+				$this->tpl->set( '{msg_registration}', '' );
+				$this->tpl->set( '{msg_login}', $this->tpl->result['msg_login'] );
 
 				break;
 
