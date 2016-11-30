@@ -17,6 +17,6 @@ interface TemplateInterface {
     public function clear();
     public function globalClear();
     public function compile( $tpl );
-    public function globalTags();
+    public function globalTags( $template );
     public function getRealTime();
 }

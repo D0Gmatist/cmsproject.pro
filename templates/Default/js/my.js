@@ -39,7 +39,10 @@ var CMS = {
 
         },
         clos : function () {
-            $( '[data-content="css_loading"]' ).hide();
+			setTimeout( function () {
+				$( '[data-content="css_loading"]' ).hide();
+
+			}, 400 );
 
         }
 
@@ -52,27 +55,39 @@ var CMS = {
 }
 
 CMS.a.on( 'click', '[data-btn="form"]', function () {
+	CMS.cssLoading.open();
+
 	$( $( this ).closest( 'form' ) ).hide();
 	$( '[data-form="' + $( this ).data( 'name-form' ) + '"]' ).show();
 
+	CMS.cssLoading.clos();
 
 }).on( 'click', '[data-btn="formGo"]', function () {
+	CMS.cssLoading.open();
+
+	var a = true;
 	if ( $( this ).data( 'action' ) == 'login' ) {
 		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="username"]' ).val() == '' ) {
-			return false;
+			a = false;
 
 		}
 
 		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="password"]' ).val() == '' ) {
-			return false;
+			a = false;
 
 		}
 
 	} else if ( $( this ).data( 'action' ) == 'forget' ) {
 		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="email"]' ).val() == '' ) {
-			return false;
+			a = false;
 
 		}
+
+	}
+
+	CMS.cssLoading.clos();
+	if ( a == false ) {
+		return a;
 
 	}
 

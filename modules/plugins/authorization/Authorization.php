@@ -20,6 +20,7 @@ final class Authorization {
 	 * @param Functions $functions
 	 * @param Db $db
 	 * @param array $config
+	 * @param Template $tpl
 	 */
 	function __construct ( Functions $functions, Db $db, array $config, Template $tpl ) {
 		$this->functions = $functions;

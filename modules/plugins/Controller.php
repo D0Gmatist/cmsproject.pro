@@ -7,6 +7,7 @@ use Modules\Mysql\Db\Db;
 use Modules\Plugins\Authorization\Authorization;
 use Modules\Plugins\LoginPanel\LoginPanel;
 use Modules\Plugins\Main\Main;
+use Modules\Plugins\Registration\Registration;
 use Modules\Template\Template;
 use Modules\Translate\Translate;
 
@@ -100,6 +101,11 @@ switch ( $action ) {
 	case 'main' :
 		$tpl->loadTemplate( 'xxx.tpl' );
 		$tpl->compile( 'content' );
+		break;
+
+	case 'registration' :
+		$registration = new Registration( $functions, $db, $config, $tpl );
+		$registration->getContent();
 		break;
 
 	case 'login' :
