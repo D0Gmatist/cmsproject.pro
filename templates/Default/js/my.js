@@ -12,7 +12,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
     }
 
-};
+}
 
 var CMS = {
     a : $( document ),
@@ -52,7 +52,7 @@ var CMS = {
         CMS.login();
 
     }
-}
+};
 
 CMS.a.on( 'click', '[data-btn="form"]', function () {
 	CMS.cssLoading.open();
@@ -65,25 +65,31 @@ CMS.a.on( 'click', '[data-btn="form"]', function () {
 }).on( 'click', '[data-btn="formGo"]', function () {
 	CMS.cssLoading.open();
 
-	var a = true;
-	if ( $( this ).data( 'action' ) == 'login' ) {
-		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="username"]' ).val() == '' ) {
-			a = false;
+	var a = true,
+		b = $( this ).data( 'action' ),
+		c,
+		d;
+	if ( b == 'login' ) {
+		c = [ 'login', 'password' ];
 
-		}
+	} else if ( b == 'registration' ) {
+		c = [ 'login', 'email', 'password' ];
 
-		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="password"]' ).val() == '' ) {
-			a = false;
-
-		}
-
-	} else if ( $( this ).data( 'action' ) == 'forget' ) {
-		if ( $( '[data-form="' + $( this ).data( 'action' ) + '"] [name="email"]' ).val() == '' ) {
-			a = false;
-
-		}
+	} else if ( b == 'forget' ) {
+		c = [ 'email' ];
 
 	}
+
+	$( c ).each( function ( k, v ) {
+		d = $( '[data-form="' + b + '"] [name="' + v + '"]' );
+		if ( d.val() == '' ) {
+			$( d.closest( '.form-group' ) ).addClass( 'has-error' );
+			a = false;
+		} else {
+			$( d.closest( '.form-group' ) ).removeClass( 'has-error' );
+		}
+
+	});
 
 	CMS.cssLoading.clos();
 	if ( a == false ) {

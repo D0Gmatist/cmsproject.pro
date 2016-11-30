@@ -4,6 +4,7 @@ namespace Modules\Plugins\Authorization;
 
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
+use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
 
 final class Authorization {
@@ -33,7 +34,12 @@ final class Authorization {
 
 	}
 
-	public function login () {
+	public function registration () {
+
+
+	}
+
+	public function login ( MsgBox $msgBox ) {
 		$login = $this->db->safesql( $_POST['login'] );
 		$password = @md5( $_POST['password'] );
 
@@ -42,12 +48,16 @@ final class Authorization {
 			if ( preg_match( "/[\||\'|\<|\>|\"|\!|\?|\$|\/|\\\|\&\~\*\+]/", $login ) ) {
 				$logged = false;
 
+				$msgBox->getResult( 'login_err1', 'login1', 'error' );
+
 			}
 			$where = "`user_email` = '{$login}'";
 
 		} else {
 			if ( preg_match( "/[\||\'|\<|\>|\"|\!|\?|\$|\@|\/|\\\|\&\~\*\+]/", $login ) ) {
 				$logged = false;
+
+				$msgBox->getResult( 'login_err2', 'login2', 'error' );
 
 			}
 			$where = "`user_login` = '{$login}'";
@@ -59,6 +69,12 @@ final class Authorization {
 
 			if ( $this->member_id['user_id'] AND $this->member_id['user_password'] AND $this->member_id['user_password'] == md5( $password ) ) {
 				$this->cookieUp( $password );
+
+				header( 'Location: ' . $this->config['http_home_url'] );
+				die();
+
+			} else {
+				$msgBox->getResult( 'login_err3', 'login3', 'error' );
 
 			}
 
@@ -103,8 +119,6 @@ final class Authorization {
 		if ( ! $this->functions->allowedIp( $this->member_id['allowed_ip'] ) ) {
 			$this->noLogin();
 
-			//new MsgBox( 'login_err', 'ip_block_login' );
-
 		}
 
 	}
@@ -128,10 +142,7 @@ final class Authorization {
 
 	}
 
-	/**
-	 * @param $http_home_url
-	 */
-	public function logout ( $http_home_url ) {
+	public function logout () {
 		$this->member_id = array ();
 		$this->is_logged = false;
 
@@ -142,13 +153,70 @@ final class Authorization {
 		@session_destroy();
 		@session_unset();
 
-		header( 'Location: ' . $http_home_url );
+		header( 'Location: ' . $this->config['http_home_url'] );
 		die();
 
 	}
 
 	public function getContent () {
 		$this->tpl->loadTemplate( 'login.tpl' );
+
+		switch ( $_POST['action'] ) {
+
+			case 'forget' :
+
+				$this->tpl->set( '{form_forget}', 'block' );
+				$this->tpl->set( '{form_registration}', 'none' );
+				$this->tpl->set( '{form_login}', 'none' );
+
+				$this->tpl->set( '{forget_email}', $_POST['email'] );
+
+				$this->tpl->set( '{registration_login}', '' );
+				$this->tpl->set( '{registration_email}', '' );
+				$this->tpl->set( '{registration_password}', '' );
+
+				$this->tpl->set( '{login}', '' );
+				$this->tpl->set( '{password}', '' );
+
+				break;
+
+			case 'registration' :
+
+				$this->tpl->set( '{form_forget}', 'none' );
+				$this->tpl->set( '{form_registration}', 'block' );
+				$this->tpl->set( '{form_login}', 'none' );
+
+				$this->tpl->set( '{forget_email}', '' );
+
+				$this->tpl->set( '{registration_login}', $_POST['login'] );
+				$this->tpl->set( '{registration_email}', $_POST['email'] );
+				$this->tpl->set( '{registration_password}', '' );
+
+				$this->tpl->set( '{login}', '' );
+				$this->tpl->set( '{password}', '' );
+
+				break;
+
+			case 'login' :
+			default:
+
+				$this->tpl->set( '{form_forget}', 'none' );
+				$this->tpl->set( '{form_registration}', 'none' );
+				$this->tpl->set( '{form_login}', 'block' );
+
+				$this->tpl->set( '{forget_email}', '' );
+
+				$this->tpl->set( '{registration_login}', '' );
+				$this->tpl->set( '{registration_email}', '' );
+				$this->tpl->set( '{registration_password}', '' );
+
+				$this->tpl->set( '{login}', $_POST['login'] );
+				$this->tpl->set( '{password}', '' );
+
+				break;
+
+		}
+
 		$this->tpl->compile( 'content' );
 
 	}

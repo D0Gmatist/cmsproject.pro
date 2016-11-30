@@ -1,18 +1,26 @@
 <?php
 
 use Modules\Functions\Functions;
+
 use Modules\MobileDetect\MobileDetect;
+
 use Modules\Mysql\Config\ConfigDb;
 use Modules\Mysql\Db\Db;
+
 use Modules\Plugins\Authorization\Authorization;
 use Modules\Plugins\LoginPanel\LoginPanel;
 use Modules\Plugins\Main\Main;
-use Modules\Plugins\Registration\Registration;
+use Modules\Plugins\MsgBox\MsgBox;
+
 use Modules\Template\Template;
 use Modules\Translate\Translate;
 
 /** @var $config */
 require_once ROOT_DIR . '/modules/config.php';
+
+/** @var $language */
+require_once ROOT_DIR . '/Language/loader.php';
+
 
 /** @var  $module */
 $action = 'main';
@@ -47,28 +55,34 @@ $config['http_home_url'] = reset( $config['http_home_url'] );
 
 /** @var  $config */
 date_default_timezone_set( $config['date_adjust'] );
-
-/** @var  $tpl */
-$tpl = new Template( new MobileDetect(), new Translate(), $config );
-define ( 'TPL_DIR', $tpl->dir );
+/** @var  $_TIME */
+$_TIME = time();
+/** @var  $_IP */
+$_IP =  $functions->getIp();
 
 /** @var  $db */
 $db = new Db( new ConfigDb );
 
-/** @var  $_TIME */
-$_TIME = time();
+/** @var  $tpl */
+$tpl = new Template( new MobileDetect, new Translate, $config );
+define ( 'TPL_DIR', $tpl->dir );
 
-/** @var  $_IP */
-$_IP =  $functions->getIp();
+/** @var  $main */
+$main = new Main( $tpl );
+/** @var  $msg */
+$msg = new MsgBox( $tpl );
 
 /** @var  $authorization */
 $authorization = new Authorization( $functions, $db, $config, $tpl );
 
 if ( $action == 'logout' ) {
-	$authorization->logout( $config['http_home_url'] );
+	$authorization->logout();
 
 } else if ( $_POST['action'] == 'login' ) {
-	$authorization->login();
+	$authorization->login( $msg );
+
+} else if ( $_POST['action'] == 'registration' ) {
+	$authorization->registration();
 
 } else {
 	$authorization->isLogged();
@@ -88,24 +102,17 @@ if ( $authorization->is_logged ) {
 	$member_id['user_group'] = 5;
 
 	if ( $config['no_login'] == 1 AND $action != 'login' ) {
-		header( 'Location: ' . $config['http_home_url'] . 'login/' );
+		header( 'Location: ' . $config['http_home_url'] . 'login' );
 		die();
 
 	}
 
 }
 
-$main = new Main( $tpl );
-
 switch ( $action ) {
 	case 'main' :
 		$tpl->loadTemplate( 'xxx.tpl' );
 		$tpl->compile( 'content' );
-		break;
-
-	case 'registration' :
-		$registration = new Registration( $functions, $db, $config, $tpl );
-		$registration->getContent();
 		break;
 
 	case 'login' :
@@ -114,6 +121,7 @@ switch ( $action ) {
 
 }
 
+$main->setTags( ['msg'] );
 $main->setTags( [ 'login_panel' ] );
 $main->setTags( [ 'content' ] );
 

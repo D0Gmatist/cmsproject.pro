@@ -64,7 +64,8 @@
                                 <button type="button" class="btn btn-primary mt-ladda-btn ladda-button" data-style="slide-up">
                                     <span class="ladda-label">Expand Right</span><span class="ladda-spinner"></span>
                                 </button>
-                                {content}
+								{msg}
+								{content}
                             </div>
 
                         </div>
@@ -90,6 +91,7 @@
 <body class="login">
 
     {content}
+	{msg}
 
 	{include file="include/main/script.tpl"}
 

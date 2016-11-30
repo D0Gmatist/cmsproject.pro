@@ -40,6 +40,8 @@ final class Main {
 	public function getResult ( $replaceUrl ) {
 		$this->tpl->loadTemplate( 'main.tpl' );
 
+		$this->results = array_unique( $this->results );
+
 		foreach ( $this->results AS $val ) {
 			$this->tpl->set ( '{' . $val . '}', $this->tpl->result[$val] );
 

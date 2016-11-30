@@ -5,6 +5,7 @@ $config = [
 	'http_home_url'		=> 'http://cmsproject.pro/',
 	'skin'				=> 'Default',
 	'date_adjust'		=> 'Europe/Minsk',
+	'lang'				=> 'ru',
 	'online_status'		=> '1',
 	'no_login'			=> '1', // 0, 1, 2
 ];
