@@ -61,9 +61,6 @@ final class IsLogin {
 
 	}
 
-	/**
-	 * @param $_TIME
-	 */
 	private function loginUpdate () {
 		if ( $this->config['online_status'] ) {
 			$sTime = 1200;
