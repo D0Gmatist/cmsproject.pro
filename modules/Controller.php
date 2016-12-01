@@ -18,6 +18,7 @@ use Modules\Plugins\User\IsLogin\IsLogin;
 use Modules\Plugins\UserPanel\UserPanel;
 use Modules\Template\Template;
 use Modules\Translate\Translate;
+use Modules\VarsSerialize\VarsSerialize;
 
 /** @var $config */
 require_once MODULES_DIR . '/config.php';
@@ -33,11 +34,11 @@ if ( isset( $_GET['action'] ) AND trim( $_GET['action'] ) != '' ) {
 }
 $module = $action;
 
-/** @var  $is_logged */
-$is_logged = false;
+/** @var  $isLogged */
+$isLogged = false;
 
-/** @var  $member_id */
-$member_id = [];
+/** @var  $memberId */
+$memberId = [];
 
 /** @var  $functions */
 $functions = new Functions( $config );
@@ -74,8 +75,17 @@ $_IP =  $functions->getIp();
 /** @var  $db */
 $db = new Db( new ConfigDb );
 
+/** @var  $varsSerialize */
+$varsSerialize = new VarsSerialize( $functions, $db, $config, $language );
+$groupVar = $varsSerialize->initial( 'group', 'group_id' );
+
+/** @var  $isLogin */
+$isLogin = new IsLogin( $action, $functions, $db, $config, $_TIME );
+$isLogged = $isLogin->isLogged;
+$memberId = $isLogin->memberId;
+
 /** @var  $tpl */
-$tpl = new Template( new MobileDetect, new Translate, $config );
+$tpl = new Template( new MobileDetect, new Translate, $config, $memberId );
 define ( 'TPL_DIR', $tpl->dir );
 
 /** @var  $main */
@@ -84,23 +94,18 @@ $main = new Main( $tpl );
 /** @var  $msgBox */
 $msgBox= new MsgBox( $tpl );
 
-/** @var  $isLogin */
-$isLogin = new IsLogin( $action, $functions, $db, $config, $_TIME );
-$is_logged = $isLogin->is_logged;
-$member_id = $isLogin->member_id;
-
-new UserPanel( $is_logged, $member_id, $action, $functions, $db, $tpl, $config, $language );
+new UserPanel( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 
 switch ( $action ) {
 	case 'main' :
 		break;
 
 	case 'login' :
-		new Authorization( $is_logged, $member_id, $action, $functions, $db, $tpl, $msgBox, $config, $language );
+		new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, $config, $language );
 		break;
 
 	case 'registration' :
-		new Registration( $is_logged, $member_id, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+		new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 

@@ -9,10 +9,13 @@ use Modules\Template\Template;
 final class UserPanel {
 
 	/** @var bool  */
-	private $is_logged = false;
+	private $isLogged = false;
 
 	/** @var array  */
-	private $member_id;
+	private $memberId;
+
+	/** @var array  */
+	private $groupVar;
 
 	/** @var Functions  */
 	private $functions;
@@ -31,18 +34,20 @@ final class UserPanel {
 
 	/**
 	 * UserPanel constructor.
-	 * @param $is_logged
-	 * @param array $member_id
-	 * @param $action
+	 * @param $isLogged
+	 * @param array $memberId
+	 * @param array $groupVar
 	 * @param Functions $functions
 	 * @param Db $db
 	 * @param Template $tpl
 	 * @param array $config
 	 * @param array $language
+	 * @internal param $action
 	 */
-	function __construct ( $is_logged, array $member_id, $action, Functions $functions, Db $db, Template $tpl, array $config, array $language ) {
-		$this->is_logged = $is_logged;
-		$this->member_id = $member_id;
+	function __construct ( $isLogged, array $memberId, array $groupVar, Functions $functions, Db $db, Template $tpl, array $config, array $language ) {
+		$this->isLogged = $isLogged;
+		$this->memberId = $memberId;
+		$this->groupVar = $groupVar;
 
 		$this->functions = $functions;
 		$this->db = $db;
@@ -54,26 +59,27 @@ final class UserPanel {
 
 		$this->getLoginPanel();
 
+		$this->groupVar = $groupVar;
 	}
 
 	private function getLoginPanel () {
 
 		$this->tpl->loadTemplate( 'user/user_panel.tpl' );
 
-		if ( $this->is_logged ) {
-			$this->tpl->set( '{user_id}', $this->member_id['user_id'] );
-			$this->tpl->set( '{user_login}', $this->member_id['user_login'] );
-			$this->tpl->set( '{user_email}', $this->member_id['user_email'] );
+		if ( $this->isLogged ) {
+			$this->tpl->set( '{user_id}', $this->memberId['user_id'] );
+			$this->tpl->set( '{user_login}', $this->memberId['user_login'] );
+			$this->tpl->set( '{user_email}', $this->memberId['user_email'] );
 
-			if ( $this->member_id['user_avatar'] != '' ) {
-				$this->tpl->set( '{user_avatar}', $this->member_id['user_avatar'] );
+			if ( $this->memberId['user_avatar'] != '' ) {
+				$this->tpl->set( '{user_avatar}', $this->memberId['user_avatar'] );
 
 			} else {
 				$this->tpl->set( '{user_avatar}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
 
 			}
 
-			$this->tpl->set( '{user_group}', $this->member_id['user_group'] );
+			$this->tpl->set( '{user_group}', $this->memberId['user_group'] );
 
 		} else {
 			$this->tpl->set( '{user_id}', '' );

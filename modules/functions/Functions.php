@@ -233,4 +233,69 @@ class Functions implements FunctionsInterface {
 
 	}
 
+	public function toTranslate( $var, $langTranslate, $lower = true, $point = true ) {
+
+		if ( is_array( $var ) ) {
+			return '';
+
+		}
+		$var = str_replace( chr( 0 ), '', $var );
+
+		if ( ! is_array ( $langTranslate ) OR ! count( $langTranslate ) ) {
+			$var = trim( strip_tags( $var ) );
+
+			if ( $point ) {
+				$var = preg_replace( "/[^a-z0-9\_\-.]+/mi", '', $var );
+
+			} else {
+				$var = preg_replace( "/[^a-z0-9\_\-]+/mi", '', $var );
+
+			}
+			$var = preg_replace( '#[.]+#i', '.', $var );
+			$var = str_ireplace( '.php', '.ppp', $var );
+
+			if ( $lower ) {
+				$var = strtolower( $var );
+
+			}
+
+			return $var;
+
+		}
+		$var = trim( strip_tags( $var ) );
+		$var = preg_replace( "/\s+/ms", "-", $var );
+		$var = str_replace( "/", "-", $var );
+		$var = strtr( $var, $langTranslate );
+
+		if ( $point ) {
+			$var = preg_replace( "/[^a-z0-9\_\-.]+/mi", '', $var );
+
+		} else {
+			$var = preg_replace( "/[^a-z0-9\_\-]+/mi", '', $var );
+
+		}
+		$var = preg_replace( '#[\-]+#i', '-', $var );
+		$var = preg_replace( '#[.]+#i', '.', $var );
+
+		if ( $lower ) {
+			$var = strtolower( $var );
+
+		}
+		$var = str_ireplace( '.php', '', $var );
+		$var = str_ireplace( '.php', '.ppp', $var );
+
+		if ( strlen( $var ) > 200 ) {
+			$var = substr( $var, 0, 200 );
+
+			if ( ( $temp_max = strrpos( $var, '-' ) ) ) {
+				$var = substr( $var, 0, $temp_max );
+
+			}
+
+		}
+
+		return $var;
+
+	}
+
 }

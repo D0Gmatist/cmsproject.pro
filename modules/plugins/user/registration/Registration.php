@@ -11,10 +11,10 @@ use Modules\Template\Template;
 final class Registration {
 
 	/** @var bool  */
-	private $is_logged = false;
+	private $isLogged = false;
 
 	/** @var array  */
-	private $member_id;
+	private $memberId;
 
 	/** @var Functions  */
 	private $functions;
@@ -54,8 +54,8 @@ final class Registration {
 
 	/**
 	 * Registration constructor.
-	 * @param $is_logged
-	 * @param array $member_id
+	 * @param $isLogged
+	 * @param array $memberId
 	 * @param $action
 	 * @param Functions $functions
 	 * @param Db $db
@@ -65,9 +65,9 @@ final class Registration {
 	 * @param array $config
 	 * @param array $language
 	 */
-	function __construct ( $is_logged, array $member_id, $action, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, Mail $mail, array $config, array $language ) {
-		$this->is_logged = $is_logged;
-		$this->member_id = $member_id;
+	function __construct ( $isLogged, array $memberId, $action, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, Mail $mail, array $config, array $language ) {
+		$this->isLogged = $isLogged;
+		$this->memberId = $memberId;
 
 		$this->functions = $functions;
 		$this->db = $db;

@@ -11,8 +11,8 @@ final class IsLogin {
 	private $config;
 	private $time;
 
-	public $is_logged = false;
-	public $member_id = [];
+	public $isLogged = false;
+	public $memberId = [];
 
 
 	function __construct ( $action, Functions $functions, Db $db, array $config, $time ) {
@@ -28,12 +28,12 @@ final class IsLogin {
 
 		$this->isLogged();
 
-		if ( $this->is_logged ) {
+		if ( $this->isLogged ) {
 			$this->loginUpdate();
 
 		} else {
 			$this->noLogin();
-			$this->member_id['user_group'] = 5;
+			$this->memberId['user_group'] = 5;
 
 		}
 
@@ -41,19 +41,19 @@ final class IsLogin {
 
 	private function isLogged () {
 		if ( isset( $_COOKIE['user_id'] ) AND intval( $_COOKIE['user_id'] ) > 0 AND $_COOKIE['user_password'] ) {
-			$this->member_id = $this->db->superQuery( "SELECT * FROM users WHERE `user_id` = '" . intval( $_COOKIE['user_id'] ) . "'" );
+			$this->memberId = $this->db->superQuery( "SELECT * FROM users WHERE `user_id` = '" . intval( $_COOKIE['user_id'] ) . "'" );
 
-			if ( $this->member_id['user_id'] AND $this->member_id['user_password'] AND $this->member_id['user_password'] == md5( $_COOKIE['user_password'] ) ) {
-				$this->is_logged = true;
+			if ( $this->memberId['user_id'] AND $this->memberId['user_password'] AND $this->memberId['user_password'] == md5( $_COOKIE['user_password'] ) ) {
+				$this->isLogged = true;
 
 				session_regenerate_id();
 
-				$this->functions->setCookie( "user_id", $this->member_id['user_id'], 365 );
+				$this->functions->setCookie( "user_id", $this->memberId['user_id'], 365 );
 				$this->functions->setCookie( "user_password", $_COOKIE['user_password'], 365 );
 
 			} else {
-				$this->member_id = [];
-				$this->is_logged = false;
+				$this->memberId = [];
+				$this->isLogged = false;
 
 			}
 
@@ -70,24 +70,24 @@ final class IsLogin {
 
 		}
 
-		if ( ( $this->member_id['user_last_date'] + $sTime ) < $this->time ) {
-			$this->db->query( "UPDATE LOW_PRIORITY users SET `user_last_date` = '" . date( 'Y-m-d H:i:s', $this->time ) . "' WHERE `user_id` = '{$this->member_id['user_id']}'" );
+		if ( ( $this->memberId['user_last_date'] + $sTime ) < $this->time ) {
+			$this->db->query( "UPDATE LOW_PRIORITY users SET `user_last_date` = '" . date( 'Y-m-d H:i:s', $this->time ) . "' WHERE `user_id` = '{$this->memberId['user_id']}'" );
 
 		}
 
 	}
 
 	private function noLogin () {
-		$this->member_id = [];
-		$this->is_logged = false;
+		$this->memberId = [];
+		$this->isLogged = false;
 		$this->functions->setCookie( 'user_id', '', 0 );
 		$this->functions->setCookie( 'user_password', '', 0 );
 
 	}
 
 	private function logout () {
-		$this->member_id = array ();
-		$this->is_logged = false;
+		$this->memberId = [];
+		$this->isLogged = false;
 
 		$this->functions->setCookie( 'user_id', '', 0 );
 		$this->functions->setCookie( 'user_password', '', 0 );
