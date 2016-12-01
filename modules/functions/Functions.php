@@ -3,9 +3,13 @@
 namespace Modules\Functions;
 
 class Functions {
-
+	/** @var array  */
 	private $config = [];
 
+	/**
+	 * Functions constructor.
+	 * @param array $config
+	 */
 	function __construct ( array $config ) {
 		$this->config = $config;
 
@@ -97,6 +101,11 @@ class Functions {
 
 	}
 
+	/**
+	 * @param $name
+	 * @param $value
+	 * @param $expires
+	 */
 	public function setCookie ( $name, $value, $expires ) {
 		if ( $expires ) {
 			$expires = time() + ( $expires * 86400 );
@@ -139,6 +148,10 @@ class Functions {
 
 	}
 
+	/**
+	 * @param $ip_array
+	 * @return bool
+	 */
 	public function allowedIp ( $ip_array ) {
 		$ip_array = trim( $ip_array );
 		$_IP = $this->getIp();
@@ -188,12 +201,22 @@ class Functions {
 
 	}
 
+	/**
+	 * @param $IP
+	 * @param $CIDR
+	 * @return bool
+	 */
 	public function  maskMatch( $IP, $CIDR ) {
 		list ( $net, $mask) = explode ( '/', $CIDR );
 		return ( ip2long( $IP ) & ~( ( 1 << ( 32 - $mask ) ) - 1 ) ) == ip2long ( $net );
 
 	}
 
+	/**
+	 * @param $value
+	 * @param $charset
+	 * @return int
+	 */
 	public function strLen( $value, $charset ) {
 		if ( strtolower( $charset ) == 'utf-8' ) {
 			if( function_exists( 'mb_strlen' ) ) {

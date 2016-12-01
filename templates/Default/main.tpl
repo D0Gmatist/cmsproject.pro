@@ -11,7 +11,6 @@
 	{include file="include/main/style.tpl"}
 </head>
 
-[not-group=5]
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
 
     <div class="page-header navbar navbar-fixed-top">
@@ -21,7 +20,7 @@
 
             {include file="include/main/navbar/sidebar_toggler_btn.tpl"}
 
-			{login_panel}
+			{user_panel}
 
         </div>
     </div>
@@ -38,40 +37,8 @@
                 <h3 class="page-title"> Dashboard<small>dashboard & statistics</small></h3>
 
                 <!-- content -->
-                <div class="row">
-                    <div class="col-md-12">
-
-                        <div class="portlet light bordered">
-
-                            <div class="portlet-title">
-                                <div class="caption">Заголовок</div>
-                                <div class="actions">
-                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                                        <i class="icon-cloud-upload"></i>
-                                    </a>
-                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                                        <i class="icon-wrench"></i>
-                                    </a>
-                                    <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
-                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                                        <i class="icon-trash"></i>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="portlet-body">
-
-                                <button type="button" class="btn btn-primary mt-ladda-btn ladda-button" data-style="slide-up">
-                                    <span class="ladda-label">Expand Right</span><span class="ladda-spinner"></span>
-                                </button>
-								{msg}
-								{content}
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
+				{msg}
+				{content}
 
             </div>
         </div>
@@ -85,16 +52,5 @@
     {include file="include/main/script.tpl"}
 
 </body>
-[/not-group]
-
-[group=5]
-<body class="login">
-
-    {content}
-
-	{include file="include/main/script.tpl"}
-
-</body>
-[/group]
 
 </html>

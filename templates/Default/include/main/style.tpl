@@ -6,7 +6,6 @@
 <link href="{THEME}/css/vendor/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
 <link href="{THEME}/css/vendor/select2.min.css" rel="stylesheet" type="text/css" />
 <link href="{THEME}/css/vendor/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="{THEME}/css/vendor/login.css" rel="stylesheet" type="text/css" />
 
 <link href="{THEME}/css/vendor/components.min.css" rel="stylesheet" type="text/css" />
 <link href="{THEME}/css/vendor/plugins.min.css" rel="stylesheet" type="text/css" />

@@ -18,12 +18,11 @@ final class MsgBox {
 	}
 
 	/**
-	 * @param string $title
-	 * @param string $text
-	 * @param string $type
-	 * @param string $name
+	 * @param bool $title
+	 * @param $text
+	 * @param $type
 	 */
-	public function getResult ( $title = false, $text, $type, $name = 'msg' ) {
+	public function getResult ( $title = false, $text, $type ) {
 		switch ( $type ) {
 
 			case 'error' :
@@ -54,7 +53,7 @@ final class MsgBox {
 		}
 		$this->tpl->set ( '{text}', $text );
 
-		$this->tpl->compile( $name );
+		$this->tpl->compile( 'msg' );
 
 	}
 

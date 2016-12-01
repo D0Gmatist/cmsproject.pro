@@ -11,6 +11,7 @@ $config = [
 	'max_users'				=> '0',
 	'online_status'			=> '1',
 
+	'mail_check'			=> '1',
 	'mail_title'			=> 'mail_title',
 	'admin_mail'			=> 'D0Gmatist@qip.ru',
 	'mail_metod'			=> 'php',

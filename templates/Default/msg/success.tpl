@@ -1,4 +1,5 @@
-<div class="note note-success">
-	<h4 class="block">{title}</h4>
-	<p>{text}</p>
+<div class="alert alert-success">
+	<button class="close" data-close="alert"></button>
+	[title]<h4 class="block">{title}</h4>[/title]
+	<span>{text}</span>
 </div>

@@ -10,20 +10,20 @@ use Modules\Mysql\Config\ConfigDb;
 use Modules\Mysql\Db\Db;
 
 use Modules\Plugins\Authorization\Authorization;
-use Modules\Plugins\LoginPanel\LoginPanel;
 use Modules\Plugins\Main\Main;
 use Modules\Plugins\MsgBox\MsgBox;
 
+use Modules\Plugins\Registration\Registration;
+use Modules\Plugins\User\IsLogin\IsLogin;
+use Modules\Plugins\UserPanel\UserPanel;
 use Modules\Template\Template;
 use Modules\Translate\Translate;
-
 
 /** @var $config */
 require_once MODULES_DIR . '/config.php';
 
 /** @var $language */
 require_once ROOT_DIR . '/Language/loader.php';
-
 
 /** @var  $module */
 $action = 'main';
@@ -33,11 +33,17 @@ if ( isset( $_GET['action'] ) AND trim( $_GET['action'] ) != '' ) {
 }
 $module = $action;
 
+/** @var  $is_logged */
+$is_logged = false;
+
 /** @var  $member_id */
 $member_id = [];
 
 /** @var  $functions */
 $functions = new Functions( $config );
+
+$functions->domain();
+$functions->Session();
 
 /** @var  $replaceUrl */
 $replaceUrl = false;
@@ -58,8 +64,10 @@ $config['http_home_url'] = reset( $config['http_home_url'] );
 
 /** @var  $config */
 date_default_timezone_set( $config['date_adjust'] );
+
 /** @var  $_TIME */
 $_TIME = time();
+
 /** @var  $_IP */
 $_IP =  $functions->getIp();
 
@@ -72,35 +80,37 @@ define ( 'TPL_DIR', $tpl->dir );
 
 /** @var  $main */
 $main = new Main( $tpl );
-/** @var  $msg */
-$msgBox = new MsgBox( $tpl );
-/** @var  $mail */
-$mail = new Mail( new PHPMailer );
 
-/** @var  $authorization */
-$authorization = new Authorization( $action, $_TIME, $functions, $db, $tpl, $msgBox, $mail, $config, $language );
+/** @var  $msgBox */
+$msgBox= new MsgBox( $tpl );
 
-/** @var  $member_id */
-$member_id = $authorization->member_id;
-if ( $authorization->is_logged ) {
-	new LoginPanel( $config, $member_id, $tpl );
+/** @var  $isLogin */
+$isLogin = new IsLogin( $action, $functions, $db, $config, $_TIME );
+$is_logged = $isLogin->is_logged;
+$member_id = $isLogin->member_id;
+
+if ( $is_logged ) {
+	new UserPanel( $is_logged, $member_id, $action, $functions, $db, $tpl, $config, $language );
 
 }
 
 switch ( $action ) {
 	case 'main' :
-		$tpl->loadTemplate( 'xxx.tpl' );
-		$tpl->compile( 'content' );
 		break;
 
 	case 'login' :
-		$authorization->getContent();
+		new Authorization( $is_logged, $member_id, $action, $functions, $db, $tpl, $msgBox, $config, $language );
 		break;
+
+	case 'registration' :
+		new Registration( $is_logged, $member_id, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+		break;
+
 
 }
 
 $main->setTags( ['msg'] );
-$main->setTags( [ 'login_panel' ] );
+$main->setTags( [ 'user_panel' ] );
 $main->setTags( [ 'content' ] );
 
 $main->getResult( $replaceUrl );
