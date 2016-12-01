@@ -3,12 +3,16 @@
 /** @var  $config */
 $config = [
 	'http_home_url'			=> 'http://cmsproject.pro/',
-	'skin'					=> 'Default',
+
 	'charset'				=> 'utf-8',
 	'date_adjust'			=> 'Europe/Minsk',
+
+	'skin'					=> 'Default',
 	'lang'					=> 'ru',
+
 	'allow_registration'	=> '1',
 	'max_users'				=> '0',
+
 	'online_status'			=> '1',
 
 	'mail_check'			=> '1',
