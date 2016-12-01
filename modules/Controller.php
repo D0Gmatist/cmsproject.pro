@@ -2,6 +2,8 @@
 
 use Modules\Functions\Functions;
 
+use Modules\Mail\Mail;
+use Modules\Mail\PHPMailer\PHPMailer;
 use Modules\MobileDetect\MobileDetect;
 
 use Modules\Mysql\Config\ConfigDb;
@@ -14,6 +16,7 @@ use Modules\Plugins\MsgBox\MsgBox;
 
 use Modules\Template\Template;
 use Modules\Translate\Translate;
+
 
 /** @var $config */
 require_once MODULES_DIR . '/config.php';
@@ -34,7 +37,7 @@ $module = $action;
 $member_id = [];
 
 /** @var  $functions */
-$functions = new Functions();
+$functions = new Functions( $config );
 
 /** @var  $replaceUrl */
 $replaceUrl = false;
@@ -71,9 +74,11 @@ define ( 'TPL_DIR', $tpl->dir );
 $main = new Main( $tpl );
 /** @var  $msg */
 $msgBox = new MsgBox( $tpl );
+/** @var  $mail */
+$mail = new Mail( new PHPMailer );
 
 /** @var  $authorization */
-$authorization = new Authorization( $action, $_TIME, $functions, $db, $tpl, $msgBox, $config, $language );
+$authorization = new Authorization( $action, $_TIME, $functions, $db, $tpl, $msgBox, $mail, $config, $language );
 
 /** @var  $member_id */
 $member_id = $authorization->member_id;

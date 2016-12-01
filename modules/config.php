@@ -10,7 +10,6 @@ $config = [
 	'allow_registration'	=> '1',
 	'max_users'				=> '0',
 	'online_status'			=> '1',
-	'no_login'				=> '1',
 
 	'mail_title'			=> 'mail_title',
 	'admin_mail'			=> 'D0Gmatist@qip.ru',

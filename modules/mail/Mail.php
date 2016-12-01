@@ -2,23 +2,31 @@
 
 namespace Modules\Mail;
 
+use Modules\Mail\PHPMailer\PHPMailer;
+
 final class Mail {
 	public $mail;
 	public $send_error = false;
 	public $smtp_msg = "";
 	public $from = false;
 	public $html_mail = false;
-	public $bcc = array ();
+	public $bcc = [];
 	public $keepalive = false;
 
 	/**
 	 * Mail constructor.
+	 * @param PHPMailer $mail
+	 */
+	function __construct( PHPMailer $mail ) {
+		/** @var  mail */
+		$this->mail = $mail;
+	}
+
+	/**
 	 * @param $config
 	 * @param bool $is_html
 	 */
-	function __construct( $config, $is_html = false ) {
-		/** @var  mail */
-		$this->mail = new PhpMailer;
+	function doSend ( $config, $is_html = false ) {
 		$this->mail->CharSet = $config['charset'];
 		$this->mail->Encoding = "base64";
 

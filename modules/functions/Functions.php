@@ -3,6 +3,14 @@
 namespace Modules\Functions;
 
 class Functions {
+
+	private $config = [];
+
+	function __construct ( array $config ) {
+		$this->config = $config;
+
+	}
+
 	/**
 	 * @param $url
 	 * @return string

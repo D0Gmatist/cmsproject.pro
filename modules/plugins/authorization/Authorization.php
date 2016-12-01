@@ -28,16 +28,18 @@ final class Authorization {
 	 * @param Db $db
 	 * @param Template $tpl
 	 * @param MsgBox $msgBox
+	 * @param Mail $mail
 	 * @param array $config
 	 * @param array $language
 	 */
-	function __construct ( $action, $time, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, array $config, array $language ) {
+	function __construct ( $action, $time, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, Mail $mail, array $config, array $language ) {
 		$this->action = $action;
 		$this->time = $time;
 		$this->functions = $functions;
 		$this->db = $db;
 		$this->tpl = $tpl;
 		$this->msgBox = $msgBox;
+		$this->mail = $mail;
 		$this->config = $config;
 		$this->language = $language;
 
@@ -45,17 +47,23 @@ final class Authorization {
 		$this->functions->Session();
 
 		if ( $this->action == 'logout' ) {
-			$this->logout();
+			$this->logout ();
 
 		} else {
-			if ( $_POST['action'] == 'login' ) {
-				$this->login();
-
-			} else if ( $_POST['action'] == 'registration' ) {
-				$this->registration();
+			if ( $_GET['subaction'] == 'validating' AND trim( $_GET['id'] ) != '' ) {
+				$this->validating();
 
 			} else {
-				$this->isLogged();
+				if ( $_POST[ 'action' ] == 'login' ) {
+					$this->login ();
+
+				} else if ( $_POST[ 'action' ] == 'registration' ) {
+					$this->registration ();
+
+				} else {
+					$this->isLogged ();
+
+				}
 
 			}
 
@@ -65,12 +73,6 @@ final class Authorization {
 			$this->loginUpdate( $this->time );
 
 		} else {
-			if ( $this->config['no_login'] == 1 AND $action != 'login' ) {
-				header( 'Location: ' . $config['http_home_url'] . 'login' );
-				die();
-
-			}
-
 			$this->noLogin();
 			$this->member_id['user_group'] = 5;
 
@@ -78,10 +80,18 @@ final class Authorization {
 
 	}
 
-	private function checkLogin () {
+	/**
+	 * @param bool $login
+	 * @return bool|mixed|string
+	 */
+	private function checkRegLogin ( $login = false ) {
 		$status = true;
 
-		$login = trim( $this->db->safeSql( htmlspecialchars( $_POST['login'], ENT_COMPAT, $this->config['charset'] ) ) );
+		if ( $login == false ) {
+			$login = $_POST['login'];
+
+		}
+		$login = trim( $this->db->safeSql( htmlspecialchars( $login, ENT_COMPAT, $this->config['charset'] ) ) );
 		$login = preg_replace( '#\s+#i', ' ', $login );
 
 		if ( $this->functions->strLen( $login, $this->config['charset'] ) > 40 OR $this->functions->strLen( $login, $this->config['charset'] ) < 3 ) {
@@ -111,9 +121,17 @@ final class Authorization {
 
 	}
 
-	private function checkEmail () {
+	/**
+	 * @param bool $email
+	 * @return bool|string
+	 */
+	private function checkRegEmail ( $email = false ) {
 		$status = true;
 
+		if ( $email == false ) {
+			$email = $_POST['email'];
+
+		}
 		$notAllowSymbol = [
 			"\x22", "\x60", "\t", '\n',
 			'\r', "\n", "\r", '\\', ",",
@@ -122,7 +140,7 @@ final class Authorization {
 			"*", "^", "%", "$", "<", ">",
 			"?", "!", '"', "'", " ", "&"
 		];
-		$email = trim( $this->db->safeSql( str_replace( $notAllowSymbol, '', strip_tags( stripslashes( $_POST['Mail'] ) ) ) ) );
+		$email = trim( $this->db->safeSql( str_replace( $notAllowSymbol, '', strip_tags( stripslashes( $email ) ) ) ) );
 
 		if( empty( $email ) OR strlen( $email ) > 40 OR @count( explode( "@", $email ) ) != 2 ) {
 			$this->msgBox->getResult( false, $this->language['registration'][6], 'error', 'msg_registration' );
@@ -139,10 +157,17 @@ final class Authorization {
 
 	}
 
-	private function checkPassword () {
+	/**
+	 * @param bool $password
+	 * @return bool
+	 */
+	private function checkRegPassword ( $password = false ) {
 		$status = true;
 
-		$password = $_POST['password'];
+		if ( $password == false ) {
+			$password = $_POST['password'];
+
+		}
 		if( strlen( $password ) < 8 ) {
 			$this->msgBox->getResult( false, $this->language['registration'][7], 'error', 'msg_registration' );
 			$status = false;
@@ -158,8 +183,29 @@ final class Authorization {
 
 	}
 
+	public function validating () {
+		$user_arr = explode( '||', base64_decode( @rawurldecode( trim( $_GET['id'] ) ) ) );
+
+		$regLogin = trim( $this->db->safeSql( htmlspecialchars( $user_arr[0], ENT_COMPAT, $this->config['charset'] ) ) );
+		$regEmail = $this->checkRegEmail( $user_arr[1] );
+		$regPassword = md5( $user_arr[2] );
+
+		$strongHash = $this->db->getStrongHash();
+
+		if( sha1( $regLogin . $regEmail . $strongHash . $this->config['key'] ) == $user_arr[3] ) {
+			$this->msgBox->getResult( false, $this->language['registration'][11], 'error', 'msg_registration' );
+			$this->registration = false;
+
+		}
+
+	}
+
 	public function registration () {
 		$this->registration = true;
+		$login = false;
+		$email = false;
+		$password = false;
+
 		if ( $this->config['allow_registration'] != 1 ) {
 			$this->msgBox->getResult( false, $this->language['registration'][1], 'error', 'msg_registration' );
 			$this->registration = false;
@@ -171,7 +217,7 @@ final class Authorization {
 
 			if ( $row['count'] >= $this->config['max_users'] ) {
 				$this->msgBox->getResult( false, $this->language['registration'][2], 'error', 'msg_registration' );
-				$registration = false;
+				$this->registration = false;
 
 			}
 
@@ -179,17 +225,17 @@ final class Authorization {
 
 		if ( $this->registration == true AND $this->is_logged == true ) {
 			$this->msgBox->getResult( false, $this->language['registration'][3], 'error', 'msg_registration' );
-			$registration = false;
+			$this->registration = false;
 
 		}
 
 		if ( $this->registration == true ) {
-			$login = $this->checkLogin();
-			$email = $this->checkEmail();
-			$password = $this->checkPassword();
+			$login = $this->checkRegLogin();
+			$email = $this->checkRegEmail();
+			$password = $this->checkRegPassword();
 
 			if ( $login === false OR $email === false OR $password === false ) {
-				$registration = false;
+				$this->registration = false;
 
 			}
 
@@ -218,7 +264,7 @@ final class Authorization {
 
 			if ( $row['count'] ) {
 				$this->msgBox->getResult( false, $this->language['registration'][8], 'error', 'msg_registration' );
-				$registration = false;
+				$this->registration = false;
 
 			}
 
@@ -229,7 +275,7 @@ final class Authorization {
 
 			$row = $this->db->superQuery( "SELECT * FROM email WHERE `name` = 'reg_mail' LIMIT 1" );
 
-			$mail = new Mail( $this->config, $row['html'] );
+			$this->mail->doSend( $this->config, $row['html'] );
 
 			$row['template'] = stripslashes( $row['template'] );
 
@@ -248,17 +294,17 @@ final class Authorization {
 
 			$row['template'] = str_replace( "{%username%}", $login, $row['template'] );
 			$row['template'] = str_replace( "{%email%}", $email, $row['template'] );
-			$row['template'] = str_replace( "{%validationlink%}", $sLink . "index.php?do=register&doaction=validating&id=" . $idLink, $row['template'] );
+			$row['template'] = str_replace( "{%validationlink%}", $sLink . "index.php?action=login&subaction=validating&id=" . $idLink, $row['template'] );
 			$row['template'] = str_replace( "{%password%}", $password, $row['template'] );
 
-			$mail->send( $email, $this->language['registration'][9], $row['template'] );
+			$this->mail->send( $email, $this->language['registration'][9], $row['template'] );
 
-			if( $mail->send_error ) {
-				$this->msgBox->getResult( false, $mail->smtp_msg, 'error', 'msg_registration' );
+			if( $this->mail->send_error ) {
+				$this->msgBox->getResult( false, $this->mail->smtp_msg, 'error', 'msg_registration' );
 				$this->registration = false;
 
 			} else {
-				$this->msgBox->getResult( false, $this->language['registration'][8], 'success', 'msg_registration' );
+				$this->msgBox->getResult( false, $this->language['registration'][10], 'success', 'msg_registration' );
 
 			}
 
@@ -398,7 +444,7 @@ final class Authorization {
 				$this->tpl->set( '{form_registration}', 'none' );
 				$this->tpl->set( '{form_login}', 'none' );
 
-				$this->tpl->set( '{forget_email}', $_POST['Mail'] );
+				$this->tpl->set( '{forget_email}', $_POST['mail'] );
 
 				$this->tpl->set( '{registration_login}', '' );
 				$this->tpl->set( '{registration_email}', '' );
@@ -422,7 +468,7 @@ final class Authorization {
 				$this->tpl->set( '{forget_email}', '' );
 
 				$this->tpl->set( '{registration_login}', $_POST['login'] );
-				$this->tpl->set( '{registration_email}', $_POST['Mail'] );
+				$this->tpl->set( '{registration_email}', $_POST['mail'] );
 				$this->tpl->set( '{registration_password}', '' );
 
 				$this->tpl->set( '{login}', '' );

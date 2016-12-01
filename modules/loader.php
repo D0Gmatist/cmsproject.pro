@@ -3,7 +3,7 @@
 require_once 'functions/loader.php';
 
 require_once 'mysql/loader.php';
-require_once 'Mail/Mail.php';
+require_once 'mail/loader.php';
 
 require_once 'mobileDetect/loader.php';
 require_once 'translate/loader.php';
