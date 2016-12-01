@@ -89,10 +89,7 @@ $isLogin = new IsLogin( $action, $functions, $db, $config, $_TIME );
 $is_logged = $isLogin->is_logged;
 $member_id = $isLogin->member_id;
 
-if ( $is_logged ) {
-	new UserPanel( $is_logged, $member_id, $action, $functions, $db, $tpl, $config, $language );
-
-}
+new UserPanel( $is_logged, $member_id, $action, $functions, $db, $tpl, $config, $language );
 
 switch ( $action ) {
 	case 'main' :

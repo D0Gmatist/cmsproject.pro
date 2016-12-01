@@ -60,20 +60,29 @@ final class UserPanel {
 
 		$this->tpl->loadTemplate( 'user/user_panel.tpl' );
 
-		$this->tpl->set( '{user_id}', $this->member_id['user_id'] );
-		$this->tpl->set( '{user_login}', $this->member_id['user_login'] );
-		$this->tpl->set( '{user_email}', $this->member_id['user_email'] );
+		if ( $this->is_logged ) {
+			$this->tpl->set( '{user_id}', $this->member_id['user_id'] );
+			$this->tpl->set( '{user_login}', $this->member_id['user_login'] );
+			$this->tpl->set( '{user_email}', $this->member_id['user_email'] );
 
-		if ( $this->member_id['user_avatar'] != '' ) {
-			$this->tpl->set( '{user_avatar}', $this->member_id['user_avatar'] );
+			if ( $this->member_id['user_avatar'] != '' ) {
+				$this->tpl->set( '{user_avatar}', $this->member_id['user_avatar'] );
+
+			} else {
+				$this->tpl->set( '{user_avatar}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+
+			}
+
+			$this->tpl->set( '{user_group}', $this->member_id['user_group'] );
 
 		} else {
+			$this->tpl->set( '{user_id}', '' );
+			$this->tpl->set( '{user_login}', $this->language['userPanel'][1] );
+			$this->tpl->set( '{user_email}', '' );
 			$this->tpl->set( '{user_avatar}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+			$this->tpl->set( '{user_group}', 5 );
 
 		}
-
-		$this->tpl->set( '{user_group}', $this->member_id['user_group'] );
-		$this->tpl->set( '{user_last_date}', $this->member_id['user_last_date'] );
 
 		$this->tpl->compile( 'user_panel' );
 

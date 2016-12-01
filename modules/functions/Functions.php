@@ -2,7 +2,7 @@
 
 namespace Modules\Functions;
 
-class Functions {
+class Functions implements FunctionsInterface {
 	/** @var array  */
 	private $config = [];
 
@@ -206,7 +206,7 @@ class Functions {
 	 * @param $CIDR
 	 * @return bool
 	 */
-	public function  maskMatch( $IP, $CIDR ) {
+	public function maskMatch( $IP, $CIDR ) {
 		list ( $net, $mask) = explode ( '/', $CIDR );
 		return ( ip2long( $IP ) & ~( ( 1 << ( 32 - $mask ) ) - 1 ) ) == ip2long ( $net );
 

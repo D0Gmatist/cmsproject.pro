@@ -4,7 +4,7 @@ namespace Modules\Mail;
 
 use Modules\Mail\PHPMailer\PHPMailer;
 
-final class Mail {
+class Mail implements MailInterface {
 	public $mail;
 	public $send_error = false;
 	public $smtp_msg = "";
@@ -26,7 +26,7 @@ final class Mail {
 	 * @param $config
 	 * @param bool $is_html
 	 */
-	function doSend ( $config, $is_html = false ) {
+	public function doSend ( $config, $is_html = false ) {
 		$this->mail->CharSet = $config['charset'];
 		$this->mail->Encoding = "base64";
 
@@ -71,7 +71,7 @@ final class Mail {
 
 	}
 
-	function send( $to, $subject, $message ) {
+	public function send( $to, $subject, $message ) {
 		if( $this->from ) {
 			$this->mail->addReplyTo($this->from  );
 
