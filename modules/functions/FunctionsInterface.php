@@ -11,5 +11,4 @@ interface FunctionsInterface {
 	public function allowedIp ( $ip_array );
 	public function maskMatch( $IP, $CIDR );
 	public function strLen( $value, $charset );
-
 }
