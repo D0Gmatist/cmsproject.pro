@@ -51,6 +51,11 @@ final class IsLogin {
 				$this->functions->setCookie( "user_id", $this->memberId['user_id'], 365 );
 				$this->functions->setCookie( "user_password", $_COOKIE['user_password'], 365 );
 
+				if ( $this->memberId['user_vk_token'] ) {
+					$this->functions->setCookie( "user_vk", md5( md5( $this->memberId['user_vk_token'] ) ), 365 );
+
+				}
+
 			} else {
 				$this->memberId = [];
 				$this->isLogged = false;
@@ -82,6 +87,7 @@ final class IsLogin {
 		$this->isLogged = false;
 		$this->functions->setCookie( 'user_id', '', 0 );
 		$this->functions->setCookie( 'user_password', '', 0 );
+		$this->functions->setCookie( 'user_vk', '', 0 );
 
 	}
 
@@ -91,6 +97,7 @@ final class IsLogin {
 
 		$this->functions->setCookie( 'user_id', '', 0 );
 		$this->functions->setCookie( 'user_password', '', 0 );
+		$this->functions->setCookie( 'user_vk', '', 0 );
 		$this->functions->setCookie( session_name(), '', 0 );
 
 		@session_destroy();

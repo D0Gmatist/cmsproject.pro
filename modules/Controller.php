@@ -24,8 +24,7 @@ use Modules\VarsSerialize\VarsSerialize;
 
 /** @var $config */
 require_once MODULES_DIR . '/config.php';
-
-$config['save_home_url'] = $config['http_home_url'];
+define ( 'HTTP_HOME_URL', $config['http_home_url'] );
 
 /** @var $language */
 require_once ROOT_DIR . '/Language/loader.php';

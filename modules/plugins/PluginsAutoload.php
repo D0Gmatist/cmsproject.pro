@@ -14,10 +14,11 @@ class PluginsAutoload {
     }
 
     private function scanDir() {
-        if ( $handle = opendir( ROOT_DIR . '\modules\plugins' ) ) {
+    	/** @var  $handle */
+        if ( $handle = opendir( PLUGINS_DIR ) ) {
             while ( false !== ( $dir = readdir( $handle ) ) ) {
                 if ( ! in_array( $dir, $this->notDir ) ) {
-					if ( is_readable( ROOT_DIR . '/modules/plugins/' . $dir . '/loader.php' ) ) {
+					if ( is_readable( PLUGINS_DIR . '/' . $dir . '/loader.php' ) ) {
 						require_once $dir . '/loader.php';
 
 					}

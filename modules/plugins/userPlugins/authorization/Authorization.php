@@ -101,6 +101,11 @@ final class Authorization {
 				$this->functions->setCookie( "user_id", $row['user_id'], 365 );
 				$this->functions->setCookie( "user_password", $password, 365 );
 
+				if ( $row['user_vk_token'] ) {
+					$this->functions->setCookie( "user_vk", md5( md5( $row['user_vk_token'] ) ), 365 );
+
+				}
+
 				header( 'Location: ' . $this->config['http_home_url'] );
 				die();
 

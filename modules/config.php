@@ -30,7 +30,7 @@ $config = [
 
 	'vk_app_id'				=> '5755528',
 	'vk_app_secret'			=> 'fsNVfRlBCRhiJhVhn9D0',
-	'vk_app_redirect'		=> 'registration_vk',
+	'vk_app_redirect'		=> '?action=registration_vk',
 	'vk_app_version'		=> '5.8',
 
 ];
