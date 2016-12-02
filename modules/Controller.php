@@ -14,6 +14,7 @@ use Modules\Plugins\Main\Main;
 use Modules\Plugins\MsgBox\MsgBox;
 
 use Modules\Plugins\Registration\Registration;
+use Modules\Plugins\RegistrationVk\RegistrationVk;
 use Modules\Plugins\User\IsLogin\IsLogin;
 use Modules\Plugins\UserPanel\UserPanel;
 use Modules\Template\Template;
@@ -22,6 +23,8 @@ use Modules\VarsSerialize\VarsSerialize;
 
 /** @var $config */
 require_once MODULES_DIR . '/config.php';
+
+$config['save_home_url'] = $config['http_home_url'];
 
 /** @var $language */
 require_once ROOT_DIR . '/Language/loader.php';
@@ -49,13 +52,13 @@ $functions->Session();
 /** @var  $replaceUrl */
 $replaceUrl = false;
 
-/** @var  $homeUrl */
-$homeUrl = $functions->cleanUrl( $config['http_home_url'] );
+/** @var  $homeDomain */
+$homeDomain = $functions->cleanUrl( $config['http_home_url'] );
 
-if ( $homeUrl AND $functions->cleanUrl( $_SERVER['HTTP_HOST'] ) != $homeUrl ) {
+if ( $homeDomain AND $functions->cleanUrl( $_SERVER['HTTP_HOST'] ) != $homeDomain ) {
 	/** @var  $replaceUrl */
 	$replaceUrl =[];
-	$replaceUrl[0] = $homeUrl;
+	$replaceUrl[0] = $homeDomain;
 	$replaceUrl[1] = $functions->cleanUrl( $_SERVER['HTTP_HOST'] );
 
 }
@@ -106,6 +109,10 @@ switch ( $action ) {
 
 	case 'registration' :
 		new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+		break;
+
+	case 'registration_vk' :
+		new RegistrationVk( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 

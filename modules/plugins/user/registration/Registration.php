@@ -340,7 +340,6 @@ final class Registration {
 	private function getContent () {
 		$this->tpl->loadTemplate( 'user/registration.tpl' );
 
-		var_dump( $this->step );
 		switch ( $this->step ) {
 
 			case '3' :

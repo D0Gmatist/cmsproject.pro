@@ -1,7 +1,7 @@
 <?php
 
 require_once 'IsLogin.php';
-require_once 'authorization/Authorization.php';
-require_once 'userPanel/UserPanel.php';
-require_once 'profile/Profile.php';
-require_once 'registration/Registration.php';
+require_once 'authorization/loader.php';
+require_once 'userPanel/loader.php';
+require_once 'profile/loader.php';
+require_once 'registration/loader.php';

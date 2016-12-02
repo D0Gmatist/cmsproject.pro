@@ -16,3 +16,4 @@ ErrorDocument 500 /error/500.html
 RewriteRule ^login(/?)+$ index.php?action=login [L]
 RewriteRule ^logout(/?)+$ index.php?action=logout [L]
 RewriteRule ^registration(/?)+$ index.php?action=registration [L]
+RewriteRule ^registration_vk(/?)+$ index.php?action=registration_vk [L]
