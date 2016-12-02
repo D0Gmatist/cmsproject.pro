@@ -9,14 +9,15 @@ use Modules\MobileDetect\MobileDetect;
 use Modules\Mysql\Config\ConfigDb;
 use Modules\Mysql\Db\Db;
 
-use Modules\Plugins\Authorization\Authorization;
 use Modules\Plugins\Main\Main;
 use Modules\Plugins\MsgBox\MsgBox;
 
-use Modules\Plugins\Registration\Registration;
-use Modules\Plugins\RegistrationVk\RegistrationVk;
-use Modules\Plugins\User\IsLogin\IsLogin;
-use Modules\Plugins\UserPanel\UserPanel;
+use Modules\Plugins\UserPlugins\Authorization;
+use Modules\Plugins\UserPlugins\Registration;
+use Modules\Plugins\UserPlugins\RegistrationVk;
+use Modules\Plugins\UserPlugins\IsLogin;
+use Modules\Plugins\UserPlugins\UserPanel;
+
 use Modules\Template\Template;
 use Modules\Translate\Translate;
 use Modules\VarsSerialize\VarsSerialize;

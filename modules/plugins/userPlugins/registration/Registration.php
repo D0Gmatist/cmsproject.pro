@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Plugins\Registration;
+namespace Modules\Plugins\UserPlugins;
 
 use Modules\Functions\Functions;
 use Modules\Mail\Mail;

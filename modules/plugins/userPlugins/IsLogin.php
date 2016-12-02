@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Plugins\User\IsLogin;
+namespace Modules\Plugins\UserPlugins;
 
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;

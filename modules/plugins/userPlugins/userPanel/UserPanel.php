@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Plugins\UserPanel;
+namespace Modules\Plugins\UserPlugins;
 
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
