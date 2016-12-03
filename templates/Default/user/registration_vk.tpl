@@ -12,7 +12,7 @@
 				<form role="form" action="{url_vk_form}" data-form="registration" method="post" style="margin: 0;">
 
 					<div class="form-actions">
-						<button type="submit" class="btn green uppercase" data-btn="formGo" style="width: 100%;">Войти через VK</button>
+						<button type="submit" class="btn green uppercase" data-btn="formGo" style="width: 100%;">Регистрация через VK</button>
 					</div>
 
 				</form>
