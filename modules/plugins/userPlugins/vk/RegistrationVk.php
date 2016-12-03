@@ -543,8 +543,15 @@ final class RegistrationVk {
 														'{$userVkToken}' 
 													)" );
 
-		if ( (int)$this->db->insertId() > 0 ) {
-			$this->msgBox->getResult ( false, $this->language['registration_vk'][1], 'success' );
+		$user_id = (int)$this->db->insertId();
+		if ( $user_id > 0 ) {
+			session_regenerate_id();
+
+			$this->functions->setCookie( "user_id", $user_id, 365 );
+			$this->functions->setCookie( "user_vk", md5( md5( $userVkToken ) ), 365 );
+
+			header( 'Location: ' . $this->config['http_home_url'] );
+			die();
 
 		} else {
 			$this->msgBox->getResult ( false, $this->language['registration_vk'][3], 'error' );
@@ -587,25 +594,7 @@ final class RegistrationVk {
 	private function getContent () {
 		$this->authorize();
 
-		$this->tpl->loadTemplate( 'user/registration_vk.tpl' );
-
-		switch ( $this->step ) {
-
-			case '1' :
-
-				$this->tpl->setBlock( "'\\[form_registration_vk\\](.*?)\\[/form_registration_vk\\]'si", "" );
-
-				break;
-
-			case '0' :
-			default :
-
-				$this->tpl->set( '[form_registration_vk]', "" );
-				$this->tpl->set( '[/form_registration_vk]', "" );
-
-				break;
-
-		}
+		$this->tpl->loadTemplate( 'user/vk/registration_vk.tpl' );
 
 		$this->tpl->set( '{url_vk_form}', $this->authorizeUrl );
 

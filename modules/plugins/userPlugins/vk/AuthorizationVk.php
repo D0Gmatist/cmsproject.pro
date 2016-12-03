@@ -508,10 +508,9 @@ final class AuthorizationVk {
 			die();
 
 		} else {
-			$this->msgBox->getResult ( false, $this->language['registration_vk'][3], 'error' );
+			$this->msgBox->getResult ( false, $this->language['authorization_vk'][2], 'error' );
 
 		}
-
 
 	}
 
@@ -551,28 +550,9 @@ final class AuthorizationVk {
 	private function getContent () {
 		$this->authorize();
 
-		$this->tpl->loadTemplate( 'user/registration_vk.tpl' );
-
-		switch ( $this->step ) {
-
-			case '1' :
-
-				$this->tpl->setBlock( "'\\[form_registration_vk\\](.*?)\\[/form_registration_vk\\]'si", "" );
-
-				break;
-
-			case '0' :
-			default :
-
-				$this->tpl->set( '[form_registration_vk]', "" );
-				$this->tpl->set( '[/form_registration_vk]', "" );
-
-				break;
-
-		}
+		$this->tpl->loadTemplate( 'user/vk/authorization_vk.tpl' );
 
 		$this->tpl->set( '{url_vk_form}', $this->authorizeUrl );
-
 
 		$this->tpl->compile( 'content' );
 
