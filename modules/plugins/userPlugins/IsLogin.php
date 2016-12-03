@@ -40,25 +40,41 @@ final class IsLogin {
 	}
 
 	private function isLogged () {
-		if ( isset( $_COOKIE['user_id'] ) AND intval( $_COOKIE['user_id'] ) > 0 AND $_COOKIE['user_password'] ) {
-			$this->memberId = $this->db->superQuery( "SELECT * FROM users WHERE `user_id` = '" . intval( $_COOKIE['user_id'] ) . "'" );
+		if ( isset( $_COOKIE['user_id'] ) AND (int)$_COOKIE['user_id'] > 0 ) {
+			if ( $_COOKIE[ 'user_password' ] ) {
+				$this->memberId = $this->db->superQuery ( "SELECT * FROM users WHERE `user_id` = '" . (int)$_COOKIE[ 'user_id' ] . "'" );
 
-			if ( $this->memberId['user_id'] AND $this->memberId['user_password'] AND $this->memberId['user_password'] == md5( $_COOKIE['user_password'] ) ) {
-				$this->isLogged = true;
+				if ( $this->memberId[ 'user_id' ] AND $this->memberId[ 'user_password' ] AND $this->memberId[ 'user_password' ] == md5( $_COOKIE[ 'user_password' ] ) ) {
+					$this->isLogged = true;
 
-				session_regenerate_id();
+					session_regenerate_id ();
 
-				$this->functions->setCookie( "user_id", $this->memberId['user_id'], 365 );
-				$this->functions->setCookie( "user_password", $_COOKIE['user_password'], 365 );
+					$this->functions->setCookie ( "user_id", $this->memberId[ 'user_id' ], 365 );
+					$this->functions->setCookie ( "user_password", $_COOKIE[ 'user_password' ], 365 );
 
-				if ( $this->memberId['user_vk_token'] ) {
-					$this->functions->setCookie( "user_vk", md5( md5( $this->memberId['user_vk_token'] ) ), 365 );
+				} else {
+					$this->memberId = [];
+					$this->isLogged = false;
 
 				}
 
-			} else {
-				$this->memberId = [];
-				$this->isLogged = false;
+			} else if ( $_COOKIE[ 'user_vk' ] ) {
+				$this->memberId = $this->db->superQuery ( "SELECT * FROM users WHERE `user_id` = '" . (int)$_COOKIE[ 'user_id' ] . "'" );
+
+				if ( $this->memberId[ 'user_id' ] AND $this->memberId[ 'user_vk_token' ] AND md5( md5( $this->memberId[ 'user_vk_token' ] ) ) == $_COOKIE[ 'user_vk' ] ) {
+					$this->isLogged = true;
+
+					session_regenerate_id ();
+
+					$this->functions->setCookie ( "user_id", $this->memberId[ 'user_id' ], 365 );
+					$this->functions->setCookie ( "user_vk", md5( md5( $this->memberId[ 'user_vk_token' ] ) ), 365 );
+
+				} else {
+					$this->memberId = [];
+					$this->isLogged = false;
+
+				}
+
 
 			}
 
