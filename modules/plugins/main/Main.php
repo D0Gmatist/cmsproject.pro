@@ -40,13 +40,45 @@ final class Main {
 
 	}
 
-	public function getResult ( $replaceUrl ) {
+	/**
+	 * @param array $replaceUrl
+	 * @param array $pageTitle
+	 */
+	public function getResult ( $replaceUrl, $pageTitle ) {
 		$this->tpl->loadTemplate( 'main.tpl' );
 
 		$this->tags = array_unique( $this->tags );
 
 		foreach ( $this->tags AS $val ) {
 			$this->tpl->set ( '{' . $val . '}', $this->tpl->result[$val] );
+
+		}
+
+		if ( $pageTitle[0] ) {
+			$this->tpl->set ( '{page_title}', $pageTitle[0] );
+
+			$this->tpl->set( '[page_title]', "" );
+			$this->tpl->set( '[/page_title]', "" );
+
+			if ( $pageTitle[1] ) {
+				$this->tpl->set ( '{page_title_small}', $pageTitle[1] );
+
+				$this->tpl->set( '[page_title_small]', "" );
+				$this->tpl->set( '[/page_title_small]', "" );
+
+			} else {
+				$this->tpl->set ( '{page_title_small}', '' );
+
+				$this->tpl->setBlock( "'\\[page_title_small\\](.*?)\\[/page_title_small\\]'si", "" );
+
+			}
+
+		} else {
+			$this->tpl->set ( '{page_title}', '' );
+			$this->tpl->set ( '{page_title_small}', '' );
+
+			$this->tpl->setBlock( "'\\[page_title\\](.*?)\\[/page_title\\]'si", "" );
+			$this->tpl->setBlock( "'\\[page_title_small\\](.*?)\\[/page_title_small\\]'si", "" );
 
 		}
 

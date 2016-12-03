@@ -142,7 +142,7 @@ final class Registration {
 		$this->email = trim( $this->db->safeSql( str_replace( $notAllowSymbol, '', strip_tags( stripslashes( $this->email ) ) ) ) );
 		if( empty( $this->email ) OR $this->functions->strLen( $this->email, $this->config['charset'] ) > 40 OR @count( explode( "@", $this->email ) ) != 2 ) {
 			$this->msgBox->getResult( false, $this->language['registration'][6], 'error' );
-			return false;
+			$this->email = false;
 
 		}
 
@@ -156,7 +156,7 @@ final class Registration {
 
 		if( $this->functions->strLen( $this->password, $this->config['charset'] ) < 8 ) {
 			$this->msgBox->getResult( false, $this->language['registration'][7], 'error' );
-			return false;
+			$this->password = false;
 
 		}
 

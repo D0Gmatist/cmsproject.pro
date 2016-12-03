@@ -16,9 +16,9 @@
     <div class="page-header navbar navbar-fixed-top">
 		<div class="page-header-inner ">
 
-            {include file="include/main/navbar/logo.tpl"}
+            [not-group=5]{include file="include/main/navbar/logo.tpl"}[/not-group]
 
-            {include file="include/main/navbar/sidebar_toggler_btn.tpl"}
+            [not-group=5]{include file="include/main/navbar/sidebar_toggler_btn.tpl"}[/not-group]
 
 			{user_panel}
 
@@ -30,11 +30,16 @@
     <div class="page-container">
         [not-group=5]{include file="include/main/sidebar.tpl"}[/not-group]
 
-        <div class="page-content-wrapper">
-            <div class="page-content"[group=5] style="margin-left: 0 !important;"[/group]>
+        <div class="page-content-wrapper[group=5] page-content-not-login[/group]">
+            <div class="page-content">
                 {include file="include/main/spidbar.tpl"}
 
-                <h3 class="page-title"> Dashboard<small>dashboard & statistics</small></h3>
+                [page_title]
+                <h3 class="page-title">
+                    {page_title}
+                    [page_title_small]<small>{page_title_small}</small>[/page_title_small]
+                </h3>
+                [/page_title]
 
                 <!-- content -->
 				{msg}

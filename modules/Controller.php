@@ -38,6 +38,9 @@ if ( isset( $_GET['action'] ) AND trim( $_GET['action'] ) != '' ) {
 }
 $module = $action;
 
+/** @var  $page_title */
+$pageTitle = [ 'Главная', '' ];
+
 /** @var  $isLogged */
 $isLogged = false;
 
@@ -105,18 +108,22 @@ switch ( $action ) {
 		break;
 
 	case 'login' :
+		$pageTitle = [ 'Авторизация', '' ];
 		new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 	case 'registration' :
+		$pageTitle = [ 'Регистрация', '' ];
 		new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 	case 'login_vk' :
+		$pageTitle = [ 'Авторизация', 'через VK' ];
 		new AuthorizationVk( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 	case 'registration_vk' :
+		$pageTitle = [ 'Регистрация', 'через VK' ];
 		new RegistrationVk( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
@@ -127,4 +134,4 @@ $main->setTags( ['msg'] );
 $main->setTags( [ 'user_panel' ] );
 $main->setTags( [ 'content' ] );
 
-$main->getResult( $replaceUrl );
+$main->getResult( $replaceUrl, $pageTitle );

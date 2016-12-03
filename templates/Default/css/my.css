@@ -226,3 +226,8 @@
 		opacity: 0;
 		}
 	}
+
+/* not-login */
+.page-content-wrapper.page-content-not-login .page-content {
+	margin-left: 0 !important;
+	}
