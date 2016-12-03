@@ -3,4 +3,4 @@
 .idea/
 templates/Default/img/
 /modules/config.php
-/modules/mysql/config/ConfigDb.php
+cache/system/

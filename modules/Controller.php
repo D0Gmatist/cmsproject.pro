@@ -27,7 +27,7 @@ require_once MODULES_DIR . '/config.php';
 define ( 'HTTP_HOME_URL', $config['http_home_url'] );
 
 /** @var $language */
-require_once ROOT_DIR . '/Language/loader.php';
+require_once ROOT_DIR . '/language/loader.php';
 
 /** @var  $module */
 $action = 'main';
@@ -80,7 +80,7 @@ $db = new Db( new ConfigDb );
 
 /** @var  $varsSerialize */
 $varsSerialize = new VarsSerialize( $functions, $db, $config, $language );
-$groupVar = $varsSerialize->initial( 'group', 'group_id' );
+$groupVar = $varsSerialize->initial( 'groups', 'group_id' );
 
 /** @var  $isLogin */
 $isLogin = new IsLogin( $action, $functions, $db, $config, $_TIME );

@@ -199,7 +199,7 @@ final class Registration {
 
 		if ( $this->registration == true ) {
 			if ( $this->config['mail_check'] == 1 ) {
-				$row = $this->db->superQuery ( "SELECT * FROM email WHERE `name` = 'reg_mail' LIMIT 1" );
+				$row = $this->db->superQuery( "SELECT * FROM email WHERE `name` = 'reg_mail' LIMIT 1" );
 
 				$this->mail->doSend ( $this->config, $row[ 'html' ] );
 
@@ -223,7 +223,7 @@ final class Registration {
 				$row[ 'template' ] = str_replace( "{%validationlink%}", $sLink . "index.php?action=registration&subaction=validating&id=" . $idLink, $row[ 'template' ] );
 				$row[ 'template' ] = str_replace( "{%password%}", $this->password, $row[ 'template' ] );
 
-				$this->mail->send ( $this->email, $this->language[ 'registration' ][ 9 ], $row[ 'template' ] );
+				$this->mail->send ( $this->email, $this->language['registration'][9], $row[ 'template' ] );
 
 				if ( $this->mail->send_error ) {
 					$this->msgBox->getResult ( false, $this->mail->smtp_msg, 'error' );
@@ -231,7 +231,7 @@ final class Registration {
 
 				} else {
 					$this->step = 2;
-					$this->msgBox->getResult ( false, $this->language[ 'registration' ][ 10 ], 'success' );
+					$this->msgBox->getResult ( false, $this->language['registration'][10], 'success' );
 
 				}
 
@@ -259,7 +259,7 @@ final class Registration {
 		if ( $this->registration == true ) {
 			if ( $this->keySha1 () != $user_arr[ 3 ] ) {
 				$this->step = 0;
-				$this->msgBox->getResult ( false, $this->language[ 'registration' ][ 11 ], 'error' );
+				$this->msgBox->getResult ( false, $this->language['registration'][11], 'error' );
 				$this->registration = false;
 
 			} else {
@@ -285,7 +285,7 @@ final class Registration {
 		$id = $this->db->insertId();
 
 		if ( (int)$id > 0 ) {
-			$this->msgBox->getResult ( false, $this->language[ 'registration' ][ 12 ], 'success' );
+			$this->msgBox->getResult ( false, $this->language['registration'][12], 'success' );
 
 			session_regenerate_id();
 
@@ -293,7 +293,7 @@ final class Registration {
 			$this->functions->setCookie( 'user_password',  md5( $this->password ), 365 );
 
 		} else {
-			$this->msgBox->getResult ( false, $this->language[ 'registration' ][ 11 ], 'error' );
+			$this->msgBox->getResult ( false, $this->language['registration'][11], 'error' );
 
 		}
 
