@@ -114,16 +114,6 @@ final class RegistrationVk {
 		$this->msgBox = $msgBox;
 		$this->mail = $mail;
 
-		$date = microtime();
-		$fp = fopen( ROOT_DIR . '/cache/system/post_' . $date . '.php', 'wb+' );
-		fwrite( $fp, serialize( $_POST ) );
-		fclose( $fp );
-
-		$date = microtime();
-		$fp = fopen( ROOT_DIR . '/cache/system/get_' . $date . '.php', 'wb+' );
-		fwrite( $fp, serialize( $_GET ) );
-		fclose( $fp );
-
 		if ( trim( $_GET[ 'code' ] ) != '' AND $_GET['redirect'] != 2 ) {
 			$this->step = 1;
 			$this->getVkUserIdAndToken();
