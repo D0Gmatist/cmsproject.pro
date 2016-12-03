@@ -133,7 +133,7 @@ final class RegistrationVk {
 			'client_id'			=> '5755528',
 			'client_secret'		=> 'fsNVfRlBCRhiJhVhn9D0',
 			'code'				=> $code,
-			'redirect_uri' 		=> HTTP_HOME_URL . $this->config['vk_app_redirect'] . '&redirect=1',
+			'redirect_uri' 		=> HTTP_HOME_URL . $this->config['vk_app_registration'] . '&redirect=1',
 
 		];
 
@@ -579,7 +579,7 @@ final class RegistrationVk {
 
 		$authorizeUrl = [
 			'client_id'     => $this->config['vk_app_id'],
-			'redirect_uri'  => HTTP_HOME_URL . $this->config['vk_app_redirect'] . '&redirect=2',
+			'redirect_uri'  => HTTP_HOME_URL . $this->config['vk_app_registration'] . '&redirect=2',
 			'response_type' => 'code',
 			'display' 		=> 'page',
 			'scope' 		=> 'offline',

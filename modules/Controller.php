@@ -13,6 +13,7 @@ use Modules\Plugins\Main\Main;
 use Modules\Plugins\MsgBox\MsgBox;
 
 use Modules\Plugins\UserPlugins\Authorization;
+use Modules\Plugins\UserPlugins\AuthorizationVk;
 use Modules\Plugins\UserPlugins\Registration;
 use Modules\Plugins\UserPlugins\RegistrationVk;
 use Modules\Plugins\UserPlugins\IsLogin;

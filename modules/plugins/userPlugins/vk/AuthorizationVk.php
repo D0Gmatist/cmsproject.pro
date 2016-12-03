@@ -133,7 +133,7 @@ final class AuthorizationVk {
 			'client_id'			=> '5755528',
 			'client_secret'		=> 'fsNVfRlBCRhiJhVhn9D0',
 			'code'				=> $code,
-			'redirect_uri' 		=> HTTP_HOME_URL . $this->config['vk_app_redirect'] . '&redirect=1',
+			'redirect_uri' 		=> HTTP_HOME_URL . $this->config['vk_app_authorization'] . '&redirect=1',
 
 		];
 
@@ -498,7 +498,7 @@ final class AuthorizationVk {
 												WHERE 
 													`user_id` = '{$this->memberId['user_id']}'" );
 
-		if ( (int)$this->db->insertId() > 0 ) {
+		if ( (int)$this->memberId['user_id'] > 0 ) {
 			session_regenerate_id();
 
 			$this->functions->setCookie( "user_id", $this->memberId['user_id'], 365 );
@@ -535,7 +535,7 @@ final class AuthorizationVk {
 
 		$authorizeUrl = [
 			'client_id'     => $this->config['vk_app_id'],
-			'redirect_uri'  => HTTP_HOME_URL . $this->config['vk_app_redirect'] . '&redirect=2',
+			'redirect_uri'  => HTTP_HOME_URL . $this->config['vk_app_authorization'] . '&redirect=2',
 			'response_type' => 'code',
 			'display' 		=> 'page',
 			'scope' 		=> 'offline',

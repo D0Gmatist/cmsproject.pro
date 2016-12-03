@@ -5,12 +5,28 @@
 		<i class="fa fa-angle-down"></i>
 	</a>
 	<ul class="dropdown-menu dropdown-menu-default">
+		[not-group=5]
 		<li>
-			<a href="page_user_profile_1.html"><i class="icon-user"></i> Мой профиль </a>
+			<a href="/"><i class="icon-user"></i> Мой профиль </a>
 		</li>
 		<li class="divider"> </li>
 		<li>
-			<a href="logout"><i class="icon-key"></i> Выход </a>
+			<a href="?action=logout"><i class="icon-key"></i> Выход </a>
 		</li>
+		[/not-group]
+		[group=5]
+		<li>
+			<a href="?action=login"><i class="icon-key"></i> Выход </a>
+		</li>
+		<li>
+			<a href="?action=login_vk"><i class="icon-key"></i> Выход через VK </a>
+		</li>
+		<li>
+			<a href="?action=registration"><i class="icon-key"></i> Регистрация </a>
+		</li>
+		<li>
+			<a href="?action=registration_vk"><i class="icon-key"></i> Регистрация через VK </a>
+		</li>
+		[/group]
 	</ul>
 </li>
