@@ -1,4 +1,3 @@
-[form_registration_vk]
 <div class="row">
 	<div class="col-md-4"></div>
 	<div class="col-md-4">
@@ -9,7 +8,7 @@
 			</div>
 			<div class="portlet-body form">
 
-				<form role="form" action="{url_vk_form}" data-form="registration" method="post" style="margin: 0;">
+				<form role="form" action="{url_vk_form}" data-form="registration_vk" method="post" style="margin: 0;">
 
 					<div class="form-actions">
 						<button type="submit" class="btn green uppercase" data-btn="formGo" style="width: 100%;">Регистрация через VK</button>
@@ -23,4 +22,3 @@
 	</div>
 	<div class="col-md-4"></div>
 </div>
-[/form_registration_vk]
