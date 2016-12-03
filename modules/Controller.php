@@ -104,11 +104,15 @@ switch ( $action ) {
 		break;
 
 	case 'login' :
-		new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, $config, $language );
+		new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 	case 'registration' :
 		new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+		break;
+
+	case 'login_vk' :
+		new AuthorizationVk( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
 
 	case 'registration_vk' :

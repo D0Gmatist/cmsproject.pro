@@ -3,6 +3,7 @@
 namespace Modules\Plugins\UserPlugins;
 
 use Modules\Functions\Functions;
+use Modules\Mail\Mail;
 use Modules\Mysql\Db\Db;
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
@@ -33,6 +34,9 @@ final class Authorization {
 	/** @var MsgBox  */
 	private $msgBox;
 
+	/** @var Mail  */
+	private $mail;
+
 	/** @var bool  */
 	private $logged = true;
 
@@ -45,10 +49,11 @@ final class Authorization {
 	 * @param Db $db
 	 * @param Template $tpl
 	 * @param MsgBox $msgBox
+	 * @param Mail $mail
 	 * @param array $config
 	 * @param array $language
 	 */
-	function __construct ( $isLogged, array $memberId, $action, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, array $config, array $language ) {
+	function __construct ( $isLogged, array $memberId, $action, Functions $functions, Db $db, Template $tpl, MsgBox $msgBox, Mail $mail, array $config, array $language ) {
 		$this->isLogged = $isLogged;
 		$this->memberId = $memberId;
 
@@ -60,6 +65,7 @@ final class Authorization {
 
 		$this->tpl = $tpl;
 		$this->msgBox = $msgBox;
+		$this->mail = $mail;
 
 		if ( $_POST[ 'action' ] == 'login' ) {
 			$this->login();
