@@ -13,4 +13,6 @@
 <link href="{THEME}/css/vendor/themes/darkblue.min.css" rel="stylesheet" type="text/css" />
 <link href="{THEME}/css/vendor/custom.min.css" rel="stylesheet" type="text/css" />
 
+<link href="{THEME}/css/vendor/bootstrap-tokenfield.min.css" rel="stylesheet" type="text/css" />
+
 <link href="{THEME}/css/my.css" rel="stylesheet" type="text/css" />

@@ -17,8 +17,11 @@ if ( typeof( jQuery ) === 'undefined' ) {
 var CMS = {
     a : $( document ),
 
-	login : function() {
-
+	tokenField : function() {
+		$( '[data-input="tokenfield"]' ).tokenfield({
+			delimiter: [ ',', ' ' ],
+			showAutocompleteOnFocus: true
+		})
 
 	},
 
@@ -49,7 +52,7 @@ var CMS = {
     },
     ready : function () {
         CMS.cssLoading.init();
-        CMS.login();
+        CMS.tokenField();
 
     }
 };

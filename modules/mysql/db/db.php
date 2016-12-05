@@ -4,7 +4,12 @@ namespace Modules\Mysql\Db;
 
 use Modules\Mysql\Config\ConfigDb;
 
-final class Db implements DbInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class Db {
 
     /** @var bool|ConfigDB  */
 	private $configDb = false;

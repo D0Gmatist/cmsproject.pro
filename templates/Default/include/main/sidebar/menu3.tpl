@@ -1,6 +1,3 @@
-<li class="heading">
-	<h3 class="uppercase">Layouts</h3>
-</li>
 <li class="nav-item">
 	<a href="javascript:;" class="nav-link nav-toggle">
 		<i class="icon-layers"></i>

@@ -2,7 +2,12 @@
 
 namespace Modules\Mysql\Config;
 
-final class ConfigDb implements ConfigDbInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class ConfigDb {
     const DBHOST = 'localhost';
     const DBNAME = 'cmsproject';
     const DBUSER = 'cmsproject';

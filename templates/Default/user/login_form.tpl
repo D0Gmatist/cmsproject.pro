@@ -1,6 +1,6 @@
 <div class="row">
-	<div class="col-lg-4"></div>
-	<div class="col-lg-4">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
 		<div class="portlet light portlet-fit bordered">
 			<div class="portlet-body">
 
@@ -61,5 +61,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-4"></div>
+	<div class="col-md-4"></div>
 </div>
