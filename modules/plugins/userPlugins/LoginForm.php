@@ -6,6 +6,11 @@ use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
 use Modules\Template\Template;
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 final class LoginForm {
 
 	/** @var bool  */

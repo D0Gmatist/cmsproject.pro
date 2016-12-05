@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Plugins\UserPlugins;
+namespace Modules\Plugins\Vk;
 
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
@@ -11,7 +11,7 @@ if ( ! defined ( 'ENGINE' ) ) {
 
 }
 
-final class UserPanel {
+final class VkSearchForm {
 
 	/** @var bool  */
 	private $isLogged = false;
@@ -62,41 +62,20 @@ final class UserPanel {
 
 		$this->tpl = $tpl;
 
-		$this->getLoginPanel();
+		$this->getForm();
 
 	}
 
-	private function getLoginPanel () {
+	private function getForm ()	{
 
-		$this->tpl->loadTemplate( 'user/user_panel.tpl' );
+		$this->tpl->loadTemplate( 'vk_search_form.tpl' );
 
-		if ( $this->isLogged ) {
-			$this->tpl->set( '{user_id}', $this->memberId['user_id'] );
-			$this->tpl->set( '{user_login}', $this->memberId['user_login'] );
-			$this->tpl->set( '{user_email}', $this->memberId['user_email'] );
+		$this->tpl->set( '{search}', '' );
 
-			if ( $this->memberId['user_avatar'] != '' ) {
-				$this->tpl->set( '{user_avatar}', $this->memberId['user_avatar'] );
-
-			} else {
-				$this->tpl->set( '{user_avatar}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
-
-			}
-
-			$this->tpl->set( '{user_group}', $this->memberId['user_group'] );
-
-		} else {
-			$this->tpl->set( '{user_id}', '' );
-			$this->tpl->set( '{user_login}', $this->language['userPanel'][1] );
-			$this->tpl->set( '{user_email}', '' );
-			$this->tpl->set( '{user_avatar}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
-			$this->tpl->set( '{user_group}', 5 );
-
-		}
-
-		$this->tpl->compile( 'user_panel' );
+		$this->tpl->compile( 'content' );
 
 		$this->tpl->clear();
+
 
 	}
 

@@ -5,7 +5,12 @@ namespace Modules\VarsSerialize;
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
 
-class VarsSerialize implements VarsSerializeInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+final class VarsSerialize {
 
 	/** @var Functions  */
 	private $functions;

@@ -2,7 +2,12 @@
 
 namespace Modules\Translate;
 
-class Translate implements TranslateInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class Translate {
     /** @var string  */
     public $var = '';
     /** @var array  */

@@ -5,6 +5,11 @@ namespace Modules\Plugins\UserPlugins;
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 final class IsLogin {
 	private $functions;
 	private $db;

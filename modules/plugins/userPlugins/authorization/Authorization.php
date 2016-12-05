@@ -8,6 +8,11 @@ use Modules\Mysql\Db\Db;
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 final class Authorization {
 
 	/** @var bool  */

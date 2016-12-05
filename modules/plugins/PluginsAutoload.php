@@ -2,6 +2,11 @@
 
 namespace Modules\Plugins;
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 class PluginsAutoload {
     /** @var array  */
     private $notDir = [ '.', '..', 'loader.php', 'PluginsAutoload.php' ];

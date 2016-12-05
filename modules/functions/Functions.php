@@ -2,7 +2,12 @@
 
 namespace Modules\Functions;
 
-class Functions implements FunctionsInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class Functions {
 	/** @var array  */
 	private $config = [];
 

@@ -9,6 +9,11 @@ namespace Modules\Mail\PHPMailer;
  *
  */
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 define("SASL_NTLM_STATE_START", 0);
 define("SASL_NTLM_STATE_IDENTIFY_DOMAIN", 1);
 define("SASL_NTLM_STATE_RESPOND_CHALLENGE", 2);

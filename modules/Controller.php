@@ -2,25 +2,13 @@
 
 use Modules\Functions\Functions;
 
-use Modules\Mail\Mail;
-use Modules\Mail\PHPMailer\PHPMailer;
 use Modules\MobileDetect\MobileDetect;
 
 use Modules\Mysql\Config\ConfigDb;
 use Modules\Mysql\Db\Db;
 
-use Modules\Plugins\Main\Main;
-use Modules\Plugins\MsgBox\MsgBox;
-
-use Modules\Plugins\UserPlugins\Authorization;
-use Modules\Plugins\UserPlugins\AuthorizationVk;
-use Modules\Plugins\UserPlugins\LoginForm;
-use Modules\Plugins\UserPlugins\Registration;
-use Modules\Plugins\UserPlugins\RegistrationVk;
 use Modules\Plugins\UserPlugins\IsLogin;
-use Modules\Plugins\UserPlugins\UserPanel;
 
-use Modules\Plugins\UserPlugins\VkLogin;
 use Modules\Template\Template;
 use Modules\Translate\Translate;
 use Modules\VarsSerialize\VarsSerialize;
@@ -97,38 +85,13 @@ $memberId = $isLogin->memberId;
 $tpl = new Template( new MobileDetect, new Translate, $config, $memberId );
 define ( 'TPL_DIR', $tpl->dir );
 
-/** @var  $main */
-$main = new Main( $tpl );
+if ( $_POST['method'] != 'ajax' ) {
+	require_once 'Action.php';
 
-/** @var  $msgBox */
-$msgBox= new MsgBox( $tpl );
-
-new UserPanel( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
-
-switch ( $action ) {
-	case 'main' :
-		break;
-
-	case 'login' :
-		$pageTitle = [ 'Авторизация', '' ];
-		if ( $_POST[ 'action' ] == 'login' ) {
-			new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
-
-		} else if ( $_POST[ 'action' ] == 'registration' ) {
-			new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
-
-		}
-		new LoginForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
-		break;
-
-	case 'vk_login' :
-		new VkLogin( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
-		break;
+} else {
+	require_once 'ActionAjax.php';
 
 }
 
-$main->setTags( ['msg'] );
-$main->setTags( [ 'user_panel' ] );
-$main->setTags( [ 'content' ] );
-
-$main->getResult( $replaceUrl, $pageTitle );
+$tpl->globalClear();
+$db->close();

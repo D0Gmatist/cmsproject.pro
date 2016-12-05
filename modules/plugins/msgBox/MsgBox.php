@@ -4,7 +4,12 @@ namespace Modules\Plugins\MsgBox;
 
 use Modules\Template\Template;
 
-final class MsgBox {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class MsgBox {
 	/** @var Template  */
 	public $tpl;
 

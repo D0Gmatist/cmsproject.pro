@@ -4,7 +4,12 @@ namespace Modules\Plugins\Main;
 
 use Modules\Template\Template;
 
-final class Main {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class Main {
 	/** @var Template  */
 	public $tpl;
 

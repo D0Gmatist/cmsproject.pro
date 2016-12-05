@@ -20,6 +20,3 @@ define ( 'PLUGINS_DIR', MODULES_DIR . '/plugins' );
 header('Content-Type: text/html; charset=utf-8');
 
 require_once 'loader.php';
-
-$tpl->globalClear();
-$db->close();

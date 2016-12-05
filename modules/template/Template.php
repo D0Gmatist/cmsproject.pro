@@ -5,7 +5,12 @@ namespace Modules\Template;
 use Modules\MobileDetect\MobileDetect;
 use Modules\Translate\Translate;
 
-class Template implements TemplateInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class Template {
 
     /** @var string  */
     public $dir;

@@ -4,7 +4,12 @@ namespace Modules\Mail;
 
 use Modules\Mail\PHPMailer\PHPMailer;
 
-class Mail implements MailInterface {
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
+class Mail {
 	public $mail;
 	public $send_error = false;
 	public $smtp_msg = "";

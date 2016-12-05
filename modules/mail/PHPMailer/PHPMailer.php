@@ -4,6 +4,11 @@ namespace Modules\Mail\PHPMailer;
 
 use Exception;
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 /**
  * PHPMailer - PHP email creation and transport class.
  * PHP Version 5

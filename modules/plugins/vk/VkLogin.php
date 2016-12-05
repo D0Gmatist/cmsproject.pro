@@ -1,12 +1,17 @@
 <?php
 
-namespace Modules\Plugins\UserPlugins;
+namespace Modules\Plugins\Vk;
 
 use Modules\Functions\Functions;
 use Modules\Mail\Mail;
 use Modules\Mysql\Db\Db;
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
+
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
 
 final class VkLogin {
 

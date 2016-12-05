@@ -4,6 +4,11 @@ namespace Modules\Mail\PHPMailer;
 
 use stdClass;
 
+if ( ! defined ( 'ENGINE' ) ) {
+	die ( 'Get out of here!' );
+
+}
+
 /**
  * PHPMailer RFC821 SMTP email transport class.
  * PHP Version 5
