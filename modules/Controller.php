@@ -14,11 +14,13 @@ use Modules\Plugins\MsgBox\MsgBox;
 
 use Modules\Plugins\UserPlugins\Authorization;
 use Modules\Plugins\UserPlugins\AuthorizationVk;
+use Modules\Plugins\UserPlugins\LoginForm;
 use Modules\Plugins\UserPlugins\Registration;
 use Modules\Plugins\UserPlugins\RegistrationVk;
 use Modules\Plugins\UserPlugins\IsLogin;
 use Modules\Plugins\UserPlugins\UserPanel;
 
+use Modules\Plugins\UserPlugins\VkLogin;
 use Modules\Template\Template;
 use Modules\Translate\Translate;
 use Modules\VarsSerialize\VarsSerialize;
@@ -109,24 +111,19 @@ switch ( $action ) {
 
 	case 'login' :
 		$pageTitle = [ 'Авторизация', '' ];
-		new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+		if ( $_POST[ 'action' ] == 'login' ) {
+			new Authorization( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+
+		} else if ( $_POST[ 'action' ] == 'registration' ) {
+			new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+
+		}
+		new LoginForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		break;
 
-	case 'registration' :
-		$pageTitle = [ 'Регистрация', '' ];
-		new Registration( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
+	case 'vk_login' :
+		new VkLogin( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
 		break;
-
-	case 'login_vk' :
-		$pageTitle = [ 'Авторизация', 'через VK' ];
-		new AuthorizationVk( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
-		break;
-
-	case 'registration_vk' :
-		$pageTitle = [ 'Регистрация', 'через VK' ];
-		new RegistrationVk( $isLogged, $memberId, $action, $functions, $db, $tpl, $msgBox, new Mail( new PHPMailer() ), $config, $language );
-		break;
-
 
 }
 

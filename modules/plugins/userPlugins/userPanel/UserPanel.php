@@ -59,7 +59,6 @@ final class UserPanel {
 
 		$this->getLoginPanel();
 
-		$this->groupVar = $groupVar;
 	}
 
 	private function getLoginPanel () {

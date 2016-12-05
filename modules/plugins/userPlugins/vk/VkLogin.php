@@ -8,10 +8,10 @@ use Modules\Mysql\Db\Db;
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
 
-final class RegistrationVk {
+final class VkLogin {
 
 	/** @var array  */
-	private  $fields = [
+	private $fields = [
 		'photo_id', 'verified', 'sex',
 		'bdate', 'city', 'country', 'home_town',
 		'has_photo', 'photo_50', 'photo_100',
@@ -84,7 +84,7 @@ final class RegistrationVk {
 	/** @var string  */
 	private $userVkToken;
 
-	/** @var array  */
+	/** @var string  */
 	private $response;
 
 	/**
@@ -114,13 +114,11 @@ final class RegistrationVk {
 		$this->msgBox = $msgBox;
 		$this->mail = $mail;
 
-		if ( trim( $_GET[ 'code' ] ) != '' AND $_GET['redirect'] != 2 ) {
+		if ( trim( $_GET[ 'code' ] ) != '' AND ! $isLogged ) {
 			$this->step = 1;
 			$this->getVkUserIdAndToken();
 
 		}
-
-		$this->getContent();
 
 	}
 
@@ -130,10 +128,10 @@ final class RegistrationVk {
 		$code =  $_GET['code'];
 
 		$accessTokenUrl = [
-			'client_id'			=> '5755528',
-			'client_secret'		=> 'fsNVfRlBCRhiJhVhn9D0',
+			'client_id'			=> $this->config['vk_app_id'],
+			'client_secret'		=> $this->config['vk_app_secret'],
 			'code'				=> $code,
-			'redirect_uri' 		=> HTTP_HOME_URL . $this->config['vk_app_registration'] . '&redirect=1',
+			'redirect_uri' 		=> HTTP_HOME_URL . $this->config['vk_login'],
 
 		];
 
@@ -149,17 +147,10 @@ final class RegistrationVk {
 		$token = json_decode( file_get_contents( $this->accessTokenUrl ), true );
 
 		if ( (int)$token['user_id'] > 0 AND isset( $token['access_token'] ) ) {
-			if ( $this->searchDouble ( $token['user_id'] ) ) {
-				$this->msgBox->getResult ( false, $this->language['registration_vk'][2], 'success' );
-
-			} else {
-				$this->userVkId 	= $token['user_id'];
-				$this->userVkToken 	= $token['access_token'];
-
-				$this->step = 2;
-				$this->getVkUserInfo();
-
-			}
+			$this->userVkId 	= $token['user_id'];
+			$this->userVkToken 	= $token['access_token'];
+			$this->step = 2;
+			$this->getVkUserInfo();
 
 		}
 
@@ -194,7 +185,13 @@ final class RegistrationVk {
 
 		if ( is_array( $row['response'][0] ) ) {
 			$this->response =  $row['response'][0];
-			$this->complete();
+			if ( $this->searchDouble ( $this->userVkId ) > 0 ) {
+				$this->login();
+
+			} else {
+				$this->registration();
+
+			}
 
 		}
 
@@ -460,7 +457,7 @@ final class RegistrationVk {
 
 	}
 
-	private function complete () {
+	private function registration () {
 		$date = date( 'Y-m-d H:i:s', time() );
 		$password = crc32( md5( $date ) );
 
@@ -545,63 +542,91 @@ final class RegistrationVk {
 
 		$user_id = (int)$this->db->insertId();
 		if ( $user_id > 0 ) {
-			session_regenerate_id();
-
-			$this->functions->setCookie( "user_id", $user_id, 365 );
-			$this->functions->setCookie( "user_vk", md5( md5( $userVkToken ) ), 365 );
-
-			header( 'Location: ' . $this->config['http_home_url'] );
-			die();
+			$this->cookie( $user_id, $userVkToken );
 
 		} else {
-			$this->msgBox->getResult ( false, $this->language['registration_vk'][3], 'error' );
+			$this->msgBox->getResult ( false, $this->language['vk_login'][3], 'error' );
 
 		}
 
+	}
+
+	private function login () {
+		$obj = [];
+		$obj['user_avatar'] 			= $this->userAvatar();
+		$obj['user_first_name'] 		= $this->userFirstName();
+		$obj['user_last_name'] 			= $this->userLastName();
+		$obj['user_sex'] 				= $this->userSex();
+		$obj['user_birthday_date'] 		= $this->userBirthdayDate();
+		$obj['user_city_id'] 			= $this->userCityId();
+		$obj['user_country_id'] 		= $this->userCountryId();
+		$obj['user_mobile_phone'] 		= $this->userMobilePhone();
+		$obj['user_home_phone'] 		= $this->userHomePhone();
+		$obj['user_skype'] 				= $this->userSkype();
+		$obj['user_facebook'] 			= $this->userSkype();
+		$obj['user_facebook_name'] 		= $this->userFacebookName();
+		$obj['user_twitter'] 			= $this->userTwitter();
+		$obj['user_site'] 				= $this->userSite();
+		$obj['user_followers_count']	= $this->userFollowersCount();
+		$obj['user_common_count'] 		= $this->userCommonCount();
+		$obj['user_last_date'] 			= date( 'Y-m-d H:i:s', time() );
+		$obj['user_vk_token'] 			= $this->userVkToken;
+
+		$setUpdate = [];
+		foreach ( $obj AS $k => $v ) {
+			if ( $v != false AND trim( $v ) != '' ) {
+				$setUpdate[] = "`{$k}` = '{$v}'";
+			}
+
+		}
+
+		$setUpdate = implode( ', ', $setUpdate );
+
+		$this->db->query( "UPDATE 
+									users 
+										SET 
+											{$setUpdate} 
+												WHERE 
+													`user_id` = '{$this->memberId['user_id']}'" );
+
+		if ( (int)$this->memberId['user_id'] > 0 ) {
+			$this->cookie( $this->memberId['user_id'], $obj['user_vk_token'] );
+
+		} else {
+			$this->msgBox->getResult ( false, $this->language['vk_login'][2], 'error' );
+
+		}
+
+	}
+
+	/**
+	 * @param $user_id
+	 * @param $user_vk_token
+	 */
+	private function cookie ( $user_id, $user_vk_token ) {
+		session_regenerate_id();
+
+		$this->functions->setCookie( "user_id", $user_id, 365 );
+		$this->functions->setCookie( "user_vk", md5( md5( $user_vk_token ) ), 365 );
+
+		header( 'Location: ' . $this->config['http_home_url'] );
+		die();
 
 	}
 
 	private function searchDouble ( $userVkId ) {
 		$status = false;
-		$row = $this->db->superQuery( "SELECT `user_id` FROM users WHERE `user_vk_id` = '{$userVkId}' LIMIT 1" );
+		$this->memberId = $this->db->superQuery( "SELECT * FROM users WHERE `user_vk_id` = '{$userVkId}' LIMIT 1" );
 
-		if ( $row['user_id'] ) {
-			return $row['user_id'];
+		if ( $this->memberId['user_id'] ) {
+			return $this->memberId['user_id'];
+
+		} else {
+			$this->memberId = false;
 
 		}
 
 		return $status;
-
-	}
-
-	private function authorize () {
-		$url = 'https://oauth.vk.com/authorize';
-
-		$authorizeUrl = [
-			'client_id'     => $this->config['vk_app_id'],
-			'redirect_uri'  => HTTP_HOME_URL . $this->config['vk_app_registration'] . '&redirect=2',
-			'response_type' => 'code',
-			'display' 		=> 'page',
-			'scope' 		=> 'offline',
-			'v' 			=> $this->config['vk_app_version'],
-
-		];
-
-		$this->authorizeUrl = $url . '?' . urldecode( http_build_query( $authorizeUrl ) );
-
-	}
-
-	private function getContent () {
-		$this->authorize();
-
-		$this->tpl->loadTemplate( 'user/vk/registration_vk.tpl' );
-
-		$this->tpl->set( '{url_vk_form}', $this->authorizeUrl );
-
-
-		$this->tpl->compile( 'content' );
-
-		$this->tpl->clear();
 
 	}
 

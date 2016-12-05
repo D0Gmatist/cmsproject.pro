@@ -84,15 +84,10 @@ final class Registration {
 			$this->stepTwo();
 
 		} else {
-			if ( $_POST[ 'action' ] == 'registration' ) {
-				$this->step = 1;
-				$this->stepOne();
-
-			}
+			$this->step = 1;
+			$this->stepOne();
 
 		}
-
-		$this->getContent();
 
 	}
 
@@ -334,62 +329,6 @@ final class Registration {
 			$this->registration = false;
 
 		}
-
-	}
-
-	private function getContent () {
-		$this->tpl->loadTemplate( 'user/registration.tpl' );
-
-		switch ( $this->step ) {
-
-			case '3' :
-
-				$this->tpl->setBlock( "'\\[form_registration\\](.*?)\\[/form_registration\\]'si", "" );
-
-				$this->tpl->set( '{login}', '' );
-				$this->tpl->set( '{email}', '' );
-				$this->tpl->set( '{password}', '' );
-
-				break;
-
-			case '2' :
-
-				$this->tpl->setBlock( "'\\[form_registration\\](.*?)\\[/form_registration\\]'si", "" );
-
-				$this->tpl->set( '{login}', '' );
-				$this->tpl->set( '{email}', '' );
-				$this->tpl->set( '{password}', '' );
-
-				break;
-
-			case '1' :
-
-				$this->tpl->set( '[form_registration]', "" );
-				$this->tpl->set( '[/form_registration]', "" );
-
-				$this->tpl->set( '{login}', $_POST['login'] );
-				$this->tpl->set( '{email}', $_POST['email'] );
-				$this->tpl->set( '{password}', '' );
-
-				break;
-
-			case '0' :
-			default :
-
-				$this->tpl->set( '[form_registration]', "" );
-				$this->tpl->set( '[/form_registration]', "" );
-
-				$this->tpl->set( '{login}', '' );
-				$this->tpl->set( '{email}', '' );
-				$this->tpl->set( '{password}', '' );
-
-				break;
-
-		}
-
-		$this->tpl->compile( 'content' );
-
-		$this->tpl->clear();
 
 	}
 

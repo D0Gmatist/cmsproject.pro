@@ -72,8 +72,6 @@ final class Authorization {
 
 		}
 
-		$this->getContent();
-
 	}
 
 	private function login () {
@@ -116,18 +114,6 @@ final class Authorization {
 			}
 
 		}
-
-	}
-
-	public function getContent () {
-		$this->tpl->loadTemplate( 'user/authorization.tpl' );
-
-		$this->tpl->set( '{login}', $_POST['login'] );
-		$this->tpl->set( '{password}', '' );
-
-		$this->tpl->compile( 'content' );
-
-		$this->tpl->clear();
 
 	}
 

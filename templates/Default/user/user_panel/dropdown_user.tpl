@@ -16,16 +16,7 @@
 		[/not-group]
 		[group=5]
 		<li>
-			<a href="?action=login"><i class="icon-key"></i> Выход </a>
-		</li>
-		<li>
-			<a href="?action=login_vk"><i class="icon-key"></i> Выход через VK </a>
-		</li>
-		<li>
-			<a href="?action=registration"><i class="icon-key"></i> Регистрация </a>
-		</li>
-		<li>
-			<a href="?action=registration_vk"><i class="icon-key"></i> Регистрация через VK </a>
+			<a href="?action=login"><i class="icon-key"></i> Вход </a>
 		</li>
 		[/group]
 	</ul>

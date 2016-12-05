@@ -2,12 +2,12 @@
 	<ul class="nav navbar-nav pull-right">
 
 		[not-group=5]
-		{include file="include/main/navbar/dropdown_notification.tpl"}
-		{include file="include/main/navbar/header_inbox.tpl"}
-		{include file="include/main/navbar/header_tasks.tpl"}
+		{include file="user/user_panel/dropdown_notification.tpl"}
+		{include file="user/user_panel/header_inbox.tpl"}
+		{include file="user/user_panel/header_tasks.tpl"}
 		[/not-group]
 
-		{include file="include/main/navbar/dropdown_user.tpl"}
+		{include file="user/user_panel/dropdown_user.tpl"}
 
 	</ul>
 </div>
