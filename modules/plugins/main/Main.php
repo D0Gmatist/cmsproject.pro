@@ -48,8 +48,9 @@ class Main {
 	/**
 	 * @param array $replaceUrl
 	 * @param array $pageTitle
+	 * @param $script
 	 */
-	public function getResult ( $replaceUrl, $pageTitle ) {
+	public function getResult ( $replaceUrl, $pageTitle, $script ) {
 		$this->tpl->loadTemplate( 'main.tpl' );
 
 		$this->tags = array_unique( $this->tags );
@@ -86,6 +87,16 @@ class Main {
 			$this->tpl->setBlock( "'\\[page_title_small\\](.*?)\\[/page_title_small\\]'si", "" );
 
 		}
+
+		$scriptHtml = "<script>\n";
+		$scriptHtml .= "var CMSVAR = {\n";
+		foreach ( $script AS $key => $val ) {
+			$scriptHtml .= "	{$key} : '{$val}',\n";
+
+		}
+		$scriptHtml .= "}\n";
+		$scriptHtml .= "</script>\n";
+		$this->tpl->set ( '{SCRIPT}', $scriptHtml );
 
 		$this->tpl->compile( 'main' );
 

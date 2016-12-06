@@ -62,4 +62,4 @@ $main->setTags ( [ 'content' ] );
  * @var array $replaceUrl
  * @var array $pageTitle
  */
-$main->getResult ( $replaceUrl, $pageTitle );
+$main->getResult ( $replaceUrl, $pageTitle, $script );

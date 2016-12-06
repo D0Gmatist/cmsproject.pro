@@ -20,7 +20,37 @@
 
 								<div class="form-group">
 									<label class="col-md-3 control-label">Название задачи</label>
-									<div class="col-md-9"><input type="text" name="name" class="form-control spinner" placeholder="задача"></div>
+									<div class="col-md-9">
+										<input type="text" name="name" class="form-control spinner" placeholder="задача">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-3 control-label">Список ID</label>
+									<div class="col-md-9">
+										<input type="text" name="ids" class="form-control spinner" data-input="tokenfield" placeholder="пользователи или группы">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-3 control-label">Страна</label>
+									<div class="col-md-9">
+										<select class="form-control" name="countries" data-ready="countries" data-change="countries" data-select="select2" data-placeholder="Выберите страну" style="width: 100%"></select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-3 control-label">Регион</label>
+									<div class="col-md-9">
+										<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="Выберите регион" style="width: 100%" disabled></select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-md-3 control-label">Населённый пункт</label>
+									<div class="col-md-9">
+										<select class="form-control" name="cities" data-change="cities" data-select="select2" data-placeholder="Выберите населённый пункт" style="width: 100%" disabled></select>
+									</div>
 								</div>
 
 							</div>
@@ -31,15 +61,9 @@
 
 						<div class="form-horizontal">
 							<div class="form-body">
-
-								<div class="form-group">
-									<label class="col-md-3 control-label">Список ID</label>
-									<div class="col-md-9"><input type="text" name="ids" class="form-control spinner" data-input="tokenfield" placeholder="пользователи или группы"></div>
-								</div>
-
+adasd
 							</div>
 						</div>
-
 
 					</div>
 				</div>

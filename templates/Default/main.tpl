@@ -42,8 +42,8 @@
                 [/page_title]
 
                 <!-- content -->
-				{msg}
-				{content}
+				<div data-html="msg">{msg}</div>
+				<div data-html="content">{content}</div>
 
             </div>
         </div>
@@ -54,6 +54,7 @@
     {include file="include/main/footer.tpl"}
     </div>
 
+	{SCRIPT}
     {include file="include/main/script.tpl"}
 
 </body>

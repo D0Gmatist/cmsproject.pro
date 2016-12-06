@@ -50,8 +50,8 @@ final class VarsSerialize {
 		if ( ! is_array ( $this->result ) ) {
 			$this->result = [];
 
-			$this->db->query ( "SELECT * FROM `{$table}` ORDER BY `{$name}` ASC" );
-			while ( $row = $this->db->getRow () ) {
+			$this->db->query( "SELECT * FROM `{$table}` ORDER BY `{$name}` ASC" );
+			while ( $row = $this->db->getRow() ) {
 				$this->result[$row[$name]] = [];
 
 				foreach ( $row as $key => $value ) {

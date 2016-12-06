@@ -19,4 +19,9 @@ define ( 'PLUGINS_DIR', MODULES_DIR . '/plugins' );
 
 header('Content-Type: text/html; charset=utf-8');
 
+if ( $_GET['test'] == 1 ) {
+	$_POST = $_GET;
+
+}
+
 require_once 'loader.php';
