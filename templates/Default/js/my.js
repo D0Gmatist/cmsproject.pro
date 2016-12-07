@@ -23,7 +23,7 @@ var CMS = {
 			$.ajax({
 				url: CMSVAR.home + 'index.php',
 				dataType: 'json',
-				type: 'post',
+				type: a.type,
 				data: b,
 				error: function() {
 					console.log( 'ERROR' );
@@ -34,51 +34,45 @@ var CMS = {
 					CMS.cssLoading.hide();
 
 					if ( c.success ) {
-						var d = '<option></option>';
-						if ( a == 'data-ready' ) {
+						var d = '';
+						if ( a.action == 'data-ready' ) {
 							if ( b.action == 'countries' ) {
-								$.each( c.content, function ( k, v ) {
+								d = '<option></option>';
+								$.each( c.content.countries, function ( k, v ) {
 									d += '<option value="' + v.id_country + '">' + v.title_country + '</option>';
 
 								});
-								$( '[' + a + '="' + b.action + '"]' ).html( d );
+								var i = '[data-ready="countries"]';
+								$( i ).html( d );
 
 							}
 
-						} else if ( a == 'data-change' ) {
+						} else if ( a.action == 'data-change' ) {
 							if ( b.action == 'regions' ) {
-								d += '<option value="0">Выберите регион</option>';
-								$.each( c.content, function ( k, v ) {
+								d = '<option></option><option value="0">Выберите регион</option>';
+								$.each( c.content.regions, function ( k, v ) {
 									d += '<option value="' + v.id_region + '">' + v.title_region + '</option>';
 
 								});
 
-								var i = '[' + a + '="' + b.action + '"]';
+								var i = '[data-change="regions"]';
 								$( i ).html( d );
 
 								if ( $( i ).html() != '' ) {
-									CMS.select2.disabled( '[' + a + '="' + b.action + '"]', false );
-									$( '[' + a + '="' + b.action + '"]' ).val( 0 ).trigger( 'change' );
+									CMS.select2.disabled( i, false );
+									$( i ).val( 0 ).trigger( 'change' );
 
 								}
 
-							} else if ( b.action == 'cities' ) {
-								var f = '';
-								d += '<option value="0">Выберите населённый пункт</option>';
-								$.each( c.content, function ( k, v ) {
-									f = ( v.area_city != '' && v.area_city != null ) ? ' (' + v.area_city + ')' : '';
-									d += '<option value="' + v.id_city + '">' + v.title_city + f + '</option>';
+							}
 
-								});
-
-								var i = '[' + a + '="' + b.action + '"]';
-								$( i ).html( d );
-
-								if ( $( i ).html() != '' ) {
-									CMS.select2.disabled( '[' + a + '="' + b.action + '"]', false );
-									$( '[' + a + '="' + b.action + '"]' ).val( 0 ).trigger( 'change' );
+							if ( b.action == 'regions' || b.action == 'cities' ) {
+								if ( b.action == 'regions' ) {
+									CMS.cities.mainCities = c.content.cities;
 
 								}
+
+								CMS.cities.addCities( c.content.cities );
 
 							}
 
@@ -91,6 +85,31 @@ var CMS = {
 				}
 
 			});
+
+		}
+
+	},
+	cities : {
+		mainCities : '',
+		addCities : function ( a ) {
+			var b = '',
+				c = '<option></option><option value="0">Выберите населённый пункт</option>',
+				d = '[data-change="cities"]';
+
+			$.each( a, function ( i, f ) {
+				b = ( f.area_city != '' && f.area_city != null ) ? ' (' + f.area_city + ')' : '';
+
+				c += '<option value="' + f.id_city + '">' + f.title_city + b + '</option>';
+
+			});
+
+			$( d ).html( c );
+
+			if ( $( d ).html() != '' ) {
+				CMS.select2.disabled( d, false );
+				$( d ).val( 0 ).trigger( 'change' );
+
+			}
 
 		}
 
@@ -142,11 +161,13 @@ var CMS = {
 	},
 	readyAjax : function () {
 		$( '[data-ready]' ).each( function( k, v ) {
-			CMS.ajax.request( 'data-ready', {
+			CMS.ajax.request( {
+				action : 'data-ready',
+				type : 'get'
+			}, {
 				method : 'ajax',
 				action : $( this ).data( 'ready' )
-
-			});
+			} );
 
 		});
 
@@ -221,13 +242,15 @@ CMS.a.on( 'click', '[data-btn="form"]', function () {
 		b = a.data( 'change' );
 
 	if ( b == 'countries' ) {
-		if ( CMS.obj( a.val() ) == 'string' && a.val() != '0' && a.val() != '' ) {
-			CMS.ajax.request( 'data-change', {
+		if ( CMS.obj( a.val() ) == 'string' && a.val() != '0' && a.val() != '' && a.val() != 'undefined' ) {
+			CMS.ajax.request( {
+				action : 'data-change',
+				type : 'get'
+			}, {
 				method			: 'ajax',
 				id_country		: a.val(),
 				action			: 'regions'
-
-			});
+			} );
 
 		} else {
 			CMS.select2.disabled( '[data-change="regions"]', true );
@@ -242,16 +265,18 @@ CMS.a.on( 'click', '[data-btn="form"]', function () {
 		var c = $( '[data-change="countries"]' ).val();
 
 		if ( ( CMS.obj( a.val() ) == 'string' && a.val() != '0' && a.val() != '' ) && ( CMS.obj( c ) == 'string' && c != '0' && c != '' ) ) {
-			CMS.ajax.request( 'data-change', {
+			CMS.ajax.request( {
+				action : 'data-change',
+				type : 'get'
+			}, {
 				method			: 'ajax',
 				id_country		: c,
 				id_region		: a.val(),
 				action			: 'cities'
-
-			});
+			} );
 
 		} else {
-			CMS.select2.disabled( '[data-change="cities"]', true );
+			CMS.cities.addCities( CMS.cities.mainCities );
 			$( '[data-change="cities"]' ).val( 0 ).trigger( 'change' );
 
 		}

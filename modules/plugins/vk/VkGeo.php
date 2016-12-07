@@ -76,21 +76,23 @@ final class VkGeo {
 
 		$this->tpl = $tpl;
 
-		if ( trim( $_POST['action'] ) != '' ) {
-			switch ( trim( $_POST['action'] ) ) {
+		if ( trim( $_GET['action'] ) != '' ) {
+			switch ( trim( $_GET['action'] ) ) {
 
 				case 'countries' :
 					$this->getCountries( 1 );
 					break;
 
 				case 'regions' :
-					$this->id_country = (int)$_POST['id_country'];
+					$this->id_country = (int)$_GET['id_country'];
+					$this->id_region = 0;
 					$this->getRegions( 1 );
+					$this->getCities( 1 );
 					break;
 
 				case 'cities' :
-					$this->id_country = (int)$_POST['id_country'];
-					$this->id_region = ( $_POST['id_region'] == 'not' ) ? NULL : (int)$_POST['id_region'];
+					$this->id_country = (int)$_GET['id_country'];
+					$this->id_region = ( $_GET['id_region'] == 'not' ) ? NULL : (int)$_GET['id_region'];
 					$this->getCities( 1 );
 					break;
 
@@ -108,7 +110,7 @@ final class VkGeo {
 
 		}
 
-		foreach ( $this->result AS $value ) {
+		foreach ( $this->result['countries'] AS $value ) {
 
 			$value['title'] = $this->db->safeSql( stripslashes( $value['title'] ) );
 
@@ -120,7 +122,7 @@ final class VkGeo {
 
 		}
 
-		if ( count( $this->result ) < $this->count_step ) {
+		if ( count( $this->result['countries'] ) < $this->count_step ) {
 			$this->offset = 0;
 			$this->getCountries( 2 );
 
@@ -150,7 +152,7 @@ final class VkGeo {
 		$vk_get = json_decode( file_get_contents( $url . $params_count ), true );
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
-			$this->result = $vk_get[ 'response' ];
+			$this->result['countries'] = $vk_get[ 'response' ];
 			$this->updateCountries( $upStepOne );
 
 
@@ -162,16 +164,16 @@ final class VkGeo {
 	 * @param $step
 	 */
 	private function getCountries ( $step ) {
-		$this->result = [];
+		$this->result['countries'] = [];
 
 		$this->db->query( "SELECT * FROM geo_countries ORDER BY `title_country` ASC" );
 
 		while ( $row = $this->db->getRow() ) {
-			$this->result[] = $row;
+			$this->result['countries'][] = $row;
 
 		}
 
-		if ( count( $this->result ) < 1 AND $step == 1 ) {
+		if ( count( $this->result['countries'] ) < 1 AND $step == 1 ) {
 			$this->setCountries( true );
 
 		}
@@ -187,7 +189,7 @@ final class VkGeo {
 
 		}
 
-		foreach ( $this->result AS $value ) {
+		foreach ( $this->result['regions'] AS $value ) {
 
 			$value['title'] = $this->db->safeSql( stripslashes( $value['title'] ) );
 
@@ -199,7 +201,7 @@ final class VkGeo {
 
 		}
 
-		if ( count( $this->result ) < $this->count_step ) {
+		if ( count( $this->result['regions'] ) < $this->count_step ) {
 			$this->offset = 0;
 			$this->getRegions( 2 );
 
@@ -244,7 +246,7 @@ final class VkGeo {
 		$vk_get = json_decode( file_get_contents( $url . $params_count ), true );
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
-			$this->result = $vk_get[ 'response' ];
+			$this->result['regions'] = $vk_get[ 'response' ];
 			$this->updateRegions( $upStepOne );
 
 		} else {
@@ -258,7 +260,7 @@ final class VkGeo {
 	 * @param $step
 	 */
 	private function getRegions ( $step ) {
-		$this->result = [];
+		$this->result['regions'] = [];
 
 		$row = $this->db->superQuery( "SELECT `id_country` FROM geo_countries WHERE `id_country` = '{$this->id_country}' LIMIT 1" );
 
@@ -267,13 +269,13 @@ final class VkGeo {
 			$this->db->query ( "SELECT * FROM geo_regions WHERE `id_country` = '{$this->id_country}' ORDER BY `title_region` ASC" );
 
 			while ( $row = $this->db->getRow () ) {
-				$row['id_region'] = ( $row['id_region'] == NULL ) ? 'not' : $row['id_region'];
+				$row['id_region'] = ( $row['id_region'] === NULL ) ? 'not' : $row['id_region'];
 
-				$this->result[] = $row;
+				$this->result['regions'][] = $row;
 
 			}
 
-			if ( count( $this->result ) < 1 AND $step == 1 ) {
+			if ( count( $this->result['regions'] ) < 1 AND $step == 1 ) {
 				$this->setRegions( true );
 
 			}
@@ -287,39 +289,37 @@ final class VkGeo {
 	 */
 	private function updateCities( $upStepOne ) {
 		if ( $upStepOne == true ) {
-			if ( $this->id_region == NULL ) {
-				$this->db->query ( "DELETE FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` IS NULL" );
-
-			} else {
-				$this->db->query ( "DELETE FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` = '{$this->id_region}'" );
-
-			}
+			$query = "DELETE FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` ";
+			$query .= ( $this->id_region === NULL ) ? "IS NULL" : "= '{$this->id_region}'";
+			$this->db->query( $query );
 
 		}
 
-		foreach ( $this->result AS $value ) {
+		foreach ( $this->result['cities'] AS $value ) {
 			$value['title'] = $this->db->safeSql( stripslashes( $value['title'] ) );
 			$value['area'] = $this->db->safeSql( stripslashes( $value['area'] ) );
 
-			if ( $this->id_region == NULL ) {
+			$value['important'] = ( (int)$value['important'] == 1 ) ? 1 : 0;
+
+			if ( $this->id_region === NULL ) {
 				$this->db->query( "INSERT INTO
 									geo_cities
-										( `id_country`, `id_region`, `id_city`, `title_city`, `area_city` )
+										( `id_country`, `id_region`, `id_city`, `title_city`, `area_city`, `important_city` )
 											VALUES
-										( '{$this->id_country}', NULL, '{$value['cid']}', '{$value['title']}', '{$value['area']}' )" );
+										( '{$this->id_country}', NULL, '{$value['cid']}', '{$value['title']}', '{$value['area']}', '{$value['important']}' )" );
 
 			} else {
 				$this->db->query( "INSERT INTO
 									geo_cities
-										( `id_country`, `id_region`, `id_city`, `title_city`, `area_city` )
+										( `id_country`, `id_region`, `id_city`, `title_city`, `area_city`, `important_city` )
 											VALUES
-										( '{$this->id_country}', '{$this->id_region}', '{$value['cid']}', '{$value['title']}', '{$value['area']}' )" );
+										( '{$this->id_country}', '{$this->id_region}', '{$value['cid']}', '{$value['title']}', '{$value['area']}', '{$value['important']}' )" );
 
 			}
 
 		}
 
-		if ( count( $this->result ) < $this->count_step ) {
+		if ( count( $this->result['cities'] ) < $this->count_step ) {
 			$this->offset = 0;
 			$this->getCities( 2 );
 
@@ -338,11 +338,11 @@ final class VkGeo {
 		$url = 'https://api.vk.com/method/database.getCities?';
 
 		$need_all = 1;
-		if ( $this->id_region < 1 AND $this->id_region != NULL ) {
+		if ( $this->id_region < 1 OR $this->id_region !== NULL ) {
 			$need_all = 0;
 
 		}
-		$id_region = ( $this->id_region == NULL ) ? 0 : $this->id_region;
+		$id_region = ( $this->id_region < 1 OR $this->id_region === NULL ) ? 0 : $this->id_region;
 		$params_count =  http_build_query( [
 			'region_id' 		=> $id_region,
 			'country_id' 		=> $this->id_country,
@@ -357,7 +357,7 @@ final class VkGeo {
 		$vk_get = json_decode( file_get_contents( $url . $params_count ), true );
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
-			$this->result = $vk_get[ 'response' ];
+			$this->result['cities'] = $vk_get[ 'response' ];
 			$this->updateCities( $upStepOne );
 
 		}
@@ -368,41 +368,33 @@ final class VkGeo {
 	 * @param $step
 	 */
 	private function getCities ( $step ) {
-		$this->result = [];
+		$this->result['cities'] = [];
 
-		$cityStatus = false;
+		$superQuery = "SELECT `id_country` FROM geo_regions WHERE `id_country` = '{$this->id_country}' AND `id_region` ";
+		$superQuery .= ( $this->id_region === NULL ) ? "IS NULL" : "= '{$this->id_region}'";
+		$superQuery .= " LIMIT 1";
+		$row = $this->db->superQuery( $superQuery );
 
-		if ( $this->id_region == NULL ) {
-			$row = $this->db->superQuery( "SELECT `id_country`, `id_region` FROM geo_regions WHERE `id_country` = '{$this->id_country}' AND `id_region` IS NULL LIMIT 1" );
+		if ( $this->id_country == $row['id_country'] OR $_GET['action'] == 'regions' ) {
+			$cityStatus = true;
 
-			if ( $this->id_country == $row['id_country'] AND $this->id_region == $row['id_region'] ) {
-				$cityStatus = true;
-				$this->db->query ( "SELECT * FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` IS NULL ORDER BY `title_city` ASC" );
-
-			}
-
-		} else {
-			$row = $this->db->superQuery( "SELECT `id_country`, `id_region` FROM geo_regions WHERE `id_country` = '{$this->id_country}' AND `id_region` = '{$this->id_region}' LIMIT 1" );
-
-			if ( $this->id_country == $row['id_country'] AND $this->id_region == $row['id_region'] ) {
-				$cityStatus = true;
-				$this->db->query ( "SELECT * FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` = '{$this->id_region}' ORDER BY `title_city` ASC" );
-
-
-			}
+			$query = "SELECT * FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` ";
+			$query .= ( $this->id_region === NULL ) ? "IS NULL" : "= '{$this->id_region}'";
+			$query .= " ORDER BY `important_city` DESC, `title_city` ASC";
+			$this->db->query( $query );
 
 		}
 
 		if ( $cityStatus == true ) {
 			while ( $row = $this->db->getRow () ) {
-				$this->result[] = $row;
+				$this->result['cities'][] = $row;
 
 			}
 
-			if ( count( $this->result ) < 1 AND $step == 1 ) {
-				$this->setCities( true );
+		}
 
-			}
+		if ( count( $this->result['cities'] ) < 1 AND $step == 1 ) {
+			$this->setCities( true );
 
 		}
 

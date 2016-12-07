@@ -42,7 +42,7 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Регион</label>
 									<div class="col-md-9">
-										<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="Выберите регион" style="width: 100%" disabled></select>
+										<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="Выберите регион (не обязательно)" style="width: 100%" disabled></select>
 									</div>
 								</div>
 

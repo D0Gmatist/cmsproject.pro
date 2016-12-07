@@ -1,6 +1,5 @@
 <?php
 
-use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Plugins\Vk\VkGeo;
 
 $result = [
@@ -10,20 +9,8 @@ $result = [
 
 ];
 
-if ( isset( $_POST['action'] ) AND trim( $_POST['action'] ) != '' ) {
-	$action = $_POST['action'];
-
-}
-
-/** @var  $msgBox */
-$msgBox = new MsgBox( $tpl );
-
-/** @var string $action */
-if ( trim( $action ) == '' ) {
-	$msgBox->getResult( 'ERROR', 'Not action info!', 'error' );
-
-	$result['success'] = false;
-	$result['msg'] = $tpl->result['msg'];
+if ( ! isset( $action ) OR trim( $action ) == '' ) {
+	die();
 
 }
 
