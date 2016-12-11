@@ -28,6 +28,3 @@ switch ( $action ) {
 		break;
 
 }
-
-echo json_encode( $result );
-
