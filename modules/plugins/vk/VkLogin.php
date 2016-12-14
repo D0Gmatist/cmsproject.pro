@@ -75,9 +75,6 @@ final class VkLogin {
 	private $step = 0;
 
 	/** @var string  */
-	private $authorizeUrl;
-
-	/** @var string  */
 	private $accessTokenUrl;
 
 	/** @var string  */
