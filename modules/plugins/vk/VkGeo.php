@@ -58,7 +58,7 @@ final class VkGeo {
 	/**
 	 * VkGeo constructor.
 	 *
-	 * @param           $isLogged
+	 * @param bool      $isLogged
 	 * @param array     $memberId
 	 * @param array     $groupVar
 	 * @param Functions $functions
@@ -109,7 +109,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $upStepOne
+	 * @param bool $upStepOne
 	 */
 	private function updateCountries ( $upStepOne ) {
 		if ( $upStepOne == true ) {
@@ -142,7 +142,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $upStepOne
+	 * @param bool $upStepOne
 	 */
 	private function getCountries ( $upStepOne ) {
 		$vk_get = $this->vkApi->getApiCountries( 1, $this->count_step, $this->offset );
@@ -157,7 +157,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $step
+	 * @param int $step
 	 */
 	private function setCountries ( $step ) {
 		$this->result['countries'] = [];
@@ -177,7 +177,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $upStepOne
+	 * @param bool $upStepOne
 	 */
 	private function updateRegions ( $upStepOne ) {
 		if ( $upStepOne == true ) {
@@ -225,7 +225,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $upStepOne
+	 * @param bool $upStepOne
 	 */
 	private function getRegions ( $upStepOne ) {
 		$vk_get = $this->vkApi->getApiRegions( $this->id_country, $this->count_step, $this->offset );
@@ -242,7 +242,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $step
+	 * @param int $step
 	 */
 	private function setRegions ( $step ) {
 		$this->result['regions'] = [];
@@ -270,7 +270,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $upStepOne
+	 * @param bool $upStepOne
 	 */
 	private function updateCities ( $upStepOne ) {
 		if ( $upStepOne == true ) {
@@ -317,7 +317,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $upStepOne
+	 * @param bool $upStepOne
 	 */
 	private function getCities ( $upStepOne ) {
 		$vk_get = $this->vkApi->getApiCities( $this->id_region, $this->id_country, $this->count_step, $this->offset );
@@ -331,7 +331,7 @@ final class VkGeo {
 	}
 
 	/**
-	 * @param $step
+	 * @param int $step
 	 */
 	private function setCities ( $step ) {
 		$this->result['cities'] = [];

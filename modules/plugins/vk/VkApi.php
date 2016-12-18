@@ -28,9 +28,9 @@ final class VkApi {
 	}
 
 	/**
-	 * @param $need_all
-	 * @param $count_step
-	 * @param $offset
+	 * @param int $need_all
+	 * @param int $count_step
+	 * @param int $offset
 	 *
 	 * @return array
 	 */
@@ -51,9 +51,9 @@ final class VkApi {
 	}
 
 	/**
-	 * @param $id_country
-	 * @param $count_step
-	 * @param $offset
+	 * @param int $id_country
+	 * @param int $count_step
+	 * @param int $offset
 	 *
 	 * @return array
 	 */
@@ -73,6 +73,14 @@ final class VkApi {
 
 	}
 
+	/**
+	 * @param int $id_region
+	 * @param int $id_country
+	 * @param int $count_step
+	 * @param int $offset
+	 *
+	 * @return array
+	 */
 	public function getApiCities ( $id_region, $id_country, $count_step = 1000, $offset = 0 ) {
 		$url = 'https://api.vk.com/method/database.getCities?';
 
