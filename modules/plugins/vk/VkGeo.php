@@ -37,6 +37,9 @@ final class VkGeo {
 	/** @var Template  */
 	private $tpl;
 
+	/** @var  VkApi */
+	private $vkApi;
+
 	/** @var int  */
 	private $id_country = 0;
 
@@ -44,24 +47,25 @@ final class VkGeo {
 	private $id_region = 0;
 
 	/** @var array  */
-	private $result = [];
+	private $result;
 
-	/** @var int array  */
+	/** @var int  */
 	public $offset = 0;
 
 	/** @var int  */
 	public $count_step = 1000;
 
 	/**
-	 * VkCountries constructor.
-	 * @param $isLogged
-	 * @param array $memberId
-	 * @param array $groupVar
+	 * VkGeo constructor.
+	 *
+	 * @param           $isLogged
+	 * @param array     $memberId
+	 * @param array     $groupVar
 	 * @param Functions $functions
-	 * @param Db $db
-	 * @param Template $tpl
-	 * @param array $config
-	 * @param array $language
+	 * @param Db        $db
+	 * @param Template  $tpl
+	 * @param array     $config
+	 * @param array     $language
 	 */
 	function __construct ( $isLogged, array $memberId, array $groupVar, Functions $functions, Db $db, Template $tpl, array $config, array $language ) {
 		$this->isLogged = $isLogged;
@@ -76,24 +80,27 @@ final class VkGeo {
 
 		$this->tpl = $tpl;
 
+		/** @var VkApi $vkApi */
+		$this->vkApi = new VkApi( $this->memberId = $memberId, $this->config );
+
 		if ( trim( $_GET['action'] ) != '' ) {
 			switch ( trim( $_GET['action'] ) ) {
 
 				case 'countries' :
-					$this->getCountries( 1 );
+					$this->setCountries( 1 );
 					break;
 
 				case 'regions' :
 					$this->id_country = (int)$_GET['id_country'];
 					$this->id_region = 0;
-					$this->getRegions( 1 );
-					$this->getCities( 1 );
+					$this->setRegions( 1 );
+					$this->setCities( 1 );
 					break;
 
 				case 'cities' :
 					$this->id_country = (int)$_GET['id_country'];
 					$this->id_region = ( $_GET['id_region'] == 'not' ) ? NULL : (int)$_GET['id_region'];
-					$this->getCities( 1 );
+					$this->setCities( 1 );
 					break;
 
 			}
@@ -104,7 +111,7 @@ final class VkGeo {
 	/**
 	 * @param $upStepOne
 	 */
-	private function updateCountries( $upStepOne ) {
+	private function updateCountries ( $upStepOne ) {
 		if ( $upStepOne == true ) {
 			$this->db->query( "DELETE FROM geo_countries WHERE `id_country` != ''" );
 
@@ -124,11 +131,11 @@ final class VkGeo {
 
 		if ( count( $this->result['countries'] ) < $this->count_step ) {
 			$this->offset = 0;
-			$this->getCountries( 2 );
+			$this->setCountries( 2 );
 
 		} else {
 			$this->offset = $this->offset + $this->count_step;
-			$this->setCountries( false );
+			$this->getCountries( false );
 
 		}
 
@@ -137,19 +144,8 @@ final class VkGeo {
 	/**
 	 * @param $upStepOne
 	 */
-	private function setCountries ( $upStepOne ) {
-		$url = 'https://api.vk.com/method/database.getCountries?';
-
-		$params_count =  urldecode( http_build_query( [
-			'need_all'     		=> '1',
-			'count'     		=> $this->count_step,
-			'offset'			=> $this->offset,
-			'v'		 			=> $this->memberId[ 'vk_app_version' ],
-			'access_token' 		=> $this->config[ 'user_vk_token' ]
-
-		] ) );
-
-		$vk_get = json_decode( file_get_contents( $url . $params_count ), true );
+	private function getCountries ( $upStepOne ) {
+		$vk_get = $this->vkApi->getApiCountries( 1, $this->count_step, $this->offset );
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
 			$this->result['countries'] = $vk_get[ 'response' ];
@@ -163,7 +159,7 @@ final class VkGeo {
 	/**
 	 * @param $step
 	 */
-	private function getCountries ( $step ) {
+	private function setCountries ( $step ) {
 		$this->result['countries'] = [];
 
 		$this->db->query( "SELECT * FROM geo_countries ORDER BY `title_country` ASC" );
@@ -174,7 +170,7 @@ final class VkGeo {
 		}
 
 		if ( count( $this->result['countries'] ) < 1 AND $step == 1 ) {
-			$this->setCountries( true );
+			$this->getCountries( true );
 
 		}
 
@@ -183,7 +179,7 @@ final class VkGeo {
 	/**
 	 * @param $upStepOne
 	 */
-	private function updateRegions( $upStepOne ) {
+	private function updateRegions ( $upStepOne ) {
 		if ( $upStepOne == true ) {
 			$this->db->query( "DELETE FROM geo_regions WHERE `id_country` = '{$this->id_country}'" );
 
@@ -203,18 +199,18 @@ final class VkGeo {
 
 		if ( count( $this->result['regions'] ) < $this->count_step ) {
 			$this->offset = 0;
-			$this->getRegions( 2 );
+			$this->setRegions( 2 );
 
 		} else {
 			$this->offset = $this->offset + $this->count_step;
-			$this->setRegions( false );
+			$this->getRegions( false );
 
 		}
 
 
 	}
 
-	private function updateNullRegions() {
+	private function updateNullRegions () {
 		$this->db->query( "DELETE FROM geo_regions WHERE `id_country` = '{$this->id_country}'" );
 
 		$this->db->query( "INSERT INTO
@@ -224,26 +220,15 @@ final class VkGeo {
 										( '{$this->id_country}', NULL, 'Без региона' )" );
 
 		$this->offset = 0;
-		$this->getRegions( 2 );
+		$this->setRegions( 2 );
 
 	}
 
 	/**
 	 * @param $upStepOne
 	 */
-	private function setRegions( $upStepOne ) {
-		$url = 'https://api.vk.com/method/database.getRegions?';
-
-		$params_count =  urldecode( http_build_query( [
-			'country_id' 		=> $this->id_country,
-			'count' 			=> $this->count_step,
-			'offset'			=> $this->offset,
-			'v'		 			=> $this->memberId[ 'vk_app_version' ],
-			'access_token' 		=> $this->config[ 'user_vk_token' ]
-
-		] ) );
-
-		$vk_get = json_decode( file_get_contents( $url . $params_count ), true );
+	private function getRegions ( $upStepOne ) {
+		$vk_get = $this->vkApi->getApiRegions( $this->id_country, $this->count_step, $this->offset );
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
 			$this->result['regions'] = $vk_get[ 'response' ];
@@ -259,7 +244,7 @@ final class VkGeo {
 	/**
 	 * @param $step
 	 */
-	private function getRegions ( $step ) {
+	private function setRegions ( $step ) {
 		$this->result['regions'] = [];
 
 		$row = $this->db->superQuery( "SELECT `id_country` FROM geo_countries WHERE `id_country` = '{$this->id_country}' LIMIT 1" );
@@ -276,7 +261,7 @@ final class VkGeo {
 			}
 
 			if ( count( $this->result['regions'] ) < 1 AND $step == 1 ) {
-				$this->setRegions( true );
+				$this->getRegions( true );
 
 			}
 
@@ -287,7 +272,7 @@ final class VkGeo {
 	/**
 	 * @param $upStepOne
 	 */
-	private function updateCities( $upStepOne ) {
+	private function updateCities ( $upStepOne ) {
 		if ( $upStepOne == true ) {
 			$query = "DELETE FROM geo_cities WHERE `id_country` = '{$this->id_country}' AND `id_region` ";
 			$query .= ( $this->id_region === NULL ) ? "IS NULL" : "= '{$this->id_region}'";
@@ -321,11 +306,11 @@ final class VkGeo {
 
 		if ( count( $this->result['cities'] ) < $this->count_step ) {
 			$this->offset = 0;
-			$this->getCities( 2 );
+			$this->setCities( 2 );
 
 		} else {
 			$this->offset = $this->offset + $this->count_step;
-			$this->setCities( false );
+			$this->getCities( false );
 
 		}
 
@@ -334,27 +319,8 @@ final class VkGeo {
 	/**
 	 * @param $upStepOne
 	 */
-	private function setCities ( $upStepOne ) {
-		$url = 'https://api.vk.com/method/database.getCities?';
-
-		$need_all = 1;
-		if ( $this->id_region < 1 OR $this->id_region !== NULL ) {
-			$need_all = 0;
-
-		}
-		$id_region = ( $this->id_region < 1 OR $this->id_region === NULL ) ? 0 : $this->id_region;
-		$params_count =  http_build_query( [
-			'region_id' 		=> $id_region,
-			'country_id' 		=> $this->id_country,
-			'need_all' 			=> $need_all,
-			'count' 			=> $this->count_step,
-			'offset'			=> $this->offset,
-			'v'		 			=> $this->memberId[ 'vk_app_version' ],
-			'access_token' 		=> $this->config[ 'user_vk_token' ]
-
-		] );
-
-		$vk_get = json_decode( file_get_contents( $url . $params_count ), true );
+	private function getCities ( $upStepOne ) {
+		$vk_get = $this->vkApi->getApiCities( $this->id_region, $this->id_country, $this->count_step, $this->offset );
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
 			$this->result['cities'] = $vk_get[ 'response' ];
@@ -367,7 +333,7 @@ final class VkGeo {
 	/**
 	 * @param $step
 	 */
-	private function getCities ( $step ) {
+	private function setCities ( $step ) {
 		$this->result['cities'] = [];
 
 		$superQuery = "SELECT `id_country` FROM geo_regions WHERE `id_country` = '{$this->id_country}' AND `id_region` ";
@@ -375,6 +341,7 @@ final class VkGeo {
 		$superQuery .= " LIMIT 1";
 		$row = $this->db->superQuery( $superQuery );
 
+		$cityStatus = false;
 		if ( $this->id_country == $row['id_country'] OR $_GET['action'] == 'regions' ) {
 			$cityStatus = true;
 
@@ -394,7 +361,7 @@ final class VkGeo {
 		}
 
 		if ( count( $this->result['cities'] ) < 1 AND $step == 1 ) {
-			$this->setCities( true );
+			$this->getCities( true );
 
 		}
 
@@ -403,7 +370,7 @@ final class VkGeo {
 	/**
 	 * @return array
 	 */
-	public function getResult () {
+	public function returnResult () {
 		return $this->result;
 
 	}

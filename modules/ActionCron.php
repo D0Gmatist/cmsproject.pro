@@ -24,7 +24,7 @@ switch ( $action ) {
 		 * @var array $config
 		 */
 		$vkGeo = new VkGeo( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
-		$result['content'] = $vkGeo->getResult();
+		$result['content'] = $vkGeo->returnResult();
 		break;
 
 }
