@@ -11,7 +11,7 @@ if ( ! defined ( 'ENGINE' ) ) {
 
 }
 
-final class AddParserUsers {
+final class AddParser {
 
 	/** @var bool  */
 	private $isLogged = false;
