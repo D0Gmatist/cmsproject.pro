@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Plugins\Vk;
+namespace Modules\Plugins\Parser;
 
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
@@ -11,7 +11,7 @@ if ( ! defined ( 'ENGINE' ) ) {
 
 }
 
-final class VkSearchForm {
+final class AddParserUsers {
 
 	/** @var bool  */
 	private $isLogged = false;
@@ -68,7 +68,7 @@ final class VkSearchForm {
 
 	private function getForm ()	{
 
-		$this->tpl->loadTemplate( 'vk_search_form.tpl' );
+		$this->tpl->loadTemplate( 'add_parser_users.tpl' );
 
 		$this->tpl->set( '{search}', '' );
 
@@ -77,5 +77,6 @@ final class VkSearchForm {
 		$this->tpl->clear();
 
 	}
+
 
 }

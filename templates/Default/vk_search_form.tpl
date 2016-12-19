@@ -61,7 +61,53 @@
 
 						<div class="form-horizontal">
 							<div class="form-body">
-adasd
+
+								<div class="form-group">
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="mt-checkbox-inline">
+											<label class="mt-checkbox"><input type="checkbox" id="inlineCheckbox21" value="option1"> Checkbox 1<span></span></label>
+										</div>
+									</div>
+								</div>
+
 							</div>
 						</div>
 
