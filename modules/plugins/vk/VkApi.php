@@ -47,7 +47,7 @@ final class VkApi {
 	 * @param array $memberId
 	 * @param array $config
 	 */
-	function __construct ( $memberId, $config ) {
+	function __construct ( $memberId, array $config ) {
 		$this->config = $config;
 		$this->memberId = $memberId;
 
@@ -60,8 +60,8 @@ final class VkApi {
 	 * @return array
 	 */
 	private function getApi ( $url, $params_count ) {
-		$params_count['v'] 				= $this->memberId[ 'vk_app_version' ];
-		$params_count['access_token'] 	= $this->config[ 'user_vk_token' ];
+		$params_count['v'] 				= $this->config[ 'vk_app_version' ];
+		$params_count['access_token'] 	= $this->memberId[ 'user_vk_token' ];
 
 		$params_count =  urldecode( http_build_query( $params_count ) );
 
@@ -139,39 +139,70 @@ final class VkApi {
 
 	}
 
-
+	/**
+	 * @param int   $sort
+	 * @param int   $count_step
+	 * @param int   $offset
+	 * @param bool  $q
+	 * @param bool  $city
+	 * @param bool  $country
+	 * @param bool  $sex
+	 * @param bool  $status
+	 * @param array $age
+	 * @param array $birth
+	 * @param int   $online
+	 * @param int   $photo
+	 *
+	 * @return array
+	 */
 	public function getApiUsers (
 		$sort = 1,
 		$count_step = 1000,
 		$offset = 0,
+		$q = false,
 		$city = false,
 		$country = false,
+		$sex = false,
 		$status = false,
-		$age = false,
-		$birth = false,
+		$age = [],
+		$birth = [],
 		$online = 1,
 		$photo = 1
 	) {
-		$url = 'https://api.vk.com/method/database.getCities?';
+		$url = 'https://api.vk.com/method/users.search?';
 
 		$params_count = [];
 
-		$params_count['sort'] 		= $sort;
+		if ( $sort !== false AND $sort > 0 ) {
+			$params_count[ 'sort' ] = $sort;
+
+		}
+
 		$params_count['count'] 		= $count_step;
 		$params_count['offset'] 	= $offset;
 		$params_count['fields'] 	= $this->fields;
 
-		if ( $city !== false ) {
+		if ( $q !== false AND trim( $q ) != '' ) {
+			$params_count['q'] 		= $q;
+
+		}
+
+		if ( $city !== false AND $city > 0 ) {
 			$params_count['city'] 		= $city;
 
 		}
 
-		if ( $country !== false ) {
+		if ( $country !== false AND $country > 0 ) {
 			$params_count['country'] 	= $country;
 
 		}
 
-		if ( $status !== false ) {
+		if ( $sex !== false AND $sex > 0 ) {
+			$params_count['sex'] 	= $sex;
+
+		}
+
+		if ( $status !== false AND $status > 0 ) {
 			$params_count['status'] 	= $status;
 
 		}
@@ -191,7 +222,7 @@ final class VkApi {
 
 		if ( $birth !== false ) {
 			if ( (int)$birth[0] > 0 ) {
-				$params_count['birth_day'] 		= $birth[0];
+				$params_count['birth_year'] 	= $birth[0];
 
 			}
 
@@ -201,18 +232,18 @@ final class VkApi {
 			}
 
 			if ( (int)$birth[2] > 0 ) {
-				$params_count['birth_year'] 	= $birth[2];
+				$params_count['birth_day'] 		= $birth[2];
 
 			}
 
 		}
 
-		if ( $online !== false ) {
+		if ( $online !== false AND $online > 0 ) {
 			$params_count['online'] 	= $online;
 
 		}
 
-		if ( $photo !== false ) {
+		if ( $photo !== false AND $photo > 0 ) {
 			$params_count['has_photo'] 	= $photo;
 
 		}

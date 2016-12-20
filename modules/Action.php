@@ -4,6 +4,7 @@ use Modules\Mail\Mail;
 use Modules\Mail\PHPMailer\PHPMailer;
 use Modules\Plugins\Main\Main;
 use Modules\Plugins\MsgBox\MsgBox;
+use Modules\Plugins\Parser\AddParser;
 use Modules\Plugins\UserPlugins\Authorization;
 use Modules\Plugins\UserPlugins\LoginForm;
 use Modules\Plugins\UserPlugins\Registration;
@@ -30,14 +31,14 @@ switch ( $action ) {
 	case 'main' :
 		break;
 
-	case 'search' :
+	case 'vk_search' :
 		$pageTitle = [ 'Поиск пользователей и групп', '' ];
 		new VkSearchForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		break;
 
 	case 'add_parser' :
 		$pageTitle = [ 'Создание задачи по парсингу', '' ];
-		new VkSearchForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+		new AddParser( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		break;
 
 	case 'login' :

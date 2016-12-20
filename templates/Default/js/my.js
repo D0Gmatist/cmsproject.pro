@@ -49,7 +49,7 @@ var CMS = {
 
 						} else if ( a.action == 'data-change' ) {
 							if ( b.action == 'regions' ) {
-								d = '<option></option><option value="0">Выберите регион</option>';
+								d = '<option></option><option value="0">выберите регион</option>';
 								$.each( c.content.regions, function ( k, v ) {
 									d += '<option value="' + v.id_region + '">' + v.title_region + '</option>';
 
@@ -93,7 +93,7 @@ var CMS = {
 		mainCities : '',
 		addCities : function ( a ) {
 			var b = '',
-				c = '<option></option><option value="0">Выберите населённый пункт</option>',
+				c = '<option></option><option value="0">выберите населённый пункт</option>',
 				d = '[data-change="cities"]';
 
 			$.each( a, function ( i, f ) {
@@ -112,6 +112,83 @@ var CMS = {
 			}
 
 		}
+
+	},
+	hash_array: function( a ) {
+		var b		= {},
+			name	= '',
+			x		= false,
+			y		= '';
+
+		$( a ).each( function( ) {
+			if ( this.value !== '' ) {
+				y = this.name.replace( /[\[\]]/g, '' );
+
+				if ( y != this.name ) {
+					name = this.name.replace( /[\]]/g, '' ),
+						name = name.split( '[' );
+					if ( name[name.length-1] != '' ) {
+						x = true;
+
+					} else {
+						name = this.name.replace( /[\[\]]/g, '' );
+
+					}
+
+				} else {
+					name = y;
+
+				}
+
+				if ( x == false ) {
+					if ( name in b ) {
+						if ( $.isArray( b[name] ) ) {
+							b[name].push( this.value );
+
+						} else {
+							b[name] = [ b[name], this.value ];
+
+						}
+
+					} else {
+						b[name] = this.value;
+
+					}
+
+				} else {
+					if ( name.length == 2 ) {
+						if ( ! ( name[0] in b ) ) {
+							b[name[0]] = {};
+
+						}
+						b[name[0]][name[1]] = this.value;
+
+					} else if ( name.length == 3 ) {
+						if ( name[0] in b ) {
+							if ( ! ( name[1] in b[name[0]] ) ) {
+								b[name[0]][name[1]] = {};
+
+							}
+							b[name[0]][name[1]][name[2]] = this.value;
+
+						} else {
+							b[name[0]] = {};
+							b[name[0]][name[1]] = {};
+							b[name[0]][name[1]][name[2]] = this.value;
+
+						}
+
+					}
+
+
+
+				}
+
+			}
+
+		});
+
+		return b;
 
 	},
 	obj: function( a ) {
@@ -183,7 +260,11 @@ var CMS = {
 	select2 : {
     	init : function() {
 			$( '[data-select="select2"]' ).select2 ({
-				allowClear: true
+				allowClear: true,
+				minimumResultsForSearch: 20
+			});
+			$( '[data-select="select1"]' ).select2 ({
+				minimumResultsForSearch: 20
 			});
 
 		},
@@ -315,6 +396,21 @@ CMS.a.on( 'click', '[data-btn="form"]', function () {
 
 	}
 
+}).on( 'click', '[data-btn="vk_search"]', function () {
+	var a = '[data-form="vk_search"]',
+		b = $( a + ' input, ' + a + ' select' ).serializeArray(),
+		c = CMS.hash_array( b );
+
+	CMS.ajax.request( {
+		action : 'vk_search',
+		type : 'get'
+	}, {
+		method			: 'ajax',
+		data			: c,
+		action			: 'vk_search'
+	} );
+
+	console.log( c );
 }).ready( function () {
     CMS.ready();
 

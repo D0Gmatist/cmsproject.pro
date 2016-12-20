@@ -14,15 +14,15 @@
 			</a>
 		</li>
 		<li class="nav-item start">
-			<a href="/?action=search" class="nav-link">
+			<a href="/?action=vk_search" class="nav-link">
 				<i class="icon-magnifier"></i>
 				<span class="title">Поиск</span>
 			</a>
 		</li>
 		<li class="nav-item start">
-			<a href="#" class="nav-link">
+			<a href="/?action=add_parser" class="nav-link">
 				<i class="icon-graph"></i>
-				<span class="title">Dashboard 3</span>
+				<span class="title">Создать парсер</span>
 			</a>
 		</li>
 	</ul>

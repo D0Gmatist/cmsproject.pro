@@ -68,7 +68,7 @@ final class AddParser {
 
 	private function getForm ()	{
 
-		$this->tpl->loadTemplate( 'add_parser_users.tpl' );
+		$this->tpl->loadTemplate( 'add_parser.tpl' );
 
 		$this->tpl->set( '{search}', '' );
 
