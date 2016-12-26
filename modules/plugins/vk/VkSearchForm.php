@@ -153,8 +153,6 @@ final class VkSearchForm {
 			(int)$data['has_photo']
 		);
 
-		die( var_dump( $vk_get ) );
-
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
 			$this->result = $vk_get[ 'response' ];
 
@@ -188,11 +186,27 @@ final class VkSearchForm {
 
 			}
 
+			if ( trim( $row['photo_50'] ) == '' ) {
+				$this->tpl->set( '{photo_50}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+
+			} else {
+				$this->tpl->set ( '{photo_50}', $row[ 'photo_50' ] );
+
+			}
+
 			if ( trim( $row['photo_100'] ) == '' ) {
 				$this->tpl->set( '{photo_100}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
 
 			} else {
 				$this->tpl->set ( '{photo_100}', $row[ 'photo_100' ] );
+
+			}
+
+			if ( trim( $row['photo_200'] ) == '' ) {
+				$this->tpl->set( '{photo_200}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+
+			} else {
+				$this->tpl->set ( '{photo_200}', $row[ 'photo_200' ] );
 
 			}
 
@@ -299,19 +313,6 @@ final class VkSearchForm {
 
 				$this->tpl->set( '[instagram]', '' );
 				$this->tpl->set( '[/instagram]', '' );
-
-			}
-
-			if ( trim( $row['site'] ) == '' ) {
-				$this->tpl->set( '{site}', '' );
-
-				$this->tpl->setBlock( "'\\[site\\](.*?)\\[/site\\]'si", "" );
-
-			} else {
-				$this->tpl->set( '{site}', $row['site'] );
-
-				$this->tpl->set( '[site]', '' );
-				$this->tpl->set( '[/site]', '' );
 
 			}
 

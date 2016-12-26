@@ -231,3 +231,31 @@
 .page-content-wrapper.page-content-not-login .page-content {
 	margin-left: 0 !important;
 	}
+/* widget */
+.mt-widget-1.vk-widget-1{
+	margin-bottom: 20px;
+	}
+.mt-widget-1.vk-widget-1 .mt-img img {
+	height: 200px;
+	width: 200px;
+	}
+.div-vk-search-result {
+	background: #f7f7f7;
+	border-top: 1px solid #e7ecf1;
+	padding: 5px;
+	}
+/* table */
+.table-vk-search-result {
+	background: #ffffff;
+	margin: 0;
+	}
+table.table-vk-search-result>tbody>tr>td.no-br-l {
+	border-left: 0 solid transparent !important;
+	text-align: left;
+	}
+
+table.table-vk-search-result>tbody>tr>td.no-br-r {
+	border-right: 0 solid transparent !important;
+	font-weight: 700;
+	text-align: right;
+	}

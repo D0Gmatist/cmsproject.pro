@@ -158,5 +158,7 @@
 
 		</div>
 
+		<div data-content="vk_search_result"></div>
+
 	</div>
 </div>

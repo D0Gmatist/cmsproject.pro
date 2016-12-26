@@ -76,6 +76,21 @@ var CMS = {
 
 							}
 
+						} else if ( a.action == 'vk_search' ) {
+							$( '[data-content="vk_search_result"]' ).html( '<div class="portlet box blue">' +
+																				'<div class="portlet-title">' +
+																					'<div class="caption">' +
+																						'<i class="fa fa-gift"></i>Результат поиска' +
+																					'</div>' +
+																					'<div class="tools">' +
+																						'<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>' +
+																					'</div>' +
+																				'</div>' +
+																				'<div class="portlet-body form">' +
+																					'<div class="form-body clearfix">' + c.content + '</div>' +
+																				'</div>' +
+																			'</div>'  );
+
 						}
 					} else {
 						$( '[data-html="msg"]' ).after( c.msg );
