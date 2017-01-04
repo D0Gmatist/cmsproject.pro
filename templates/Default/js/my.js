@@ -34,7 +34,8 @@ var CMS = {
 					CMS.cssLoading.hide();
 
 					if ( c.success ) {
-						var d = '';
+						var d = '',
+							i = '';
 						if ( a.action == 'data-ready' ) {
 							if ( b.action == 'countries' ) {
 								d = '<option></option>';
@@ -42,7 +43,7 @@ var CMS = {
 									d += '<option value="' + v.id_country + '">' + v.title_country + '</option>';
 
 								});
-								var i = '[data-ready="countries"]';
+								i = '[data-ready="countries"]';
 								$( i ).html( d );
 
 							}
@@ -55,7 +56,7 @@ var CMS = {
 
 								});
 
-								var i = '[data-change="regions"]';
+								i = '[data-change="regions"]';
 								$( i ).html( d );
 
 								if ( $( i ).html() != '' ) {
@@ -77,19 +78,7 @@ var CMS = {
 							}
 
 						} else if ( a.action == 'vk_search' ) {
-							$( '[data-content="vk_search_result"]' ).html( '<div class="portlet box blue">' +
-																				'<div class="portlet-title">' +
-																					'<div class="caption">' +
-																						'<i class="fa fa-gift"></i>Результат поиска' +
-																					'</div>' +
-																					'<div class="tools">' +
-																						'<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>' +
-																					'</div>' +
-																				'</div>' +
-																				'<div class="portlet-body form">' +
-																					'<div class="form-body clearfix">' + c.content + '</div>' +
-																				'</div>' +
-																			'</div>'  );
+							$( '[data-content="vk_search_result"]' ).html( c.content   );
 
 						}
 					} else {
@@ -140,8 +129,8 @@ var CMS = {
 				y = this.name.replace( /[\[\]]/g, '' );
 
 				if ( y != this.name ) {
-					name = this.name.replace( /[\]]/g, '' ),
-						name = name.split( '[' );
+					name = this.name.replace( /[\]]/g, '' );
+					name = name.split( '[' );
 					if ( name[name.length-1] != '' ) {
 						x = true;
 

@@ -34,6 +34,9 @@ final class VkSearchForm {
 	/** @var array  */
 	private $language;
 
+	/** @var array  */
+	private $data;
+
 	/** @var Template  */
 	private $tpl;
 
@@ -136,21 +139,28 @@ final class VkSearchForm {
 	}
 
 	private function searchForm () {
-		$data = $_GET['data'];
+		$this->data = $_GET['data'];
 
 		$vk_get = $this->vkApi->getApiUsers(
-			(int)$data['cort'],
-			100,
+			(int)$this->data['cort'],
+			1000,
 			1,
-			(string)$data['q'],
-			(int)$data['cities'],
-			(int)$data['countries'],
-			(int)$data['sex'],
-			(int)$data['status'],
-			[ (int)$data['age_from'], (int)$data['age_to'] ],
-			[ (int)$data['birth_year'], (int)$data['birth_month'], (int)$data['birth_day'] ],
-			(int)$data['online'],
-			(int)$data['has_photo']
+			(string)$this->data['q'],
+			(int)$this->data['cities'],
+			(int)$this->data['countries'],
+			(int)$this->data['sex'],
+			(int)$this->data['status'],
+			[
+				(int)$this->data['age_from'],
+				(int)$this->data['age_to']
+			],
+			[
+				(int)$this->data['birth_year'],
+				(int)$this->data['birth_month'],
+				(int)$this->data['birth_day']
+			],
+			(int)$this->data['online'],
+			(int)$this->data['has_photo']
 		);
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
@@ -165,7 +175,42 @@ final class VkSearchForm {
 	 */
 	public function getResult () {
 
+		$rows = [];
 		foreach ( $this->result['items'] AS $row ) {
+			if ( (int)$this->data[ 'mobile_phone' ] == 1 AND trim( $row['mobile_phone'] ) == '' ) {
+				continue;
+
+			}
+
+			if ( (int)$this->data[ 'home_phone' ] == 1 AND trim( $row['home_phone'] ) == '' ) {
+				continue;
+
+			}
+
+			if ( (int)$this->data[ 'skype' ] == 1 AND trim( $row['skype'] ) == '' ) {
+				continue;
+
+			}
+
+			if ( (int)$this->data[ 'facebook' ] == 1 AND trim( $row['facebook'] ) == '' ) {
+				continue;
+
+			}
+
+			if ( (int)$this->data[ 'twitter' ] == 1 AND trim( $row['twitter'] ) == '' ) {
+				continue;
+
+			}
+
+			if ( (int)$this->data[ 'instagram' ] == 1 AND trim( $row['instagram'] ) == '' ) {
+				continue;
+
+			}
+			$rows[] = $row;
+
+		}
+
+		foreach ( $rows AS $row ) {
 			$this->tpl->loadTemplate( 'vk_search_result.tpl' );
 
 			$this->tpl->set( '{id}', $row['id'] );
@@ -187,7 +232,7 @@ final class VkSearchForm {
 			}
 
 			if ( trim( $row['photo_50'] ) == '' ) {
-				$this->tpl->set( '{photo_50}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+				$this->tpl->set( '{photo_50}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar_50.png' );
 
 			} else {
 				$this->tpl->set ( '{photo_50}', $row[ 'photo_50' ] );
@@ -195,7 +240,7 @@ final class VkSearchForm {
 			}
 
 			if ( trim( $row['photo_100'] ) == '' ) {
-				$this->tpl->set( '{photo_100}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+				$this->tpl->set( '{photo_100}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar_100.png' );
 
 			} else {
 				$this->tpl->set ( '{photo_100}', $row[ 'photo_100' ] );
@@ -203,7 +248,7 @@ final class VkSearchForm {
 			}
 
 			if ( trim( $row['photo_200'] ) == '' ) {
-				$this->tpl->set( '{photo_200}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar.png' );
+				$this->tpl->set( '{photo_200}', $this->config['http_home_url'] . 'templates/' . $this->config['skin'] . '/img/avatar_200.png' );
 
 			} else {
 				$this->tpl->set ( '{photo_200}', $row[ 'photo_200' ] );
@@ -320,7 +365,14 @@ final class VkSearchForm {
 
 		}
 
-		return $this->tpl->result[ 'vk_search_result' ];
+		$this->tpl->loadTemplate( 'vk_search_result_block.tpl' );
+
+		$this->tpl->set( '{vk_search_result}', $this->tpl->result[ 'vk_search_result' ] );
+		$this->tpl->set( '{count}', $this->result['count'] );
+
+		$this->tpl->compile( 'vk_search_result_block' );
+
+		return $this->tpl->result[ 'vk_search_result_block' ] . json_encode( $this->result['items'] );
 
 	}
 

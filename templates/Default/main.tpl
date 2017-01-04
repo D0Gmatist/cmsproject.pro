@@ -6,6 +6,8 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
+    <link rel="shortcut icon" href="{THEME}/img/favicon.ico" type="image/x-icon">
+
     <title>Title</title>
 
 	{include file="include/main/style.tpl"}
