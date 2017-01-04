@@ -15,4 +15,5 @@
 
 <link href="{THEME}/css/vendor/bootstrap-tokenfield.min.css" rel="stylesheet" type="text/css" />
 
+<link href="{THEME}/css/vendor/jquery-confirm.min.css" rel="stylesheet" type="text/css" />
 <link href="{THEME}/css/my.css" rel="stylesheet" type="text/css" />

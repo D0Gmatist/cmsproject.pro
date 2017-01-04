@@ -11,4 +11,5 @@
 
 <script src="{THEME}/js/vendor/bootstrap-tokenfield.min.js" type="text/javascript"></script>
 
+<script src="{THEME}/js/vendor/jquery-confirm.js" type="text/javascript"></script>
 <script src="{THEME}/js/my.js" type="text/javascript"></script>

@@ -40,8 +40,18 @@ final class VkSearchForm {
 	/** @var Template  */
 	private $tpl;
 
+	/** @var int  */
+	private $stepCount = 10;
+
+	/** @var int  */
+	private $offset = 0;
+
 	/** @var array  */
-	private $result;
+	private $rows = [];
+
+	/** @var array  */
+	private $result = [];
+	private $result2 = [];
 
 	/**
 	 * UserPanel constructor.
@@ -71,6 +81,7 @@ final class VkSearchForm {
 		/** @var VkApi $vkApi */
 		$this->vkApi = new VkApi( $this->memberId = $memberId, $this->config );
 
+		die( var_dump( $_GET ) );
 		if ( $_POST['method'] == 'ajax' OR $_GET['method'] == 'ajax' ) {
 			$this->searchForm();
 
@@ -141,10 +152,16 @@ final class VkSearchForm {
 	private function searchForm () {
 		$this->data = $_GET['data'];
 
+		$stepCount = $this->stepCount - count( $this->rows );
+		echo $stepCount;
+		$offset = $this->offset + count( $this->rows );
+		echo $offset;
+		die();
+
 		$vk_get = $this->vkApi->getApiUsers(
 			(int)$this->data['cort'],
-			1000,
-			1,
+			$stepCount,
+			$offset,
 			(string)$this->data['q'],
 			(int)$this->data['cities'],
 			(int)$this->data['countries'],
@@ -165,17 +182,16 @@ final class VkSearchForm {
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
 			$this->result = $vk_get[ 'response' ];
+			echo json_encode( $this->result );
+			die();
+			$this->filtrationResult();
 
 		}
 
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getResult () {
+	private function filtrationResult() {
 
-		$rows = [];
 		foreach ( $this->result['items'] AS $row ) {
 			if ( (int)$this->data[ 'mobile_phone' ] == 1 AND trim( $row['mobile_phone'] ) == '' ) {
 				continue;
@@ -206,11 +222,23 @@ final class VkSearchForm {
 				continue;
 
 			}
-			$rows[] = $row;
+			$this->rows[] = $row;
 
 		}
 
-		foreach ( $rows AS $row ) {
+		if ( count( $this->rows ) < $this->stepCount ) {
+			$this->searchForm();
+
+		}
+
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getResult () {
+
+		foreach ( $this->rows AS $row ) {
 			$this->tpl->loadTemplate( 'vk_search_result.tpl' );
 
 			$this->tpl->set( '{id}', $row['id'] );
@@ -281,83 +309,83 @@ final class VkSearchForm {
 
 			}
 
-			if ( trim( $row['mobile_phone'] ) == '' ) {
-				$this->tpl->set( '{mobile_phone}', '' );
-
-				$this->tpl->setBlock( "'\\[mobile_phone\\](.*?)\\[/mobile_phone\\]'si", "" );
-
-			} else {
+			if ( (int)$this->data[ 'mobile_phone' ] == 1 AND trim( $row['mobile_phone'] ) != '' ) {
 				$this->tpl->set( '{mobile_phone}', $row['mobile_phone'] );
 
 				$this->tpl->set( '[mobile_phone]', '' );
 				$this->tpl->set( '[/mobile_phone]', '' );
 
+			} else {
+				$this->tpl->set( '{mobile_phone}', '' );
+
+				$this->tpl->setBlock( "'\\[mobile_phone\\](.*?)\\[/mobile_phone\\]'si", "" );
+
 			}
 
-			if ( trim( $row['home_phone'] ) == '' ) {
-				$this->tpl->set( '{home_phone}', '' );
-
-				$this->tpl->setBlock( "'\\[home_phone\\](.*?)\\[/home_phone\\]'si", "" );
-
-			} else {
+			if ( (int)$this->data[ 'home_phone' ] == 1 AND trim( $row['home_phone'] ) != '' ) {
 				$this->tpl->set( '{home_phone}', $row['home_phone'] );
 
 				$this->tpl->set( '[home_phone]', '' );
 				$this->tpl->set( '[/home_phone]', '' );
 
+			} else {
+				$this->tpl->set( '{home_phone}', '' );
+
+				$this->tpl->setBlock( "'\\[home_phone\\](.*?)\\[/home_phone\\]'si", "" );
+
 			}
 
-			if ( trim( $row['skype'] ) == '' ) {
-				$this->tpl->set( '{skype}', '' );
-
-				$this->tpl->setBlock( "'\\[skype\\](.*?)\\[/skype\\]'si", "" );
-
-			} else {
+			if ( (int)$this->data[ 'skype' ] == 1 AND trim( $row['skype'] ) != '' ) {
 				$this->tpl->set( '{skype}', $row['skype'] );
 
 				$this->tpl->set( '[skype]', '' );
 				$this->tpl->set( '[/skype]', '' );
 
+			} else {
+				$this->tpl->set( '{skype}', '' );
+
+				$this->tpl->setBlock( "'\\[skype\\](.*?)\\[/skype\\]'si", "" );
+
 			}
 
-			if ( trim( $row['facebook'] ) == '' ) {
-				$this->tpl->set( '{facebook}', '' );
-				$this->tpl->set( '{facebook_name}', '' );
-
-				$this->tpl->setBlock( "'\\[facebook\\](.*?)\\[/facebook\\]'si", "" );
-
-			} else {
+			if ( (int)$this->data[ 'facebook' ] == 1 AND trim( $row['facebook'] ) != '' ) {
 				$this->tpl->set( '{facebook}', $row['facebook'] );
 				$this->tpl->set( '{facebook_name}', $row['facebook_name'] );
 
 				$this->tpl->set( '[facebook]', '' );
 				$this->tpl->set( '[/facebook]', '' );
 
+			} else {
+				$this->tpl->set( '{facebook}', '' );
+				$this->tpl->set( '{facebook_name}', '' );
+
+				$this->tpl->setBlock( "'\\[facebook\\](.*?)\\[/facebook\\]'si", "" );
+
 			}
 
-			if ( trim( $row['twitter'] ) == '' ) {
-				$this->tpl->set( '{twitter}', '' );
-
-				$this->tpl->setBlock( "'\\[twitter\\](.*?)\\[/twitter\\]'si", "" );
-
-			} else {
+			if ( (int)$this->data[ 'twitter' ] == 1 AND trim( $row['twitter'] ) != '' ) {
 				$this->tpl->set( '{twitter}', $row['twitter'] );
 
 				$this->tpl->set( '[twitter]', '' );
 				$this->tpl->set( '[/twitter]', '' );
 
+			} else {
+				$this->tpl->set( '{twitter}', '' );
+
+				$this->tpl->setBlock( "'\\[twitter\\](.*?)\\[/twitter\\]'si", "" );
+
 			}
 
-			if ( trim( $row['instagram'] ) == '' ) {
-				$this->tpl->set( '{instagram}', '' );
-
-				$this->tpl->setBlock( "'\\[instagram\\](.*?)\\[/instagram\\]'si", "" );
-
-			} else {
+			if ( (int)$this->data[ 'twitter' ] == 1 AND trim( $row['instagram'] ) != '' ) {
 				$this->tpl->set( '{instagram}', $row['instagram'] );
 
 				$this->tpl->set( '[instagram]', '' );
 				$this->tpl->set( '[/instagram]', '' );
+
+			} else {
+				$this->tpl->set( '{instagram}', '' );
+
+				$this->tpl->setBlock( "'\\[instagram\\](.*?)\\[/instagram\\]'si", "" );
 
 			}
 
@@ -372,7 +400,7 @@ final class VkSearchForm {
 
 		$this->tpl->compile( 'vk_search_result_block' );
 
-		return $this->tpl->result[ 'vk_search_result_block' ] . json_encode( $this->result['items'] );
+		return $this->tpl->result[ 'vk_search_result_block' ] . json_encode( $this->result2 );
 
 	}
 

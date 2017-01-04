@@ -146,6 +146,7 @@
 										<div class="form-group">
 											<div class="col-md-12 text-right">
 												<div class="btn btn-default" data-btn="vk_search"><i class="glyphicon glyphicon-search"></i> Искать</div>
+												<div class="btn btn-success" data-btn="vk_save_modal"><i class="glyphicon glyphicon-save"></i> Сохранить парсер</div>
 											</div>
 										</div>
 
@@ -161,7 +162,7 @@
 			<div class="portlet box blue-soft">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="icon-settings"></i>
+						<i class="fa fa-wrench"></i>
 						<span class="caption-subject sbold uppercase">Наличие обязательной информации</span>
 					</div>
 					<div class="tools">
@@ -176,35 +177,35 @@
 								<div class="form-horizontal">
 									<div class="form-body">
 
-										<div class="form-group">
+										<div class="form-group" style="margin-bottom: 0;">
 											<div class="col-md-2">
 												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="mobile_phone" value="1"> Мобильный<span></span></label>
+													<label class="mt-checkbox" style="margin-bottom: 0;"><input type="checkbox" name="mobile_phone" value="1"> Мобильный<span></span></label>
 												</div>
 											</div>
 											<div class="col-md-2">
 												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="home_phone" value="1"> Домашний<span></span></label>
+													<label class="mt-checkbox" style="margin-bottom: 0;"><input type="checkbox" name="home_phone" value="1"> Домашний<span></span></label>
 												</div>
 											</div>
 											<div class="col-md-2">
 												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="skype" value="1"> Skype<span></span></label>
+													<label class="mt-checkbox" style="margin-bottom: 0;"><input type="checkbox" name="skype" value="1"> Skype<span></span></label>
 												</div>
 											</div>
 											<div class="col-md-2">
 												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="facebook" value="1"> Facebook<span></span></label>
+													<label class="mt-checkbox" style="margin-bottom: 0;"><input type="checkbox" name="facebook" value="1"> Facebook<span></span></label>
 												</div>
 											</div>
 											<div class="col-md-2">
 												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="twitter" value="1"> Twitter<span></span></label>
+													<label class="mt-checkbox" style="margin-bottom: 0;"><input type="checkbox" name="twitter" value="1"> Twitter<span></span></label>
 												</div>
 											</div>
 											<div class="col-md-2">
 												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="instagram" value="1"> Instagram<span></span></label>
+													<label class="mt-checkbox" style="margin-bottom: 0;"><input type="checkbox" name="instagram" value="1"> Instagram<span></span></label>
 												</div>
 											</div>
 										</div>

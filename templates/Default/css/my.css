@@ -253,7 +253,11 @@ table.table-vk-search-result>tbody>tr>td.no-br-l {
 	border-left: 0 solid transparent !important;
 	text-align: left;
 	}
-
+table.table-vk-search-result>tbody>tr>td.no-br-l>div{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
 table.table-vk-search-result>tbody>tr>td.no-br-r {
 	border-right: 0 solid transparent !important;
 	font-weight: 700;
