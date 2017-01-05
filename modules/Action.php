@@ -10,7 +10,8 @@ use Modules\Plugins\UserPlugins\LoginForm;
 use Modules\Plugins\UserPlugins\Registration;
 use Modules\Plugins\UserPlugins\UserPanel;
 use Modules\Plugins\Vk\VkLogin;
-use Modules\Plugins\Vk\VkSearchForm;
+use Modules\Plugins\Vk\VkSearchGroupForm;
+use Modules\Plugins\Vk\VkSearchUserForm;
 
 /** @var  $msgBox */
 $msgBox = new MsgBox( $tpl );
@@ -31,9 +32,14 @@ switch ( $action ) {
 	case 'main' :
 		break;
 
-	case 'vk_search' :
-		$pageTitle = [ 'Поиск пользователей и групп', '' ];
-		new VkSearchForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+	case 'vk_group_search' :
+		$pageTitle = [ 'Поиск групп', '' ];
+		new VkSearchGroupForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+		break;
+
+	case 'vk_user_search' :
+		$pageTitle = [ 'Поиск пользователей', '' ];
+		new VkSearchUserForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		break;
 
 	case 'add_parser' :

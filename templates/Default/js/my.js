@@ -15,12 +15,15 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 }
 
-(function () {
+( function() {
 
 	'use strict';
 
 	var CMS = {
 		a : $( document ),
+		b: {
+			optObj : [ '<option>', '</option>' ]
+		},
 		ajax: {
 			request: function( a, b ) {
 				if ( a.action != 'vk_save_modal' ) {
@@ -34,7 +37,10 @@ if ( typeof( jQuery ) === 'undefined' ) {
 					type: a.type,
 					data: b,
 					error: function() {
-						console.log( 'ERROR' );
+						CMS.confirm.alert({
+							title : 'Внемание!',
+							content : 'Ошибка на сервере!'
+						});
 
 						if ( a.action != 'vk_save_modal' ) {
 							CMS.cssLoading.hide();
@@ -53,9 +59,9 @@ if ( typeof( jQuery ) === 'undefined' ) {
 								i = '';
 							if ( a.action == 'data-ready' ) {
 								if ( b.action == 'countries' ) {
-									d = '<option></option>';
+									d = CMS.b.optObj[0] + CMS.b.optObj[1];
 									$.each( c.content.countries, function ( k, v ) {
-										d += '<option value="' + v.id_country + '">' + v.title_country + '</option>';
+										d += '<option value="' + v.id_country + '">' + v.title_country + CMS.b.optObj[1];
 
 									});
 									i = '[data-ready="countries"]';
@@ -65,9 +71,9 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 							} else if ( a.action == 'data-change' ) {
 								if ( b.action == 'regions' ) {
-									d = '<option></option><option value="0">выберите регион</option>';
+									d = CMS.b.optObj[0] + CMS.b.optObj[1] + '<option value="0">выберите регион' + CMS.b.optObj[1];
 									$.each( c.content.regions, function ( k, v ) {
-										d += '<option value="' + v.id_region + '">' + v.title_region + '</option>';
+										d += '<option value="' + v.id_region + '">' + v.title_region + CMS.b.optObj[1];
 
 									});
 
@@ -92,15 +98,23 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 								}
 
-							} else if ( a.action == 'vk_search' ) {
-								$( '[data-content="vk_search_result"]' ).html( c.content   );
+							} else if ( a.action == 'vk_user_search' ) {
+								$( '[data-content="vk_user_search_result"]' ).html( c.content );
 
 							} else if ( a.action == 'vk_save_modal' ) {
 								CMS.confirm.form( c );
 
 							}
 						} else {
-							$( '[data-html="msg"]' ).after( c.msg );
+							CMS.confirm.alert({
+								title : 'Внемание!',
+								content : c.msg
+							});
+
+							if ( a.action != 'vk_save_modal' ) {
+								CMS.cssLoading.hide();
+
+							}
 
 						}
 
@@ -115,13 +129,13 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			mainCities : '',
 			addCities : function ( a ) {
 				var b = '',
-					c = '<option></option><option value="0">выберите населённый пункт</option>',
+					c = CMS.b.optObj[0] + CMS.b.optObj[1] + '<option value="0">выберите населённый пункт' + CMS.b.optObj[1],
 					d = '[data-change="cities"]';
 
 				$.each( a, function ( i, f ) {
 					b = ( f.area_city != '' && f.area_city != null ) ? ' (' + f.area_city + ')' : '';
 
-					c += '<option value="' + f.id_city + '">' + f.title_city + b + '</option>';
+					c += '<option value="' + f.id_city + '">' + f.title_city + b + CMS.b.optObj[1];
 
 				});
 
@@ -296,6 +310,24 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			}
 
 		},
+		vk_search: {
+			vk_user_search : function() {
+				var a = '[data-form="vk_user_search"]',
+					b = $ ( a + ' input, ' + a + ' select' ).serializeArray (),
+					c = CMS.hash_array ( b );
+
+				CMS.ajax.request ( {
+					action : 'vk_user_search',
+					type : 'get'
+				}, {
+					method : 'ajax',
+					data : c,
+					action : 'vk_user_search'
+				} );
+
+			}
+
+		},
 		confirm : {
 			form: function ( a ) {
 				$.confirm({
@@ -328,8 +360,8 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			},
 			alert : function ( a ) {
 				$.alert({
-					title: 'title ' + a.title,
-					content: 'content ' + a.content,
+					title: a.title,
+					content: a.content,
 					closeIcon: true,
 					animation: 'top',
 					closeAnimation: 'bottom',
@@ -381,7 +413,8 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 	};
 
-	CMS.a.on( 'click', '[data-btn="form"]', function () {
+	CMS.a
+		.on( 'click', '[data-btn="form"]', function () {
 		CMS.cssLoading.open();
 
 		$( $( this ).closest( 'form' ) ).hide();
@@ -389,7 +422,8 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		CMS.cssLoading.hide();
 
-	}).on( 'change', '[data-change]', function () {
+	})
+		.on( 'change', '[data-change]', function () {
 		var a = $( this ),
 			b = a.data( 'change' );
 
@@ -435,7 +469,8 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		}
 
-	}).on( 'click', '[data-btn="formGo"]', function () {
+	})
+		.on( 'click', '[data-btn="formGo"]', function () {
 		var a = true,
 			b = $( this ).data( 'action' ),
 			c,
@@ -467,21 +502,13 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		}
 
-	}).on( 'click', '[data-btn="vk_search"]', function () {
-		var a = '[data-form="vk_search"]',
-			b = $( a + ' input, ' + a + ' select' ).serializeArray(),
-			c = CMS.hash_array( b );
+	})
+		.on( 'click', '[data-btn="vk_user_search"]', function () {
+		CMS.vk_search.vk_user_search();
+		$( '[data-content="vk_user_search_result"]' ).html( '' );
 
-		CMS.ajax.request( {
-			action : 'vk_search',
-			type : 'get'
-		}, {
-			method			: 'ajax',
-			data			: c,
-			action			: 'vk_search'
-		} );
-
-	}).on( 'click', '[data-btn="vk_save_modal"]', function () {
+	})
+		.on( 'click', '[data-btn="vk_save_modal"]', function () {
 		var a = '[data-form="vk_search"]',
 			b = $( a + ' input, ' + a + ' select' ).serializeArray(),
 			c = CMS.hash_array( b );
@@ -495,7 +522,8 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			action			: 'vk_save_modal'
 		} );
 
-	}).ready( function () {
+	})
+		.ready( function () {
 		CMS.ready();
 
 	});

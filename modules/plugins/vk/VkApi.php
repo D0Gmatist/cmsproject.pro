@@ -36,6 +36,21 @@ final class VkApi {
 	];
 
 	/** @var array  */
+	private $fieldsGruop = [
+		'sex', 'bdate', 'city', 'country',
+		'photo_50', 'photo_100', 'photo_200_orig',
+		'photo_200', 'photo_400_orig', 'photo_max',
+		'photo_max_orig', 'online', 'online_mobile',
+		'lists', 'domain', 'has_mobile', 'contacts',
+		'connections', 'site', 'education',
+		'universities', 'schools', 'can_post',
+		'can_see_all_posts', 'can_see_audio',
+		'can_write_private_message', 'status',
+		'last_seen', 'common_count', 'relation',
+		'relatives'
+	];
+
+	/** @var array  */
 	private $config;
 
 	/** @var array  */
@@ -59,7 +74,7 @@ final class VkApi {
 	 *
 	 * @return array
 	 */
-	private function getApi ( $url, $params_count ) {
+	private function getApi ( $url, array $params_count ) {
 		$params_count['v'] 				= $this->config[ 'vk_app_version' ];
 		$params_count['access_token'] 	= $this->memberId[ 'user_vk_token' ];
 
@@ -67,6 +82,15 @@ final class VkApi {
 
 		return json_decode( file_get_contents( $url . $params_count ), true );
 
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTrackVisitor () {
+		$url = 'https://api.vk.com/method/stats.trackVisitor?';
+
+		return $this->getApi( $url, [] );
 
 	}
 

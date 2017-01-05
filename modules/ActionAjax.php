@@ -2,7 +2,7 @@
 
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Plugins\Vk\VkGeo;
-use Modules\Plugins\Vk\VkSearchForm;
+use Modules\Plugins\Vk\VkSearchUserForm;
 
 $result = [
 	'success'			=> true,
@@ -41,14 +41,19 @@ switch ( $action ) {
 		$vkGeo = new VkGeo( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		$result['content'] = $vkGeo->returnResult();
 		break;
-	case 'vk_search' :
+	case 'vk_user_search' :
 		/**
 		 * @var array $groupVar
 		 * @var array $config
 		 * @var array $language
 		 */
-		$vkSearchForm = new VkSearchForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
-		$result['content'] = $vkSearchForm->getResult();
+		$vkSearchUserForm = new VkSearchUserForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+		$result['content'] = $vkSearchUserForm->getResult();
+		if ( $result['content'] === false ) {
+			$result['success'] = false;
+			$result['msg'] = 'Нет результата поиска!';
+
+		}
 		break;
 
 }

@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12">
 
-		<form data-form="vk_search">
+		<form data-form="vk_user_search">
 
 			<div class="portlet box blue-soft">
 				<div class="portlet-title">
@@ -145,8 +145,7 @@
 
 										<div class="form-group">
 											<div class="col-md-12 text-right">
-												<div class="btn btn-default" data-btn="vk_search"><i class="glyphicon glyphicon-search"></i> Искать</div>
-												<div class="btn btn-success" data-btn="vk_save_modal"><i class="glyphicon glyphicon-save"></i> Сохранить парсер</div>
+												<div class="btn btn-default" data-btn="vk_user_search"><i class="glyphicon glyphicon-search"></i> Искать</div>
 											</div>
 										</div>
 
@@ -221,7 +220,7 @@
 
 		</form>
 
-		<div data-content="vk_search_result"></div>
+		<div data-content="vk_user_search_result"></div>
 
 	</div>
 </div>
