@@ -4,3 +4,4 @@
 templates/Default/img/
 /modules/config.php
 cache/system/
+/composer.json
