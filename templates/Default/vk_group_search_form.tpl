@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12">
 
-		<form data-form="vk_user_search">
+		<form data-form="vk_group_search">
 
 			<div class="portlet box blue-soft">
 				<div class="portlet-title">
@@ -21,45 +21,36 @@
 								<div class="form-horizontal">
 									<div class="form-body">
 
-										<div class="form-group">
+										<div class="form-group has-error">
 											<label class="col-md-3 control-label">Поиск</label>
 											<div class="col-md-9">
-												<input type="text" name="q" class="form-control spinner" placeholder="поиск фразе (не обязательно)">
+												<input type="text" name="q" data-required-field="form-group" class="form-control spinner" placeholder="поиск по фразе (обязательно)">
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Страна</label>
+											<label class="col-md-3 control-label">Тип сообщества</label>
 											<div class="col-md-9">
-												<select class="form-control" name="countries" data-ready="countries" data-change="countries" data-select="select2" data-placeholder="выберите страну (не обязательно)" style="width: 100%"></select>
+												<select class="form-control" name="type" data-select="select1" style="width: 100%" title="">
+													<option value="0" selected="selected">Любое</option>
+													<option value="group">Группа</option>
+													<option value="page">Публичная страница</option>
+													<option value="event">Мероприятие</option>
+												</select>
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Регион</label>
+											<label class="col-md-3 control-label">Сортировать</label>
 											<div class="col-md-9">
-												<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="выберите регион (не обязательно)" style="width: 100%" disabled></select>
-											</div>
-										</div>
-
-										<div class="form-group">
-											<label class="col-md-3 control-label">Населённый пункт</label>
-											<div class="col-md-9">
-												<select class="form-control" name="cities" data-change="cities" data-select="select2" data-placeholder="выберите населённый пункт (не обязательно)" style="width: 100%" disabled></select>
-											</div>
-										</div>
-
-										<div class="form-group">
-											<label class="col-md-3 control-label">Дополнительно</label>
-											<div class="col-md-3">
-												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="has_photo" value="1"> с фотографией<span></span></label>
-												</div>
-											</div>
-											<div class="col-md-3">
-												<div class="mt-checkbox-inline">
-													<label class="mt-checkbox"><input type="checkbox" name="online" value="1"> сейчас на сайте<span></span></label>
-												</div>
+												<select class="form-control" name="sort" data-select="select1" style="width: 100%" title="">
+													<option value="0" selected="selected">по умолчанию</option>
+													<option value="1">по скорости роста</option>
+													<option value="2">по отношению дневной посещаемости к количеству пользователей</option>
+													<option value="3">по отношению количества лайков к количеству пользователей</option>
+													<option value="4">по отношению количества комментариев к количеству пользователей</option>
+													<option value="5">по отношению количества записей в обсуждениях к количеству пользователей</option>
+												</select>
 											</div>
 										</div>
 
@@ -73,79 +64,29 @@
 									<div class="form-body">
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Пол</label>
+											<label class="col-md-3 control-label">Страна</label>
 											<div class="col-md-9">
-												<select class="form-control" name="sex" data-select="select1" style="width: 100%">
-													<option value="0" selected="selected">Любой</option>
-													<option value="1">Женский</option>
-													<option value="2">Мужской</option>
-												</select>
+												<select class="form-control" name="countries" data-ready="countries" data-change="countries" data-select="select2" data-placeholder="выберите страну (не обязательно)" style="width: 100%" title=""></select>
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Семейное положение</label>
+											<label class="col-md-3 control-label">Регион</label>
 											<div class="col-md-9">
-												<select class="form-control" name="status" data-select="select1" style="width: 100%">
-													<option value="0" selected="selected">Любое</option>
-													<option value="1">Не женат (не замужем)</option>
-													<option value="2">Встречается</option>
-													<option value="3">Помолвлен(-а)</option>
-													<option value="4">Женат (замужем)</option>
-													<option value="5">Всё сложно</option>
-													<option value="6">В активном поиске</option>
-													<option value="7">Влюблен(-а)</option>
-												</select>
+												<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="выберите регион (не обязательно)" style="width: 100%" title="" disabled></select>
 											</div>
 										</div>
 
 										<div class="form-group">
-											<label class="col-md-3 control-label">Возраст</label>
-											<div class="col-md-4">
-												<select class="form-control" name="age_from" data-change="age_from" data-select="select2" data-placeholder="От" style="width: 100%">
-													{age_from}
-												</select>
-											</div>
-											<div class="col-md-1"><div style="text-align: center;line-height: 34px;">-</div></div>
-											<div class="col-md-4">
-												<select class="form-control" name="age_to" data-change="age_to" data-select="select2" data-placeholder="До" style="width: 100%">
-													{age_to}
-												</select>
-											</div>
-										</div>
-
-										<div class="form-group">
-											<label class="col-md-3 control-label">Дата рождения</label>
-											<div class="col-md-3">
-												<select class="form-control" name="birth_year" data-change="birth_year" data-select="select2" data-placeholder="Год" style="width: 100%">
-													{birth_year}
-												</select>
-											</div>
-											<div class="col-md-3">
-												<select class="form-control" name="birth_month" data-change="birth_month" data-select="select2" data-placeholder="Месяц" style="width: 100%">
-													{birth_month}
-												</select>
-											</div>
-											<div class="col-md-3">
-												<select class="form-control" name="birth_day" data-change="birth_day" data-select="select2" data-placeholder="День" style="width: 100%">
-													{birth_day}
-												</select>
-											</div>
-										</div>
-
-										<div class="form-group">
-											<label class="col-md-3 control-label">Сортировка</label>
+											<label class="col-md-3 control-label">Населённый пункт</label>
 											<div class="col-md-9">
-												<select class="form-control" name="sort" data-select="select1" style="width: 100%">
-													<option value="0" selected="selected">по популярности</option>
-													<option value="1">по дате регистрации</option>
-												</select>
+												<select class="form-control" name="cities" data-change="cities" data-select="select2" data-placeholder="выберите населённый пункт (не обязательно)" style="width: 100%" title="" disabled></select>
 											</div>
 										</div>
 
 										<div class="form-group">
 											<div class="col-md-12 text-right">
-												<div class="btn btn-default" data-btn="vk_user_search"><i class="glyphicon glyphicon-search"></i> Искать</div>
+												<div class="btn btn-default" data-btn="vk_group_search"><i class="glyphicon glyphicon-search"></i> Искать</div>
 											</div>
 										</div>
 
@@ -160,7 +101,7 @@
 
 		</form>
 
-		<div data-content="vk_group_search_result"></div>
+		<div data-content="vk_group_search_result">sss</div>
 
 	</div>
 </div>

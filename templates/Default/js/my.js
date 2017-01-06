@@ -26,10 +26,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		},
 		ajax: {
 			request: function( a, b ) {
-				if ( a.action != 'vk_save_modal' ) {
-					CMS.cssLoading.open();
-
-				}
+				CMS.cssLoading.open();
 
 				$.ajax({
 					url: CMSVAR.home + 'index.php',
@@ -49,10 +46,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 					},
 					success: function( c ) {
-						if ( a.action != 'vk_save_modal' ) {
-							CMS.cssLoading.hide();
-
-						}
+						CMS.cssLoading.hide();
 
 						if ( c.success ) {
 							var d = '',
@@ -76,7 +70,6 @@ if ( typeof( jQuery ) === 'undefined' ) {
 										d += '<option value="' + v.id_region + '">' + v.title_region + CMS.b.optObj[1];
 
 									});
-
 									i = '[data-change="regions"]';
 									$( i ).html( d );
 
@@ -93,16 +86,13 @@ if ( typeof( jQuery ) === 'undefined' ) {
 										CMS.cities.mainCities = c.content.cities;
 
 									}
-
 									CMS.cities.addCities( c.content.cities );
 
 								}
 
-							} else if ( a.action == 'vk_user_search' ) {
-								$( '[data-content="vk_user_search_result"]' ).html( c.content );
-
-							} else if ( a.action == 'vk_save_modal' ) {
-								CMS.confirm.form( c );
+							} else if ( a.action == 'vk_user_search' || a.action == 'vk_group_search' ) {
+								console.log( a.action );
+								$( '[data-content="' + a.action + '_result"]' ).html( c.content );
 
 							}
 						} else {
@@ -111,10 +101,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 								content : c.msg
 							});
 
-							if ( a.action != 'vk_save_modal' ) {
-								CMS.cssLoading.hide();
-
-							}
+							CMS.cssLoading.hide();
 
 						}
 
@@ -310,22 +297,19 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			}
 
 		},
-		vk_search: {
-			vk_user_search : function() {
-				var a = '[data-form="vk_user_search"]',
-					b = $ ( a + ' input, ' + a + ' select' ).serializeArray (),
-					c = CMS.hash_array ( b );
+		vk_search : function ( a ) {
+			var b = '[data-form="' + a + '"]',
+				c = $ ( b + ' input, ' + b + ' select' ).serializeArray (),
+				d = CMS.hash_array ( c );
 
-				CMS.ajax.request ( {
-					action : 'vk_user_search',
-					type : 'get'
-				}, {
-					method : 'ajax',
-					data : c,
-					action : 'vk_user_search'
-				} );
-
-			}
+			CMS.ajax.request ( {
+				action : a,
+				type : 'get'
+			}, {
+				method : 'ajax',
+				data : d,
+				action : a
+			} );
 
 		},
 		confirm : {
@@ -346,13 +330,17 @@ if ( typeof( jQuery ) === 'undefined' ) {
 								CMS.confirm.alert( {
 									title : 'Okay button',
 									content : 'was triggered.'
+
 								} );
+
 							}
+
 						},
 						cancel : {
 							text : 'Закрыть',
 							btnClass : 'btn-warning',
 							keys : [ 'esc' ]
+
 						}
 					}
 				});
@@ -371,9 +359,13 @@ if ( typeof( jQuery ) === 'undefined' ) {
 							text : 'Закрыть',
 							btnClass : 'btn-default',
 							keys : [ 'enter', 'esc' ]
+
 						}
+
 					}
+
 				});
+
 			}
 
 		},
@@ -413,8 +405,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 	};
 
-	CMS.a
-		.on( 'click', '[data-btn="form"]', function () {
+	CMS.a.on( 'click', '[data-btn="form"]', function () {
 		CMS.cssLoading.open();
 
 		$( $( this ).closest( 'form' ) ).hide();
@@ -422,8 +413,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		CMS.cssLoading.hide();
 
-	})
-		.on( 'change', '[data-change]', function () {
+	}).on( 'change', '[data-change]', function () {
 		var a = $( this ),
 			b = a.data( 'change' );
 
@@ -469,8 +459,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		}
 
-	})
-		.on( 'click', '[data-btn="formGo"]', function () {
+	}).on( 'click', '[data-btn="formGo"]', function () {
 		var a = true,
 			b = $( this ).data( 'action' ),
 			c,
@@ -502,28 +491,41 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		}
 
-	})
-		.on( 'click', '[data-btn="vk_user_search"]', function () {
-		CMS.vk_search.vk_user_search();
-		$( '[data-content="vk_user_search_result"]' ).html( '' );
+	}).on( 'click', '[data-btn="vk_user_search"],[data-btn="vk_group_search"]', function () {
+		var a = $( this ).data( 'btn' ),
+			b = true;
 
-	})
-		.on( 'click', '[data-btn="vk_save_modal"]', function () {
-		var a = '[data-form="vk_search"]',
-			b = $( a + ' input, ' + a + ' select' ).serializeArray(),
-			c = CMS.hash_array( b );
+		$( '[data-form="' + a + '"] [data-required-field]' ).each( function (  ) {
+			if ( $( this ).val() == '' ) {
+				$( this ).closest( '.' + $( this ).data( 'required-field' ) ).addClass( 'has-error' );
+				b = false;
 
-		CMS.ajax.request( {
-			action : 'vk_save_modal',
-			type : 'get'
-		}, {
-			method			: 'ajax',
-			data			: c,
-			action			: 'vk_save_modal'
-		} );
+			}
 
-	})
-		.ready( function () {
+		});
+
+		if ( b === false ) {
+			CMS.confirm.alert( {
+				'title' : 'Внемание!',
+				'content' : 'Не все обязательные поля заполнены!'
+			} );
+			return b;
+
+		}
+		CMS.vk_search( a );
+		$( '[data-content="' + a + '_result"]' ).html( '' );
+
+	}).on( 'keyup', '[data-required-field]', function () {
+		console.log( this );
+		if ( $( this ).val() == '' ) {
+			$( this ).closest( '.' + $( this ).data( 'required-field' ) ).addClass( 'has-error' );
+
+		} else {
+			$( this ).closest( '.' + $( this ).data( 'required-field' ) ).removeClass( 'has-error' );
+
+		}
+
+	}).ready( function () {
 		CMS.ready();
 
 	});

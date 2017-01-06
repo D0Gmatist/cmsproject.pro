@@ -149,7 +149,7 @@ final class VkSearchUserForm {
 	private function searchForm () {
 		$this->data = $_GET['data'];
 
-		$vk_get = $this->vkApi->getApiUsers(
+		$vk_get = $this->vkApi->getApiUsersSearch(
 			(int)$this->data['cort'],
 			$this->stepCount,
 			$this->offset,
@@ -378,19 +378,23 @@ final class VkSearchUserForm {
 
 			}
 
-			$this->tpl->loadTemplate ( 'vk_user_search_result_block.tpl' );
+			if ( $this->tpl->result[ 'vk_user_search_result' ] ) {
+				$this->tpl->loadTemplate ( 'vk_user_search_result_block.tpl' );
 
-			$this->tpl->set ( '{vk_user_search_result}', $this->tpl->result[ 'vk_user_search_result' ] );
-			$this->tpl->set ( '{count}', count( $this->rows ) );
+				$this->tpl->set ( '{vk_user_search_result}', $this->tpl->result[ 'vk_user_search_result' ] );
+				$this->tpl->set ( '{count}', count( $this->rows ) );
 
-			$this->tpl->compile ( 'vk_user_search_result_block' );
+				$this->tpl->compile ( 'vk_user_search_result_block' );
 
-			return $this->tpl->result[ 'vk_user_search_result_block' ];
+				return $this->tpl->result[ 'vk_user_search_result_block' ];
 
-		} else {
+			}
+
 			return false;
 
 		}
+
+		return false;
 
 	}
 

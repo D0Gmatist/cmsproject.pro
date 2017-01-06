@@ -24,28 +24,28 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Поиск</label>
 											<div class="col-md-9">
-												<input type="text" name="q" class="form-control spinner" placeholder="поиск фразе (не обязательно)">
+												<input type="text" name="q" class="form-control spinner" placeholder="поиск по фразе (не обязательно)">
 											</div>
 										</div>
 
 										<div class="form-group">
 											<label class="col-md-3 control-label">Страна</label>
 											<div class="col-md-9">
-												<select class="form-control" name="countries" data-ready="countries" data-change="countries" data-select="select2" data-placeholder="выберите страну (не обязательно)" style="width: 100%"></select>
+												<select class="form-control" name="countries" data-ready="countries" data-change="countries" data-select="select2" data-placeholder="выберите страну (не обязательно)" style="width: 100%" title=""></select>
 											</div>
 										</div>
 
 										<div class="form-group">
 											<label class="col-md-3 control-label">Регион</label>
 											<div class="col-md-9">
-												<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="выберите регион (не обязательно)" style="width: 100%" disabled></select>
+												<select class="form-control" name="regions" data-change="regions" data-select="select2" data-placeholder="выберите регион (не обязательно)" style="width: 100%" title="" disabled></select>
 											</div>
 										</div>
 
 										<div class="form-group">
 											<label class="col-md-3 control-label">Населённый пункт</label>
 											<div class="col-md-9">
-												<select class="form-control" name="cities" data-change="cities" data-select="select2" data-placeholder="выберите населённый пункт (не обязательно)" style="width: 100%" disabled></select>
+												<select class="form-control" name="cities" data-change="cities" data-select="select2" data-placeholder="выберите населённый пункт (не обязательно)" style="width: 100%" title="" disabled></select>
 											</div>
 										</div>
 
@@ -75,7 +75,7 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Пол</label>
 											<div class="col-md-9">
-												<select class="form-control" name="sex" data-select="select1" style="width: 100%">
+												<select class="form-control" name="sex" data-select="select1" style="width: 100%" title="">
 													<option value="0" selected="selected">Любой</option>
 													<option value="1">Женский</option>
 													<option value="2">Мужской</option>
@@ -86,7 +86,7 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Семейное положение</label>
 											<div class="col-md-9">
-												<select class="form-control" name="status" data-select="select1" style="width: 100%">
+												<select class="form-control" name="status" data-select="select1" style="width: 100%" title="">
 													<option value="0" selected="selected">Любое</option>
 													<option value="1">Не женат (не замужем)</option>
 													<option value="2">Встречается</option>
@@ -102,13 +102,13 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Возраст</label>
 											<div class="col-md-4">
-												<select class="form-control" name="age_from" data-change="age_from" data-select="select2" data-placeholder="От" style="width: 100%">
+												<select class="form-control" name="age_from" data-change="age_from" data-select="select2" data-placeholder="От" style="width: 100%" title="">
 													{age_from}
 												</select>
 											</div>
 											<div class="col-md-1"><div style="text-align: center;line-height: 34px;">-</div></div>
 											<div class="col-md-4">
-												<select class="form-control" name="age_to" data-change="age_to" data-select="select2" data-placeholder="До" style="width: 100%">
+												<select class="form-control" name="age_to" data-change="age_to" data-select="select2" data-placeholder="До" style="width: 100%" title="">
 													{age_to}
 												</select>
 											</div>
@@ -117,17 +117,17 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Дата рождения</label>
 											<div class="col-md-3">
-												<select class="form-control" name="birth_year" data-change="birth_year" data-select="select2" data-placeholder="Год" style="width: 100%">
+												<select class="form-control" name="birth_year" data-change="birth_year" data-select="select2" data-placeholder="Год" style="width: 100%" title="">
 													{birth_year}
 												</select>
 											</div>
 											<div class="col-md-3">
-												<select class="form-control" name="birth_month" data-change="birth_month" data-select="select2" data-placeholder="Месяц" style="width: 100%">
+												<select class="form-control" name="birth_month" data-change="birth_month" data-select="select2" data-placeholder="Месяц" style="width: 100%" title="">
 													{birth_month}
 												</select>
 											</div>
 											<div class="col-md-3">
-												<select class="form-control" name="birth_day" data-change="birth_day" data-select="select2" data-placeholder="День" style="width: 100%">
+												<select class="form-control" name="birth_day" data-change="birth_day" data-select="select2" data-placeholder="День" style="width: 100%" title="">
 													{birth_day}
 												</select>
 											</div>
@@ -136,7 +136,7 @@
 										<div class="form-group">
 											<label class="col-md-3 control-label">Сортировка</label>
 											<div class="col-md-9">
-												<select class="form-control" name="sort" data-select="select1" style="width: 100%">
+												<select class="form-control" name="sort" data-select="select1" style="width: 100%" title="">
 													<option value="0" selected="selected">по популярности</option>
 													<option value="1">по дате регистрации</option>
 												</select>
