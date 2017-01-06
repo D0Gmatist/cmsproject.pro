@@ -140,7 +140,6 @@ final class VkSearchUserForm {
 		$this->tpl->set( '{birth_month}', $birth_month );
 		$this->tpl->set( '{birth_day}', $birth_day );
 
-
 		$this->tpl->compile( 'content' );
 
 		$this->tpl->clear();

@@ -69,6 +69,26 @@ final class VkApi {
 	}
 
 	/**
+	 * @param $count
+	 *
+	 * @return int
+	 */
+	private function checkCount ( $count ) {
+		return ( (int)$count > 0 AND (int)$count < 1001 ) ? (int)$count : 1000;
+
+	}
+
+	/**
+	 * @param $offset
+	 *
+	 * @return int
+	 */
+	private function checkOffset ( $offset ) {
+		return ( (int)$offset > 0 ) ? (int)$offset : 0;
+
+	}
+
+	/**
 	 * @param string $url
 	 * @param array  $params_count
 	 *
@@ -85,30 +105,21 @@ final class VkApi {
 	}
 
 	/**
-	 * @return array
-	 */
-	public function getTrackVisitor () {
-		$url = 'https://api.vk.com/method/stats.trackVisitor?';
-
-		return $this->getApi( $url, [] );
-
-	}
-
-	/**
 	 * @param int $need_all
-	 * @param int $count_step
+	 * @param int $count
 	 * @param int $offset
 	 *
 	 * @return array
 	 */
-	public function getApiCountries ( $need_all = 1, $count_step = 1000, $offset = 0 ) {
+	public function getApiCountries ( $need_all = 1, $count = 1000, $offset = 0 ) {
 		$url = 'https://api.vk.com/method/database.getCountries?';
 
 		$params_count = [];
 
 		$params_count['need_all'] 	= $need_all;
-		$params_count['count'] 		= $count_step;
-		$params_count['offset'] 	= $offset;
+
+		$params_count['count'] = $this->checkCount( $count );
+		$params_count['offset'] = $this->checkOffset( $offset );
 
 		return $this->getApi( $url, $params_count );
 
@@ -116,19 +127,20 @@ final class VkApi {
 
 	/**
 	 * @param int $id_country
-	 * @param int $count_step
+	 * @param int $count
 	 * @param int $offset
 	 *
 	 * @return array
 	 */
-	public function getApiRegions ( $id_country, $count_step = 1000, $offset = 0 ) {
+	public function getApiRegions ( $id_country, $count = 1000, $offset = 0 ) {
 		$url = 'https://api.vk.com/method/database.getRegions?';
 
 		$params_count = [];
 
 		$params_count['country_id'] = $id_country;
-		$params_count['count'] 		= $count_step;
-		$params_count['offset'] 	= $offset;
+
+		$params_count['count'] = $this->checkCount( $count );
+		$params_count['offset'] = $this->checkOffset( $offset );
 
 		return $this->getApi( $url, $params_count );
 
@@ -137,12 +149,12 @@ final class VkApi {
 	/**
 	 * @param int $id_region
 	 * @param int $id_country
-	 * @param int $count_step
+	 * @param int $count
 	 * @param int $offset
 	 *
 	 * @return array
 	 */
-	public function getApiCities ( $id_region, $id_country, $count_step = 1000, $offset = 0 ) {
+	public function getApiCities ( $id_region, $id_country, $count = 1000, $offset = 0 ) {
 		$url = 'https://api.vk.com/method/database.getCities?';
 
 		$params_count = [];
@@ -156,8 +168,8 @@ final class VkApi {
 
 		}
 
-		$params_count['count'] 	= $count_step;
-		$params_count['offset'] = $offset;
+		$params_count['count'] = $this->checkCount( $count );
+		$params_count['offset'] = $this->checkOffset( $offset );
 
 		return $this->getApi( $url, $params_count );
 
@@ -165,7 +177,7 @@ final class VkApi {
 
 	/**
 	 * @param int   $sort
-	 * @param int   $count_step
+	 * @param int   $count
 	 * @param int   $offset
 	 * @param bool  $q
 	 * @param bool  $city
@@ -180,65 +192,66 @@ final class VkApi {
 	 * @return array
 	 */
 	public function getApiUsers (
-		$sort = 1,
-		$count_step = 1000,
-		$offset = 0,
-		$q = false,
-		$city = false,
-		$country = false,
-		$sex = false,
-		$status = false,
-		$age = [],
-		$birth = [],
-		$online = 1,
-		$photo = 1
+		$sort 		= 1,
+		$count 		= 1000,
+		$offset 	= 0,
+		$q 			= false,
+		$city 		= false,
+		$country 	= false,
+		$sex 		= false,
+		$status 	= false,
+		$age 		= [],
+		$birth 		= [],
+		$online 	= 1,
+		$photo 		= 1
 	) {
 		$url = 'https://api.vk.com/method/users.search?';
 
 		$params_count = [];
 
-		if ( $sort !== false AND $sort > 0 ) {
-			$params_count[ 'sort' ] = $sort;
+		if ( $sort !== false AND (int)$sort > 0 ) {
+			$params_count[ 'sort' ] = (int)$sort;
 
 		}
 
-		$params_count['count'] 		= $count_step;
-		$params_count['offset'] 	= $offset;
-		$params_count['fields'] 	= $this->fields;
+		$params_count['count'] = $this->checkCount( $count );
+		$params_count['offset'] = $this->checkOffset( $offset );
+
+		$params_count['fields'] = $this->fields;
 
 		if ( $q !== false AND trim( $q ) != '' ) {
-			$params_count['q'] 		= $q;
+			$params_count['q'] = $q;
 
 		}
 
-		if ( $city !== false AND $city > 0 ) {
-			$params_count['city'] 		= $city;
+		if ( $city !== false AND (int)$city > 0 ) {
+			$params_count['city'] = (int)$city;
 
 		}
 
-		if ( $country !== false AND $country > 0 ) {
-			$params_count['country'] 	= $country;
+		if ( $country !== false AND (int)$country > 0 ) {
+			$params_count['country'] = (int)$country;
 
 		}
 
-		if ( $sex !== false AND $sex > 0 ) {
-			$params_count['sex'] 	= $sex;
+		if ( $sex !== false AND (int)$sex > 0 ) {
+			$params_count['sex'] = (int)$sex;
 
 		}
 
-		if ( $status !== false AND $status > 0 ) {
-			$params_count['status'] 	= $status;
+		if ( $status !== false AND (int)$status > 0 ) {
+			$params_count['status'] = (int)$status;
 
 		}
 
 		if ( $age !== false ) {
 			if ( (int)$age[0] > 0 ) {
-				$params_count['age_from'] 	= $age[0];
+				$params_count['age_from'] = (int)$age[0];
 
 			}
 
 			if ( (int)$age[1] > 0 ) {
-				$params_count['age_to'] 	= $age[1];
+				$params_count['age_to'] = (int)$age[1];
 
 			}
 
@@ -246,24 +259,24 @@ final class VkApi {
 
 		if ( $birth !== false ) {
 			if ( (int)$birth[0] > 0 ) {
-				$params_count['birth_year'] 	= $birth[0];
+				$params_count['birth_year'] = (int)$birth[0];
 
 			}
 
 			if ( (int)$birth[1] > 0 ) {
-				$params_count['birth_month'] 	= $birth[1];
+				$params_count['birth_month'] = (int)$birth[1];
 
 			}
 
 			if ( (int)$birth[2] > 0 ) {
-				$params_count['birth_day'] 		= $birth[2];
+				$params_count['birth_day'] = (int)$birth[2];
 
 			}
 
 		}
 
-		if ( $online !== false AND $online > 0 ) {
-			$params_count['online'] 	= $online;
+		if ( $online !== false AND (int)$online > 0 ) {
+			$params_count['online'] = (int)$online;
 
 		}
 
@@ -271,6 +284,48 @@ final class VkApi {
 			$params_count['has_photo'] 	= $photo;
 
 		}
+
+		return $this->getApi( $url, $params_count );
+
+	}
+
+	/**
+	 * @param bool $q
+	 * @param bool $country_id
+	 * @param int  $city_id
+	 * @param int  $sort
+	 * @param int  $offset
+	 * @param int  $count
+	 *
+	 * @return array
+	 */
+	public function getApiGroupsSearch ( $q = false, $country_id = false, $city_id = 0, $sort = 0, $offset = 0, $count = 0 ) {
+		$url = 'https://api.vk.com/method/groups.search?';
+
+		$params_count = [];
+
+		if ( $q !== false AND trim( $q ) != '' ) {
+			$params_count['q'] = $q;
+
+		}
+
+		if ( $country_id !== false AND (int)$country_id > 0 ) {
+			$params_count['country_id'] = (int)$country_id;
+
+		}
+
+		if ( $city_id !== false AND (int)$city_id > 0 ) {
+			$params_count['city_id'] = (int)$city_id;
+
+		}
+
+		if ( in_array( (int)$sort, [ 0, 1, 2, 3, 4, 5 ] ) ) {
+			$params_count['sort'] = (int)$sort;
+
+		}
+
+		$params_count['count'] = $this->checkCount( $count );
+		$params_count['offset'] = $this->checkOffset( $offset );
 
 		return $this->getApi( $url, $params_count );
 
