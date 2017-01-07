@@ -634,6 +634,9 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 		}
 
+	}).on( 'submit', '[data-form]', function () {
+		return false;
+
 	}).ready( function () {
 		CMS.ready();
 

@@ -65,7 +65,7 @@ switch ( $action ) {
 		 * @var array $config
 		 * @var array $language
 		 */
-		$vkSearchGroupForm = new VkSearchGroupForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $msgBox, $config, $language );
+		$vkSearchGroupForm = new VkSearchGroupForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		$result['content'] = $vkSearchGroupForm->getResult();
 		if ( $result['content'] === false ) {
 			$result['success'] = false;
@@ -81,11 +81,12 @@ switch ( $action ) {
 		 * @var array $language
 		 */
 		$vkParser = new VkParser( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+		$result = $vkParser->getResult();
 		break;
 
 }
 
-if ( $result['content'] == '' ) {
+if ( $result['content'] == '' AND $result['msg'] == '' ) {
 	$result['success'] = false;
 	$result['msg'] = 'Ошибка запроса!';
 

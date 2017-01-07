@@ -93,6 +93,7 @@ final class VkGeo {
 				case 'regions' :
 					$this->id_country = (int)$_GET['id_country'];
 					$this->id_region = 0;
+
 					$this->setRegions( 1 );
 					$this->setCities( 1 );
 					break;
@@ -117,7 +118,7 @@ final class VkGeo {
 
 		}
 
-		foreach ( $this->result['countries'] AS $value ) {
+		foreach ( $this->result['countries']['items'] AS $value ) {
 
 			$value['title'] = $this->db->safeSql( stripslashes( $value['title'] ) );
 
@@ -125,7 +126,7 @@ final class VkGeo {
 									geo_countries
 										( `id_country`, `title_country` )
 											VALUES
-										( '{$value['cid']}', '{$value['title']}' )" );
+										( '{$value['id']}', '{$value['title']}' )" );
 
 		}
 
@@ -162,7 +163,7 @@ final class VkGeo {
 	private function setCountries ( $step ) {
 		$this->result['countries'] = [];
 
-		$this->db->query( "SELECT * FROM geo_countries ORDER BY `title_country` ASC" );
+		$this->db->query( "SELECT * FROM geo_countries ORDER BY `important_country` DESC, `title_country` ASC" );
 
 		while ( $row = $this->db->getRow() ) {
 			$this->result['countries'][] = $row;
@@ -185,7 +186,7 @@ final class VkGeo {
 
 		}
 
-		foreach ( $this->result['regions'] AS $value ) {
+		foreach ( $this->result['regions']['items'] AS $value ) {
 
 			$value['title'] = $this->db->safeSql( stripslashes( $value['title'] ) );
 
@@ -193,7 +194,7 @@ final class VkGeo {
 									geo_regions
 										( `id_country`, `id_region`, `title_region` )
 											VALUES
-										( '{$this->id_country}', '{$value['region_id']}', '{$value['title']}' )" );
+										( '{$this->id_country}', '{$value['id']}', '{$value['title']}' )" );
 
 		}
 
@@ -251,7 +252,7 @@ final class VkGeo {
 
 		if ( $this->id_country > 0 AND $this->id_country == $row['id_country'] ) {
 
-			$this->db->query ( "SELECT * FROM geo_regions WHERE `id_country` = '{$this->id_country}' ORDER BY `title_region` ASC" );
+			$this->db->query( "SELECT * FROM geo_regions WHERE `id_country` = '{$this->id_country}' ORDER BY `title_region` ASC" );
 
 			while ( $row = $this->db->getRow () ) {
 				$row['id_region'] = ( $row['id_region'] === NULL ) ? 'not' : $row['id_region'];
@@ -280,7 +281,7 @@ final class VkGeo {
 
 		}
 
-		foreach ( $this->result['cities'] AS $value ) {
+		foreach ( $this->result['cities']['items'] AS $value ) {
 			$value['title'] = $this->db->safeSql( stripslashes( $value['title'] ) );
 			$value['area'] = $this->db->safeSql( stripslashes( $value['area'] ) );
 
@@ -291,14 +292,14 @@ final class VkGeo {
 									geo_cities
 										( `id_country`, `id_region`, `id_city`, `title_city`, `area_city`, `important_city` )
 											VALUES
-										( '{$this->id_country}', NULL, '{$value['cid']}', '{$value['title']}', '{$value['area']}', '{$value['important']}' )" );
+										( '{$this->id_country}', NULL, '{$value['id']}', '{$value['title']}', '{$value['area']}', '{$value['important']}' )" );
 
 			} else {
 				$this->db->query( "INSERT INTO
 									geo_cities
 										( `id_country`, `id_region`, `id_city`, `title_city`, `area_city`, `important_city` )
 											VALUES
-										( '{$this->id_country}', '{$this->id_region}', '{$value['cid']}', '{$value['title']}', '{$value['area']}', '{$value['important']}' )" );
+										( '{$this->id_country}', '{$this->id_region}', '{$value['id']}', '{$value['title']}', '{$value['area']}', '{$value['important']}' )" );
 
 			}
 
@@ -321,7 +322,6 @@ final class VkGeo {
 	 */
 	private function getCities ( $upStepOne ) {
 		$vk_get = $this->vkApi->getApiCities( $this->id_region, $this->id_country, $this->count_step, $this->offset );
-
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
 			$this->result['cities'] = $vk_get[ 'response' ];
 			$this->updateCities( $upStepOne );

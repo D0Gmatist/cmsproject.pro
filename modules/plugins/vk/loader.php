@@ -5,3 +5,4 @@ require_once 'VkLogin.php';
 require_once 'VkGeo.php';
 require_once 'VkSearchUserForm.php';
 require_once 'VkSearchGroupForm.php';
+require_once 'VkParser.php';
