@@ -283,3 +283,39 @@ table.table-vk-search-result>tbody>tr>td.no-br-r {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	}
+
+/**/
+.btn-delete-block {
+	opacity: 0.8;
+	position: absolute;
+	right: 15px;
+	top: 0px;
+	z-index: 1;
+	}
+
+.btn-delete-block:hover {
+	opacity: 1;
+	}
+
+/**/
+.modal-textarea {
+	max-height: 600px;
+	max-width: 100%;
+	min-height: 200px;
+	min-width: 100%;
+	outline: 0;
+	width: 100%;
+	}
+
+/**/
+.form-text-danger > div {
+	background: #fff2f2;
+	border-left: 4px solid #ad0202;
+	color: #ad0202;
+	font-size: 13px;
+	padding: 4px 8px;
+	}
+
+.form-text-danger > div + div {
+	margin-top: 5px;
+	}

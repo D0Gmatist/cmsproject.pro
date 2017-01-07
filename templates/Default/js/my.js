@@ -276,7 +276,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		tokenField : function() {
 			$( '[data-input="tokenfield"]' ).tokenfield({
 				delimiter: [ ',', ' ' ],
-				showAutocompleteOnFocus: true
+				createTokensOnBlur: true
 
 			});
 
@@ -312,7 +312,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		},
 		vk_search : function ( a ) {
 			var b = '[data-form="' + a + '"]',
-				c = $ ( b + ' input, ' + b + ' select' ).serializeArray (),
+				c = $ ( b + ' input, ' + b + ' select' ).serializeArray(),
 				d = CMS.hash_array ( c );
 
 			CMS.ajax.request ( {
@@ -328,23 +328,45 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		confirm : {
 			form: function ( a ) {
 				$.confirm({
-					title: 'title ' + a.title,
-					content: 'content ' + a.content,
+					title: a.title,
+					content: a.content,
 					closeIcon: true,
 					animation: 'top',
 					closeAnimation: 'bottom',
 					backgroundDismiss: true,
+					columnClass: a.class,
 					buttons: {
 						okay : {
-							text : 'btn ' + a.btn,
+							text : a.button,
 							btnClass : 'btn-success',
 							keys : [ 'enter' ],
 							action : function () {
-								CMS.confirm.alert( {
-									title : 'Okay button',
-									content : 'was triggered.'
+								var i = $( '[data-danger="form"]' );
+								i.html( '' );
 
-								} );
+								if ( a.form == 'vk_group_parser' ) {
+									var b = '[data-form="' + a.form + '"]',
+										c = $ ( b + ' [name="name"]' ),
+										d = $ ( b + ' [name="id_list"]' );
+
+									if ( c.val() == '' ) {
+										i.append( '<div>Поле имя обязательно к заполнению</div>' ).slideDown( 200 );
+
+									}
+
+									if ( d.val() == '' ) {
+										i.append( '<div>Вы не внесли ни одного ID</div>' ).slideDown( 200 );
+
+									}
+
+									if ( i.html() != '' ) {
+										return false;
+
+									}
+
+									console.log( CMS.hash_array( $ ( b + ' input' ).serializeArray() ) );
+
+								}
 
 							}
 
@@ -355,7 +377,12 @@ if ( typeof( jQuery ) === 'undefined' ) {
 							keys : [ 'esc' ]
 
 						}
+					},
+					onOpen : function ( ) {
+						CMS.tokenField();
+
 					}
+
 				});
 
 			},
@@ -367,6 +394,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 					animation: 'top',
 					closeAnimation: 'bottom',
 					backgroundDismiss: true,
+					useBootstrap: true,
 					buttons: {
 						okay : {
 							text : 'Закрыть',
@@ -528,6 +556,61 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		}
 		CMS.vk_search( a );
 		$( '[data-content="' + a + '_result"]' ).html( '' );
+
+	}).on( 'click', '[data-btn-delete]', function () {
+		var a = $( '[data-block-delete="' + $( this ).data( 'btn-delete' ) + '"]' ),
+			b = a.outerHeight(),
+			c = a.outerWidth();
+		a.animate({
+			opacity: 0.1,
+			top: '-' +  b  + 'px',
+			marginRight: '-' + c + 'px'
+		}, 'slow', function (  ) {
+			$( this ).fadeOut().remove();
+		});
+
+	}).on( 'click', '[data-btn-parser="group"]', function () {
+		var a = $( '[data-vk-id-group]' ).map( function(){
+			return $( this ).data( 'vk-id-group' );
+
+		}).get();
+
+		a = a.join( ', ' );
+
+		CMS.confirm.form({
+			button 		: 'Создать',
+			class		: 'col-md-8 col-md-offset-2 col-sm-12 col-xs-12',
+			content 	: '' +
+			'<div data-form="vk_group_parser">' +
+			'<div class="row">' +
+			'<div class="col-md-12">' +
+			'<div class="form-horizontal">' +
+			'<div class="form-body">' +
+			'<div class="form-group has-error">' +
+			'<label class="col-md-3 control-label">Название задачи</label>' +
+			'<div class="col-md-9">' +
+			'<input type="text" name="name" data-required-field="form-group" class="form-control spinner" placeholder="обязательно">' +
+			'</div>' +
+			'</div>' +
+			'<div class="form-group">' +
+			'<label class="col-md-3 control-label">Список ID</label>' +
+			'<div class="col-md-9">' +
+			'<input type="text" name="id_list" data-input="tokenfield" class="form-control spinner" value="' + a + '">' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</div>' +
+			'</form>' +
+			'<div class="row">' +
+			'<div data-danger="form" class="col-md-9 col-md-offset-3 form-text-danger"></div>' +
+			'</div>',
+			form		: 'vk_group_parser',
+			title 		: 'Создание задачи парсера'
+
+		});
 
 	}).on( 'keyup', '[data-required-field]', function () {
 		if ( $( this ).val() == '' ) {

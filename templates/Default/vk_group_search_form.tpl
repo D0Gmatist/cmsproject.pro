@@ -87,6 +87,7 @@
 										<div class="form-group">
 											<div class="col-md-12 text-right">
 												<div class="btn btn-default" data-btn="vk_group_search"><i class="glyphicon glyphicon-search"></i> Искать</div>
+												<div class="btn btn-success" data-btn-parser="group">Создать задачу парсера</div>
 											</div>
 										</div>
 
