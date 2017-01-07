@@ -1,5 +1,5 @@
-<div class="col-lg-3 col-md-4 col-sm-4" data-block-delete="group_{id}">
-	<div class="btn btn-default btn-delete-block" data-btn-delete="group_{id}"><i class="icon-trash"></i></div>
+<div class="col-lg-3 col-md-4 col-sm-4" data-block-delete1="group_{id}">
+	<div class="btn btn-default btn-delete-block" data-btn-delete1="group_{id}"><i class="icon-trash"></i></div>
 	<div class="mt-widget-1 vk-widget-1">
 		<div class="mt-img">
 			<img src="{photo_200}">

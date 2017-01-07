@@ -364,7 +364,15 @@ if ( typeof( jQuery ) === 'undefined' ) {
 
 									}
 
-									console.log( CMS.hash_array( $ ( b + ' input' ).serializeArray() ) );
+									CMS.ajax.request ( {
+										action : 'vk_group_parser',
+										type : 'post'
+									}, {
+										method : 'ajax',
+										data : CMS.hash_array( $ ( b + ' input' ).serializeArray() ),
+										action : 'vk_group_parser',
+										step : 'add'
+									} );
 
 								}
 
@@ -557,17 +565,22 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		CMS.vk_search( a );
 		$( '[data-content="' + a + '_result"]' ).html( '' );
 
-	}).on( 'click', '[data-btn-delete]', function () {
-		var a = $( '[data-block-delete="' + $( this ).data( 'btn-delete' ) + '"]' ),
+	}).on( 'click', '[data-btn-delete1]', function () {
+		var a = $( '[data-block-delete1="' + $( this ).data( 'btn-delete1' ) + '"]' ),
 			b = a.outerHeight(),
 			c = a.outerWidth();
+
 		a.animate({
-			opacity: 0.1,
+			opacity: 0,
 			top: '-' +  b  + 'px',
 			marginRight: '-' + c + 'px'
 		}, 'slow', function (  ) {
 			$( this ).fadeOut().remove();
+
 		});
+
+	}).on( 'click', '[data-btn-delete2]', function () {
+		$( '[data-block-delete2="' + $( this ).data( 'btn-delete2' ) + '"]' ).fadeOut();
 
 	}).on( 'click', '[data-btn-parser="group"]', function () {
 		var a = $( '[data-vk-id-group]' ).map( function(){

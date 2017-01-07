@@ -5,6 +5,7 @@
 			По заданным параметрам найдено {count} [declination={count}]юзе|р|ра|ров[/declination].
 		</div>
 		<div class="tools">
+			<a href="javascript:;" class="remove" data-original-title="" title="Отчистить результат"> </a>
 			<a href="javascript:;" class="collapse" data-original-title="Скрыть/Показать"> </a>
 		</div>
 	</div>

@@ -5,6 +5,7 @@
 			По заданным параметрам найдено {count} [declination={count}]груп|па|пы|п[/declination].
 		</div>
 		<div class="tools">
+			<a href="javascript:;" class="remove" data-original-title="" title="Отчистить результат"> </a>
 			<a href="javascript:;" class="collapse" data-original-title="Скрыть/Показать"> </a>
 		</div>
 	</div>

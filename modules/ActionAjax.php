@@ -2,6 +2,7 @@
 
 use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Plugins\Vk\VkGeo;
+use Modules\Plugins\Vk\VkParser;
 use Modules\Plugins\Vk\VkSearchGroupForm;
 use Modules\Plugins\Vk\VkSearchUserForm;
 
@@ -64,13 +65,22 @@ switch ( $action ) {
 		 * @var array $config
 		 * @var array $language
 		 */
-		$vkSearchGroupForm = new VkSearchGroupForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+		$vkSearchGroupForm = new VkSearchGroupForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $msgBox, $config, $language );
 		$result['content'] = $vkSearchGroupForm->getResult();
 		if ( $result['content'] === false ) {
 			$result['success'] = false;
 			$result['msg'] = 'Нет результата поиска!';
 
 		}
+		break;
+
+	case 'vk_group_parser':
+		/**
+		 * @var array $groupVar
+		 * @var array $config
+		 * @var array $language
+		 */
+		$vkParser = new VkParser( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		break;
 
 }
