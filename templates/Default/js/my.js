@@ -91,7 +91,6 @@ if ( typeof( jQuery ) === 'undefined' ) {
 								}
 
 							} else if ( a.action == 'vk_user_search' || a.action == 'vk_group_search' ) {
-								console.log( a.action );
 								$( '[data-content="' + a.action + '_result"]' ).html( c.content );
 
 							}
@@ -104,6 +103,8 @@ if ( typeof( jQuery ) === 'undefined' ) {
 							CMS.cssLoading.hide();
 
 						}
+
+						CMS.tooltip.init();
 
 					}
 
@@ -280,6 +281,18 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			});
 
 		},
+		tooltip : {
+			init: function () {
+				CMS.tooltip.destroy();
+				$( '[data-toggle="tooltip"]' ).tooltip ();
+
+			},
+			destroy : function () {
+				$( '[data-toggle="tooltip"]' ).tooltip( 'destroy' );
+
+			}
+
+		},
 		select2 : {
 			init : function() {
 				$( '[data-select="select2"]' ).select2 ({
@@ -400,6 +413,7 @@ if ( typeof( jQuery ) === 'undefined' ) {
 			CMS.cssLoading.init();
 			CMS.tokenField();
 			CMS.select2.init();
+			CMS.tooltip.init();
 
 		}
 
@@ -516,7 +530,6 @@ if ( typeof( jQuery ) === 'undefined' ) {
 		$( '[data-content="' + a + '_result"]' ).html( '' );
 
 	}).on( 'keyup', '[data-required-field]', function () {
-		console.log( this );
 		if ( $( this ).val() == '' ) {
 			$( this ).closest( '.' + $( this ).data( 'required-field' ) ).addClass( 'has-error' );
 

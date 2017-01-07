@@ -275,8 +275,11 @@ table.table-vk-search-result>tbody>tr>td.no-br-r {
 .mt-widget-1 .mt-body .mt-username {
 	display: flex;
 	justify-content: center;
-	min-height: 34px;
+	text-align: left;
 	}
 
 .mt-widget-1 .mt-body .mt-username > a {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	}

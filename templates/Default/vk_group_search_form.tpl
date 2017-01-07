@@ -101,7 +101,7 @@
 
 		</form>
 
-		<div data-content="vk_group_search_result">sss</div>
+		<div data-content="vk_group_search_result"></div>
 
 	</div>
 </div>
