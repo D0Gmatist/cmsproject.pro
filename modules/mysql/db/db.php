@@ -275,6 +275,11 @@ class Db {
 
     }
 
+    public function getQueryList() {
+    	return $this->query_list;
+
+	}
+
     /**
      * @param $error
      * @param $error_num

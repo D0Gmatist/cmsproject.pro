@@ -23,7 +23,8 @@ final class VkApi {
 
 		],
 		'groups' => [
-			'search' 		=> 'groups.search?'
+			'search' 		=> 'groups.search?',
+			'getMembers'	=> 'groups.getMembers?'
 
 		]
 
@@ -94,7 +95,7 @@ final class VkApi {
 	 * @return int
 	 */
 	private function checkCount ( $count ) {
-		return ( (int)$count > 0 AND (int)$count < 1001 ) ? (int)$count : 1000;
+		return ( (int)$count >= 0 AND (int)$count < 1001 ) ? (int)$count : 1000;
 
 	}
 
@@ -311,8 +312,8 @@ final class VkApi {
 	 * @param int    $country_id
 	 * @param int    $city_id
 	 * @param int    $sort
-	 * @param int    $offset
 	 * @param int    $count
+	 * @param int    $offset
 	 *
 	 * @return array|bool
 	 */
@@ -322,8 +323,8 @@ final class VkApi {
 		$country_id = 0,
 		$city_id 	= 0,
 		$sort 		= 0,
-		$offset 	= 0,
-		$count 		= 0
+		$count 		= 0,
+		$offset 	= 0
 	) {
 		$params_count = [];
 
@@ -350,15 +351,32 @@ final class VkApi {
 
 			}
 
-			$params_count[ 'count' ] = $this->checkCount ( $count );
-			$params_count[ 'offset' ] = $this->checkOffset ( $offset );
+			$params_count[ 'count' ] = $this->checkCount( $count );
+			$params_count[ 'offset' ] = $this->checkOffset( $offset );
 
 			return $this->getApi( $this->config[ 'vk_app_version56' ], $this->vkApiUrl['groups']['search'], $params_count );
 
-		} else {
-			return false;
+		}
+
+		return false;
+
+	}
+
+
+	public function getApiGroupsMembersUserId ( $group_id = 0, $count = 0, $offset = 0 ) {
+		$params_count = [];
+
+		if ( (int)$group_id > 0 ) {
+			$params_count[ 'group_id' ] = (int)$group_id;
+			$params_count[ 'sort' ] = 'id_asc';
+
+			$params_count[ 'count' ] = $this->checkCount( $count );
+			$params_count[ 'offset' ] = $this->checkOffset( $offset );
+
+			return $this->getApi ( $this->config[ 'vk_app_version56' ], $this->vkApiUrl[ 'groups' ][ 'getMembers' ], $params_count );
 
 		}
+		return false;
 
 	}
 

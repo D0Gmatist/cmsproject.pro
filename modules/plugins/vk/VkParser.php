@@ -2,6 +2,7 @@
 
 namespace Modules\Plugins\Vk;
 
+use Exception;
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
 use Modules\Plugins\MsgBox\MsgBox;
@@ -115,13 +116,16 @@ class VkParser {
 		if ( $status === true ) {
 			$date = date( 'Y-m-d H:i:s', time() );
 
+			$this->db->query( "SET autocommit = 0" );
+			$this->db->query( "START TRANSACTION" );
+
 			$this->db->query( "INSERT INTO 
 											parser 
 												(
 													`parser_title`, 
 													`parser_user_id`, 
 													`parser_sum_pay`, 
-													`parser_atatus`, 
+													`parser_status`, 
 													`parser_date_add`, 
 													`parser_date_result` 
 												) 
@@ -143,25 +147,38 @@ class VkParser {
 													`parser_g_parser_id`,
 													`parser_g_user_id`,
 													`parser_g_vk_group_id`,
-													`parser_g_add_date`,
-													`parser_g_status`
+													`parser_g_add_date`
 												)
 													VALUES 
 														(
 															'{$parserId}',
 															'{$this->memberId['user_id']}',
 															'{$id}',
-															'{$date}',
-															'1'
+															'{$date}'
 														)" );
 
 			}
 
-			$this->result = [
-				'content'	=> '',
-				'msg' 		=> 'Задача успешно создана',
-				'status'	=> false
-			];
+			try {
+				$this->db->query( "COMMIT" );
+
+				$this->result = [
+					'content'	=> '',
+					'msg' 		=> 'Задача успешно создана',
+					'status'	=> false
+				];
+
+			} catch ( Exception $e ) {
+				$this->db->query( "ROLLBACK" );
+
+				$this->result = [
+					'content'	=> '',
+					'msg' 		=> 'Создание задачи завершилась ошибкой',
+					'status'	=> false
+				];
+
+			}
+			$this->db->query( "SET autocommit = 1" );
 
 		}
 

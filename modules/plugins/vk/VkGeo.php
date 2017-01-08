@@ -81,7 +81,7 @@ final class VkGeo {
 		$this->tpl = $tpl;
 
 		/** @var VkApi $vkApi */
-		$this->vkApi = new VkApi( $this->memberId = $memberId, $this->config );
+		$this->vkApi = new VkApi( $this->memberId, $this->config );
 
 		if ( trim( $_GET['action'] ) != '' ) {
 			switch ( trim( $_GET['action'] ) ) {

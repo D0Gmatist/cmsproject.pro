@@ -78,7 +78,7 @@ final class VkSearchUserForm {
 		$this->tpl = $tpl;
 
 		/** @var VkApi $vkApi */
-		$this->vkApi = new VkApi( $this->memberId = $memberId, $this->config );
+		$this->vkApi = new VkApi( $this->memberId, $this->config );
 
 		if ( $_POST['method'] == 'ajax' OR $_GET['method'] == 'ajax' ) {
 			$this->searchForm();

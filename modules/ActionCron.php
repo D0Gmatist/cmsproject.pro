@@ -1,6 +1,7 @@
 <?php
 
-use Modules\Plugins\Vk\VkGeo;
+use Modules\Plugins\Parser\ParserCheckGroup;
+use Modules\Plugins\Parser\ParserGroup;
 
 $result = [
 	'success'			=> true,
@@ -16,15 +17,20 @@ if ( ! isset( $action ) OR trim( $action ) == '' ) {
 
 /** @var string $action */
 switch ( $action ) {
-	case 'countries' :
-	case 'regions' :
-	case 'cities' :
+	case 'parser_check_group' :
 		/**
-		 * @var array $groupVar
-		 * @var array $config
+		 * @var $config
+		 * @var $language
 		 */
-		$vkGeo = new VkGeo( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
-		$result['content'] = $vkGeo->returnResult();
+		$parserGroup = new ParserCheckGroup( $functions, $db, $config, $language );
+		break;
+
+	case 'parser_group' :
+		/**
+		 * @var $config
+		 * @var $language
+		 */
+		$parserGroup = new ParserGroup( $functions, $db, $config, $language );
 		break;
 
 }

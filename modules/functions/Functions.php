@@ -352,8 +352,6 @@ class Functions {
 	}
 
 	public function formatDate( $matches, $newsFormatDate ) {
-		var_dump( $matches );
-		var_dump( $newsFormatDate );
 		return $this->langDate( $matches, $newsFormatDate );
 
 	}

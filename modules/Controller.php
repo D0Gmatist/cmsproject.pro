@@ -97,7 +97,7 @@ define ( 'TPL_DIR', $tpl->dir );
 if ( $_POST['method'] == 'ajax' OR $_GET['method'] == 'ajax' ) {
 	require_once 'ActionAjax.php';
 
-} else if ( $_GET['method'] == 'cron' AND in_array( $_GET['action'], array( 'parser' ) ) AND $_GET['key'] == $config['cron_key'] ) {
+} else if ( $_GET['method'] == 'cron' AND in_array( $_GET['action'], [ 'parser_check_group', 'parser_group' ] ) AND $_GET['key'] == $config['cron_key'] ) {
 	require_once 'ActionCron.php';
 
 } else {

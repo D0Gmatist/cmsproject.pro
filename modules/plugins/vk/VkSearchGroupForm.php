@@ -75,7 +75,7 @@ final class VkSearchGroupForm {
 		$this->tpl = $tpl;
 
 		/** @var VkApi $vkApi */
-		$this->vkApi = new VkApi( $this->memberId = $memberId, $this->config );
+		$this->vkApi = new VkApi( $this->memberId, $this->config );
 
 		if ( $_POST['method'] == 'ajax' OR $_GET['method'] == 'ajax' ) {
 			$this->searchForm();
@@ -105,8 +105,8 @@ final class VkSearchGroupForm {
 			(int)$this->data['countries'],
 			(int)$this->data['cities'],
 			(int)$this->data['sort'],
-			(int)$this->offset,
-			(int)$this->stepCount
+			(int)$this->stepCount,
+			(int)$this->offset
 		);
 
 		if ( is_array( $vk_get[ 'response' ] ) AND count( $vk_get[ 'response' ] ) > 0 ) {
