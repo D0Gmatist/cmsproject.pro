@@ -86,18 +86,17 @@ final class UserPanel {
 												p.parser_user_id = '{$this->memberId['user_id']}' 
 													AND 
 												p.parser_type = '1' 
+													AND 
+												p.parser_status = '1'
 													GROUP BY 
 														p.parser_id
 															ORDER BY 
-																p.parser_status
-																	DESC,
 																p.parser_date_add
 																	DESC" );
 
-		$parserAll = 0;
 		$parserActive = 0;
 		while ( $row = $this->db->getRow () ) {
-			$parserAll++;
+			$parserActive++;
 
 			/**
 			 * tpl panel
@@ -107,18 +106,6 @@ final class UserPanel {
 			$this->tpl->set( '{parser_id}', $row['parser_id'] );
 			$this->tpl->set( '{parser_title}', $row['parser_title'] );
 			$this->tpl->set( '{parser_sum_pay}', $row['parser_sum_pay'] );
-
-			if ( $row['parser_status'] == 1 ) {
-				$parserActive++;
-
-				$this->tpl->set( '{parser_status}', $row['parser_status'] );
-				$this->tpl->set( '{status_class}', 'action' );
-
-			} else {
-				$this->tpl->set( '{parser_status}', $row['parser_status'] );
-				$this->tpl->set( '{status_class}', '' );
-
-			}
 
 			$row['parser_date_add'] = strtotime( $row['parser_date_add'] );
 
@@ -146,9 +133,7 @@ final class UserPanel {
 
 		$this->tpl->set( '{parser_info}', $this->tpl->result[ 'parser_info' ] );
 
-		$this->tpl->set( '{parser_all}', $parserAll );
 		$this->tpl->set( '{parser_active}', $parserActive );
-		$this->tpl->set( '{parser_complates}', ( $parserAll - $parserActive ) );
 
 		$this->tpl->compile( 'parser_info_block' );
 

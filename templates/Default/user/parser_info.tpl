@@ -1,4 +1,4 @@
-<li class="parser-mini-info-status {status_class}">
+<li>
 	<a href="javascript:;">
 		<span class="task">
 			<span class="desc">#{parser_id} - {parser_title} </span>

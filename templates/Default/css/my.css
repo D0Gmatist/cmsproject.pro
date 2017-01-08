@@ -321,17 +321,3 @@ table.table-vk-search-result>tbody>tr>td.no-br-r {
 	}
 
 /**/
-.parser-mini-info-status {
-	background: #effff1;
-	}
-
-.parser-mini-info-status.action {
-	background: #fdfff3;
-	}
-
-.page-header.navbar .top-menu .navbar-nav>li.dropdown-extended .dropdown-menu .dropdown-menu-list>li.parser-mini-info-status>a {
-	color: #656565;
-	font-size: 12px;
-	line-height: 20px;
-	padding: 10px 15px;
-	}
