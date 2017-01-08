@@ -8,7 +8,7 @@
 			<h3>
 				В работе <span class="bold">{parser_active}</span> [declination={parser_active}]зада|ча|чи|ч[/declination]
 			</h3>
-			<a href="#">Все задачи парсера</a>
+			<a href="#">Все задачи</a>
 		</li>
 		<li>
 			<ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
