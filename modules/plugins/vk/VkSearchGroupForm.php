@@ -122,77 +122,77 @@ final class VkSearchGroupForm {
 			foreach ( $this->result['items'] AS $item ) {
 				$n++;
 
-				$this->tpl->loadTemplate ( 'vk_group_search_result.tpl' );
+				$this->tpl->loadTemplate( 'vk_group_search_result.tpl' );
 
-				$this->tpl->set ( '{id}', $item[ 'id' ] );
-				$this->tpl->set ( '{name}', $item[ 'name' ] );
-				$this->tpl->set ( '{screen_name}', $item[ 'screen_name' ] );
+				$this->tpl->set( '{id}', $item[ 'id' ] );
+				$this->tpl->set( '{name}', $item[ 'name' ] );
+				$this->tpl->set( '{screen_name}', $item[ 'screen_name' ] );
 
 				switch ( $item[ 'is_closed' ] ) {
 					case 0:
-						$this->tpl->set ( '{is_closed}', 'Сообщество открытое' );
+						$this->tpl->set( '{is_closed}', 'Сообщество открытое' );
 						break;
 
 					case 1:
-						$this->tpl->set ( '{is_closed}', 'Сообщество закрытое' );
+						$this->tpl->set( '{is_closed}', 'Сообщество закрытое' );
 						break;
 
 					case 2:
-						$this->tpl->set ( '{is_closed}', 'Сообщество частное' );
+						$this->tpl->set( '{is_closed}', 'Сообщество частное' );
 						break;
 
 				}
 
 				if ( trim ( $item[ 'photo_50' ] ) == '' ) {
-					$this->tpl->set ( '{photo_50}', $this->config[ 'http_home_url' ].'templates/'.$this->config[ 'skin' ].'/img/group_avatar_50.png' );
+					$this->tpl->set( '{photo_50}', $this->config[ 'http_home_url' ].'templates/'.$this->config[ 'skin' ].'/img/group_avatar_50.png' );
 
 				} else {
-					$this->tpl->set ( '{photo_50}', $item[ 'photo_50' ] );
+					$this->tpl->set( '{photo_50}', $item[ 'photo_50' ] );
 
 				}
 
 				if ( trim ( $item[ 'photo_100' ] ) == '' ) {
-					$this->tpl->set ( '{photo_100}', $this->config[ 'http_home_url' ].'templates/'.$this->config[ 'skin' ].'/img/group_avatar_100.png' );
+					$this->tpl->set( '{photo_100}', $this->config[ 'http_home_url' ].'templates/'.$this->config[ 'skin' ].'/img/group_avatar_100.png' );
 
 				} else {
-					$this->tpl->set ( '{photo_100}', $item[ 'photo_100' ] );
+					$this->tpl->set( '{photo_100}', $item[ 'photo_100' ] );
 
 				}
 
 				if ( trim ( $item[ 'photo_200' ] ) == '' ) {
-					$this->tpl->set ( '{photo_200}', $this->config[ 'http_home_url' ].'templates/'.$this->config[ 'skin' ].'/img/group_avatar_200.png' );
+					$this->tpl->set( '{photo_200}', $this->config[ 'http_home_url' ].'templates/'.$this->config[ 'skin' ].'/img/group_avatar_200.png' );
 
 				} else {
-					$this->tpl->set ( '{photo_200}', $item[ 'photo_200' ] );
+					$this->tpl->set( '{photo_200}', $item[ 'photo_200' ] );
 
 				}
 
 				switch ( $item[ 'type' ] ) {
 					case 'group':
-						$this->tpl->set ( '{type}', 'Группа' );
+						$this->tpl->set( '{type}', 'Группа' );
 						break;
 
 					case 'page':
-						$this->tpl->set ( '{type}', 'Публичная страница' );
+						$this->tpl->set( '{type}', 'Публичная страница' );
 						break;
 
 					case 'event':
-						$this->tpl->set ( '{type}', 'Мероприятие' );
+						$this->tpl->set( '{type}', 'Мероприятие' );
 						break;
 
 				}
 
-				$this->tpl->compile ( 'vk_group_search_result' );
+				$this->tpl->compile( 'vk_group_search_result' );
 
 			}
 
 			if ( $this->tpl->result[ 'vk_group_search_result' ] ) {
-				$this->tpl->loadTemplate ( 'vk_group_search_result_block.tpl' );
+				$this->tpl->loadTemplate( 'vk_group_search_result_block.tpl' );
 
-				$this->tpl->set ( '{vk_group_search_result}', $this->tpl->result[ 'vk_group_search_result' ] );
-				$this->tpl->set ( '{count}', $n );
+				$this->tpl->set( '{vk_group_search_result}', $this->tpl->result[ 'vk_group_search_result' ] );
+				$this->tpl->set( '{count}', $n );
 
-				$this->tpl->compile ( 'vk_group_search_result_block' );
+				$this->tpl->compile( 'vk_group_search_result_block' );
 
 				return $this->tpl->result[ 'vk_group_search_result_block' ];
 

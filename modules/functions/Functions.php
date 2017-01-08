@@ -2,6 +2,9 @@
 
 namespace Modules\Functions;
 
+use DateTime;
+use DateTimeZone;
+
 if ( ! defined ( 'ENGINE' ) ) {
 	die ( 'Get out of here!' );
 
@@ -11,12 +14,16 @@ class Functions {
 	/** @var array  */
 	private $config = [];
 
+	/** @var array  */
+	private $language = [];
+
 	/**
 	 * Functions constructor.
 	 * @param array $config
 	 */
-	function __construct ( array $config ) {
+	function __construct ( array $config, array $language ) {
 		$this->config = $config;
+		$this->language = $language;
 
 	}
 
@@ -300,6 +307,54 @@ class Functions {
 		}
 
 		return $var;
+
+	}
+
+	public function langDate( $format, $stamp ) {
+		$timezones = [
+			'Pacific/Midway', 'US/Samoa', 'US/Hawaii', 'US/Alaska', 'US/Pacific', 'America/Tijuana', 'US/Arizona',
+			'US/Mountain', 'America/Chihuahua', 'America/Mazatlan', 'America/Mexico_City', 'America/Monterrey',
+			'US/Central', 'US/Eastern', 'US/East-Indiana', 'America/Lima', 'America/Caracas', 'Canada/Atlantic',
+			'America/La_Paz', 'America/Santiago', 'Canada/Newfoundland', 'America/Buenos_Aires', 'Greenland',
+			'Atlantic/Stanley', 'Atlantic/Azores', 'Africa/Casablanca', 'Europe/Dublin', 'Europe/Lisbon',
+			'Europe/London', 'Europe/Amsterdam', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava',
+			'Europe/Brussels', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Madrid', 'Europe/Paris', 'Europe/Prague',
+			'Europe/Rome', 'Europe/Sarajevo', 'Europe/Stockholm', 'Europe/Vienna', 'Europe/Warsaw', 'Europe/Zagreb',
+			'Europe/Athens', 'Europe/Bucharest', 'Europe/Helsinki', 'Europe/Istanbul', 'Asia/Jerusalem', 'Europe/Kiev',
+			'Europe/Minsk', 'Europe/Riga', 'Europe/Sofia', 'Europe/Tallinn', 'Europe/Vilnius', 'Asia/Baghdad',
+			'Asia/Kuwait', 'Africa/Nairobi', 'Asia/Tehran', 'Europe/Kaliningrad', 'Europe/Moscow', 'Europe/Volgograd',
+			'Europe/Samara', 'Asia/Baku', 'Asia/Muscat', 'Asia/Tbilisi', 'Asia/Yerevan', 'Asia/Kabul',
+			'Asia/Yekaterinburg', 'Asia/Tashkent', 'Asia/Kolkata', 'Asia/Kathmandu', 'Asia/Almaty', 'Asia/Novosibirsk',
+			'Asia/Jakarta', 'Asia/Krasnoyarsk', 'Asia/Hong_Kong', 'Asia/Kuala_Lumpur', 'Asia/Singapore', 'Asia/Taipei',
+			'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Irkutsk', 'Asia/Seoul', 'Asia/Tokyo', 'Australia/Adelaide',
+			'Australia/Darwin', 'Asia/Yakutsk', 'Australia/Brisbane', 'Pacific/Port_Moresby', 'Australia/Sydney',
+			'Asia/Vladivostok', 'Asia/Sakhalin', 'Asia/Magadan', 'Pacific/Auckland', 'Pacific/Fiji'
+		];
+
+		if ( ! $stamp ) {
+			$stamp = time();
+
+		}
+
+		$local = new DateTime( '@' . $stamp );
+
+		$localzone = date_default_timezone_get();
+
+		if ( ! in_array( $localzone, $timezones ) ) {
+			$localzone = 'Europe/Moscow';
+
+		}
+
+		$local->setTimeZone( new DateTimeZone( $localzone ) );
+
+		return strtr( $local->format( $format ), $this->language['date'] );
+
+	}
+
+	public function formatDate( $matches, $newsFormatDate ) {
+		var_dump( $matches );
+		var_dump( $newsFormatDate );
+		return $this->langDate( $matches, $newsFormatDate );
 
 	}
 

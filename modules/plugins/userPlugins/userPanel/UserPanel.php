@@ -28,28 +28,34 @@ final class UserPanel {
 	/** @var Db  */
 	private $db;
 
+	/** @var Template  */
+	private $tpl;
+
 	/** @var array  */
 	private $config;
 
 	/** @var array  */
 	private $language;
 
-	/** @var Template  */
-	private $tpl;
+	/** @var  int */
+	private $_TIME;
 
 	/**
 	 * UserPanel constructor.
-	 * @param $isLogged
-	 * @param array $memberId
-	 * @param array $groupVar
+	 *
+	 * @param           $isLogged
+	 * @param array     $memberId
+	 * @param array     $groupVar
 	 * @param Functions $functions
-	 * @param Db $db
-	 * @param Template $tpl
-	 * @param array $config
-	 * @param array $language
+	 * @param Db        $db
+	 * @param Template  $tpl
+	 * @param array     $config
+	 * @param array     $language
+	 * @param           $_TIME
+	 *
 	 * @internal param $action
 	 */
-	function __construct ( $isLogged, array $memberId, array $groupVar, Functions $functions, Db $db, Template $tpl, array $config, array $language ) {
+	function __construct ( $isLogged, array $memberId, array $groupVar, Functions $functions, Db $db, Template $tpl, array $config, array $language, $_TIME ) {
 		$this->isLogged = $isLogged;
 		$this->memberId = $memberId;
 		$this->groupVar = $groupVar;
@@ -57,20 +63,104 @@ final class UserPanel {
 		$this->functions = $functions;
 		$this->db = $db;
 
+		$this->tpl = $tpl;
+
 		$this->config = $config;
 		$this->language = $language;
-
-		$this->tpl = $tpl;
+		$this->_TIME = $_TIME;
 
 		$this->getLoginPanel();
 
 	}
 
 	private function getLoginPanel () {
+		$this->db->query( "SELECT 
+								p.*, 
+								count( pg.parser_g_parser_id ) 
+									FROM 
+										parser p 
+											LEFT JOIN 
+										parser_groups pg 
+											ON ( p.parser_id = pg.parser_g_parser_id )
+											WHERE 
+												p.parser_user_id = '{$this->memberId['user_id']}' 
+													AND 
+												p.parser_type = '1' 
+													GROUP BY 
+														p.parser_id
+															ORDER BY 
+																p.parser_status
+																	DESC,
+																p.parser_date_add
+																	DESC" );
 
-		$this->tpl->loadTemplate( 'user/user_panel.tpl' );
+		$parserAll = 0;
+		$parserActive = 0;
+		while ( $row = $this->db->getRow () ) {
+			$parserAll++;
+
+			/**
+			 * tpl panel
+			 */
+			$this->tpl->loadTemplate( 'user/parser_info.tpl' );
+
+			$this->tpl->set( '{parser_id}', $row['parser_id'] );
+			$this->tpl->set( '{parser_title}', $row['parser_title'] );
+			$this->tpl->set( '{parser_sum_pay}', $row['parser_sum_pay'] );
+
+			if ( $row['parser_status'] == 1 ) {
+				$parserActive++;
+
+				$this->tpl->set( '{parser_status}', $row['parser_status'] );
+				$this->tpl->set( '{status_class}', 'action' );
+
+			} else {
+				$this->tpl->set( '{parser_status}', $row['parser_status'] );
+				$this->tpl->set( '{status_class}', '' );
+
+			}
+
+			$row['parser_date_add'] = strtotime( $row['parser_date_add'] );
+
+			if( date( 'Ymd', $row['parser_date_add'] ) == date( 'Ymd', $this->_TIME ) ) {
+				$this->tpl->set( '{date}', $this->language['time_heute'] . $this->functions->langDate( ", H:i", $row['parser_date_add'] ) );
+
+			} else if ( date( 'Ymd', $row['parser_date_add'] ) == date( 'Ymd', ( $this->_TIME - 86400 ) ) ) {
+				$this->tpl->set( '{date}', $this->language['time_gestern'] . $this->functions->langDate( ", H:i", $row['parser_date_add'] ) );
+
+			} else {
+				$this->tpl->set( '{date}', $this->functions->langDate( $this->config['timestamp_active'], $row['parser_date_add'] ) );
+
+			}
+			preg_match_all( "#\{date=(.+?)\}#i", $this->tpl->copy_template, $pregDate );
+			$this->tpl->copy_template = str_replace( $pregDate[0][0], $this->functions->formatDate( $pregDate[1][0], $row['parser_date_add'] ), $this->tpl->copy_template );
+
+			$this->tpl->compile( 'parser_info' );
+
+		}
+
+		/**
+		 * tpl parser_info_block
+		 */
+		$this->tpl->loadTemplate( 'user/parser_info_block.tpl' );
+
+		$this->tpl->set( '{parser_info}', $this->tpl->result[ 'parser_info' ] );
+
+		$this->tpl->set( '{parser_all}', $parserAll );
+		$this->tpl->set( '{parser_active}', $parserActive );
+		$this->tpl->set( '{parser_complates}', ( $parserAll - $parserActive ) );
+
+		$this->tpl->compile( 'parser_info_block' );
+
+		/**
+		 * tpl panel
+		 */
+		$this->tpl->loadTemplate( 'user/panel.tpl' );
 
 		if ( $this->isLogged ) {
+
+			$this->tpl->set( '{parser_info_block}', $this->tpl->result[ 'parser_info_block' ] );
+
 			$this->tpl->set( '{user_id}', $this->memberId['user_id'] );
 			$this->tpl->set( '{user_login}', $this->memberId['user_login'] );
 			$this->tpl->set( '{user_email}', $this->memberId['user_email'] );
@@ -86,6 +176,9 @@ final class UserPanel {
 			$this->tpl->set( '{user_group}', $this->memberId['user_group'] );
 
 		} else {
+
+			$this->tpl->set( '{parser_info_block}', '' );
+
 			$this->tpl->set( '{user_id}', '' );
 			$this->tpl->set( '{user_login}', $this->language['userPanel'][1] );
 			$this->tpl->set( '{user_email}', '' );

@@ -25,7 +25,7 @@ $main = new Main( $tpl );
  * @var array $config
  * @var array $language
  */
-new UserPanel( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
+new UserPanel( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language, $_TIME );
 
 /** @var string $action */
 switch ( $action ) {

@@ -212,6 +212,9 @@ $language = [
 
 	],
 
+	'time_heute'		=>	"Сегодня",
+	'time_gestern'		=>	"Вчера",
+
 	'date' => [
 		'month_1'		=>	"январь",
 		'month_2'		=>	"февраль",

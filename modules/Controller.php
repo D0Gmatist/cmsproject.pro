@@ -45,7 +45,7 @@ $isLogged = false;
 $memberId = [];
 
 /** @var Functions $functions */
-$functions = new Functions( $config );
+$functions = new Functions( $config, $language );
 
 $functions->domain();
 $functions->Session();
