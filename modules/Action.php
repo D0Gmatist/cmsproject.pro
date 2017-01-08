@@ -42,11 +42,6 @@ switch ( $action ) {
 		new VkSearchUserForm( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
 		break;
 
-	case 'add_parser' :
-		$pageTitle = [ 'Создание задачи по парсингу', '' ];
-		new AddParser( $isLogged, $memberId, $groupVar, $functions, $db, $tpl, $config, $language );
-		break;
-
 	case 'login' :
 		$pageTitle = [ 'Авторизация', '' ];
 		if ( $_POST[ 'action' ] == 'login' ) {

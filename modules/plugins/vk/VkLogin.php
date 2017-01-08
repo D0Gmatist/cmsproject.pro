@@ -125,7 +125,7 @@ final class VkLogin {
 	}
 
 	private function accessToken () {
-		$url = 'https://oauth.vk.com/access_token';
+		$url = 'https://oauth.vk.com/access_token?';
 
 		$code =  $_GET['code'];
 
@@ -137,7 +137,7 @@ final class VkLogin {
 
 		];
 
-		$this->accessTokenUrl = $url . '?' . urldecode( http_build_query( $accessTokenUrl ) );
+		$this->accessTokenUrl = json_decode( file_get_contents( $url . urldecode( http_build_query( $accessTokenUrl ) ) ), true );
 
 	}
 
@@ -146,11 +146,9 @@ final class VkLogin {
 
 		$this->accessToken();
 
-		$token = json_decode( file_get_contents( $this->accessTokenUrl ), true );
-
-		if ( (int)$token['user_id'] > 0 AND isset( $token['access_token'] ) ) {
-			$this->userVkId 	= $token['user_id'];
-			$this->userVkToken 	= $token['access_token'];
+		if ( (int)$this->accessTokenUrl['user_id'] > 0 AND isset( $this->accessTokenUrl['access_token'] ) ) {
+			$this->userVkId 	= $this->accessTokenUrl['user_id'];
+			$this->userVkToken 	= $this->accessTokenUrl['access_token'];
 			$this->step = 2;
 			$this->getVkUserInfo();
 
@@ -159,7 +157,7 @@ final class VkLogin {
 	}
 
 	private function params () {
-		$url = 'https://api.vk.com/method/users.get';
+		$url = 'https://api.vk.com/method/users.get?';
 
 		$userVkIdObj = [ $this->userVkId ];
 		if ( ! is_array( $this->userVkId  ) ) {
@@ -176,17 +174,15 @@ final class VkLogin {
 
 		];
 
-		$this->paramsUrl = $url . '?' . urldecode( http_build_query( $paramsUrl ) );
+		$this->paramsUrl = json_decode( file_get_contents( $url . urldecode( http_build_query( $paramsUrl ) ) ), true );
 
 	}
 
 	private function getVkUserInfo () {
 		$this->params();
 
-		$row = json_decode( file_get_contents( $this->paramsUrl ), true );
-
-		if ( is_array( $row['response'][0] ) ) {
-			$this->response =  $row['response'][0];
+		if ( is_array( $this->paramsUrl['response'][0] ) ) {
+			$this->response =  $this->paramsUrl['response'][0];
 			if ( $this->searchDouble ( $this->userVkId ) > 0 ) {
 				$this->login();
 

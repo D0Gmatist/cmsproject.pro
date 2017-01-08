@@ -102,6 +102,8 @@ class VkParser {
 
 			}
 
+			$id_list = array_unique( $id_list );
+
 			if ( count(  $id_list ) < 1 ) {
 				$this->result = [
 					'content'	=> '',
