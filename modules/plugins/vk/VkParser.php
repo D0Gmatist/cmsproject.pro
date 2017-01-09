@@ -5,7 +5,6 @@ namespace Modules\Plugins\Vk;
 use Exception;
 use Modules\Functions\Functions;
 use Modules\Mysql\Db\Db;
-use Modules\Plugins\MsgBox\MsgBox;
 use Modules\Template\Template;
 
 class VkParser {
