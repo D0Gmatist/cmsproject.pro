@@ -94,10 +94,12 @@ $memberId = $isLogin->memberId;
 $tpl = new Template( new MobileDetect, new Translate, $config, $memberId );
 define ( 'TPL_DIR', $tpl->dir );
 
+$actionCron = [ 'parser_check_group', 'parser_group', 'parser_user' ];
+
 if ( $_POST['method'] == 'ajax' OR $_GET['method'] == 'ajax' ) {
 	require_once 'ActionAjax.php';
 
-} else if ( $_GET['method'] == 'cron' AND in_array( $_GET['action'], [ 'parser_check_group', 'parser_group' ] ) AND $_GET['key'] == $config['cron_key'] ) {
+} else if ( $_GET['method'] == 'cron' AND in_array( $_GET['action'], $actionCron ) AND $_GET['key'] == $config['cron_key'] ) {
 	require_once 'ActionCron.php';
 
 } else {

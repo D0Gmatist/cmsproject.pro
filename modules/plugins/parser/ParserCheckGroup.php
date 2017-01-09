@@ -46,57 +46,84 @@ class ParserCheckGroup {
 		$this->config = $config;
 		$this->language = $language;
 
-		for ( $i = 1; $i <= 50; $i++ ) {
-			$this->memberId = $this->db->superQuery ( "SELECT * FROM users ORDER BY RAND() LIMIT 1" );
+		$this->vkApi = new VkApi( $this->memberId, $this->config );
 
-			$this->vkApi = new VkApi( $this->memberId, $this->config );
+		$this->foreachGroup();
 
-			$row = $this->db->superQuery ( "SELECT 
+		$this->db->close();
+
+		die();
+
+	}
+
+	private function foreachGroup() {
+		if ( $this->getCheckGroup() === true ) {
+			$this->foreachGroup();
+
+		}
+
+	}
+
+	private function getCheckGroup() {
+
+		$this->memberId = $this->db->superQuery ( "SELECT * FROM users ORDER BY RAND() LIMIT 1" );
+
+		$dateCheck = date( 'Y-m-d H:i:s', time() + 300 );
+
+		$row = $this->db->superQuery ( "SELECT 
 												* 
 													FROM 
 														parser_groups 
 															WHERE 
 																`parser_g_count` = '0' 
 																	AND 
-																`parser_g_error` = '0'
-																	LIMIT 1" );
+																( `parser_g_lock` = '0' OR ( ( `parser_g_lock` = '1' AND `parser_g_up_date` <= '{$dateCheck}' ) OR ( `parser_g_lock` = '1' AND `parser_g_up_date` IS NULL ) ) )
+																	ORDER BY 
+																		`parser_g_add_date`
+																			ASC,
+																		`parser_g_id`
+																			ASC
+																				LIMIT 1" );
 
-			$result = $this->vkApi->getApiGroupsMembersUserId( $row[ 'parser_g_vk_group_id' ], 0, 0 );
+		if ( ! $row['parser_g_id'] ) {
+			return false;
 
-			$this->db->query ( "SET autocommit = 0" );
-			$this->db->query ( "START TRANSACTION" );
+		}
 
-			$this->db->query ( "UPDATE parser_groups SET `parser_g_error` = '1' WHERE `parser_g_id` = '{$row['parser_g_id']}'" );
+		$dateUp = date( 'Y-m-d H:i:s', time() );
 
-			if ( (int)$result[ 'response' ][ 'count' ] > 0 ) {
-				$parser_g_count = (int)$result[ 'response' ][ 'count' ];
-				$this->db->query ( "UPDATE parser_groups SET `parser_g_count` = '{$parser_g_count}', `parser_g_error` = '0' WHERE `parser_g_id` = '{$row['parser_g_id']}'" );
+		$this->db->query ( "UPDATE parser_groups SET `parser_g_lock` = '1', `parser_g_up_date` = '{$dateUp}' WHERE `parser_g_id` = '{$row['parser_g_id']}'" );
 
-			} else {
-				$this->db->query ( "UPDATE
+		$result = $this->vkApi->getApiGroupsMembersUserId( $row[ 'parser_g_vk_group_id' ], 0, 0 );
+
+		$this->db->query ( "SET autocommit = 0" );
+		$this->db->query ( "START TRANSACTION" );
+
+		if ( (int)$result[ 'response' ][ 'count' ] > 0 ) {
+			$parser_g_count = (int)$result[ 'response' ][ 'count' ];
+			$this->db->query ( "UPDATE parser_groups SET `parser_g_count` = '{$parser_g_count}', `parser_g_lock` = '0' WHERE `parser_g_id` = '{$row['parser_g_id']}'" );
+
+		} else {
+			$this->db->query ( "UPDATE
 										parser_groups 
 											SET 
-												`parser_g_error` = '2',
+												`parser_g_lock` = '2',
 												`parser_g_error_text` = 'Нет пользователей для обработки'
 													WHERE 
 														`parser_g_id` = '{$row['parser_g_id']}'" );
 
-			}
-
-			try {
-				$this->db->query ( "COMMIT" );
-
-			} catch ( Exception $e ) {
-				$this->db->query ( "ROLLBACK" );
-
-			}
-			$this->db->query ( "SET autocommit = 1" );
-
 		}
 
-		$this->db->close();
+		try {
+			$this->db->query ( "COMMIT" );
 
-		die();
+		} catch ( Exception $e ) {
+			$this->db->query ( "ROLLBACK" );
+
+		}
+		$this->db->query ( "SET autocommit = 1" );
+
+		return true;
 
 	}
 

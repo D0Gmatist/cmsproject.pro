@@ -2,6 +2,7 @@
 
 use Modules\Plugins\Parser\ParserCheckGroup;
 use Modules\Plugins\Parser\ParserGroup;
+use Modules\Plugins\Parser\ParserUser;
 
 $result = [
 	'success'			=> true,
@@ -31,6 +32,14 @@ switch ( $action ) {
 		 * @var $language
 		 */
 		$parserGroup = new ParserGroup( $functions, $db, $config, $language );
+		break;
+
+	case 'parser_user' :
+		/**
+		 * @var $config
+		 * @var $language
+		 */
+		$parserUser = new ParserUser( $functions, $db, $config, $language );
 		break;
 
 }

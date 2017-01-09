@@ -126,7 +126,6 @@ class VkParser {
 												(
 													`parser_title`, 
 													`parser_user_id`, 
-													`parser_sum_pay`, 
 													`parser_status`, 
 													`parser_date_add`, 
 													`parser_date_result` 
@@ -135,7 +134,6 @@ class VkParser {
 														(
 															'{$name}', 
 															'{$this->memberId['user_id']}', 
-															'0.00', 
 															'1', 
 															'{$date}', 
 															'{$date}' 
@@ -145,19 +143,19 @@ class VkParser {
 			foreach ( $id_list AS $id ) {
 				$this->db->query( "INSERT INTO 
 											parser_groups
-												(
-													`parser_g_parser_id`,
-													`parser_g_user_id`,
-													`parser_g_vk_group_id`,
-													`parser_g_add_date`
-												)
-													VALUES 
 														(
-															'{$parserId}',
-															'{$this->memberId['user_id']}',
-															'{$id}',
-															'{$date}'
-														)" );
+															`parser_g_parser_id`,
+															`parser_g_user_id`,
+															`parser_g_vk_group_id`,
+															`parser_g_add_date`
+														)
+															VALUES 
+																(
+																	'{$parserId}',
+																	'{$this->memberId['user_id']}',
+																	'{$id}',
+																	'{$date}'
+																)" );
 
 			}
 

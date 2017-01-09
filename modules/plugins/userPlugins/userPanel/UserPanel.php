@@ -105,7 +105,6 @@ final class UserPanel {
 
 			$this->tpl->set( '{parser_id}', $row['parser_id'] );
 			$this->tpl->set( '{parser_title}', $row['parser_title'] );
-			$this->tpl->set( '{parser_sum_pay}', $row['parser_sum_pay'] );
 
 			$row['parser_date_add'] = strtotime( $row['parser_date_add'] );
 
