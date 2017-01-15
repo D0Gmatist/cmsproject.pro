@@ -13,6 +13,11 @@ if ( ! defined ( 'ENGINE' ) ) {
 
 }
 
+/**
+ * Class VkLogin
+ * @package Modules\Plugins\Vk
+ */
+
 final class VkLogin {
 
 	/** @var array  */

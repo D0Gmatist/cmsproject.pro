@@ -11,6 +11,13 @@ if ( ! defined ( 'ENGINE' ) ) {
 
 }
 
+// street count 8973568
+
+/**
+ * Class VkGeo
+ * @package Modules\Plugins\Vk
+ */
+
 final class VkGeo {
 
 	/** @var bool  */
@@ -163,7 +170,8 @@ final class VkGeo {
 	private function setCountries ( $step ) {
 		$this->result['countries'] = [];
 
-		$this->db->query( "SELECT * FROM geo_countries ORDER BY `important_country` DESC, `title_country` ASC" );
+		//$this->db->query( "SELECT * FROM geo_countries ORDER BY `important_country` DESC, `title_country` ASC" );
+		$this->db->query( "SELECT * FROM geo_countries WHERE `important_country` = '1' ORDER BY `title_country` ASC" );
 
 		while ( $row = $this->db->getRow() ) {
 			$this->result['countries'][] = $row;

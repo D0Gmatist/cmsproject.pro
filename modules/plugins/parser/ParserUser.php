@@ -13,6 +13,11 @@ if ( ! defined ( 'ENGINE' ) ) {
 
 }
 
+/**
+ * Class ParserUser
+ * @package Modules\Plugins\Parser
+ */
+
 class ParserUser {
 
 	/** @var Functions  */
